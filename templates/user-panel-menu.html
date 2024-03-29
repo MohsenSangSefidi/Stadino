@@ -1,0 +1,51 @@
+<div class="col-lg-3 d-lg-block d-none">
+    <div class="position-sticky top-0">
+        <div class="penel-nav-seller">
+            <div class="profile-box mb-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="profile-box-image">
+                    <img src="/static/img/user-avatar.svg" alt="">
+                </div>
+                <div class="profile-box-desc mt-2">
+                    <h6 class="text-center">{{ user.username }}</h6>
+                    <p class="">{{ user.email }}</p>
+                </div>
+            </div>
+            <div class="panel-nav-nav">
+                <ul class="rm-item-menu navbar-nav">
+                    <li class="nav-item">
+                        <a href="{% url 'user-panel' %}" class="nav-link"><i class="bi bi-house box-icon"></i><span>پروفایل </span> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"><i
+                                class="bi bi-menu-app box-icon"></i><span>ویرایش اطلاعات</span></a>
+                        <span class="showSubMenu"><i class="bi bi-chevron-left"></i></span>
+                        <ul class="navbar-nav h-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'change-info' %}">اطلاعات شخصی</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'change-pass' %}">تغییر رمز</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="">
+                        <i class="bi bi-cart-check box-icon"></i>سفارش های من </a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="">
+                        <i class="bi bi-pin-map box-icon"></i>آدرس های من</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="">
+                        <i class="bi bi-chat-dots box-icon"></i>نظرات من</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="">
+                        <i class="bi bi-heart box-icon"></i>محصولات مورد علاقه</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">
+                        <i class="bi bi-arrow-right-square box-icon"></i>خروج از حساب کاربری</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

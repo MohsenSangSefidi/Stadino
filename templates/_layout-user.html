@@ -1,0 +1,53 @@
+{% load render_partial %}
+<!doctype html>
+<html class="no-js" dir="rtl" lang="Fa_IR">
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %}
+
+        {% endblock %}
+    </title>
+
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <meta content="" property="og:title">
+    <meta content="" property="og:type">
+    <meta content="" property="og:url">
+    <meta content="" property="og:image">
+
+    <!-- Place favicon.ico in the root directory -->
+    {% block header-references %}
+
+    {% endblock %}
+
+    <meta content="#f4f5f9" name="theme-color">
+</head>
+
+<body>
+{% render_partial 'home_module.views.headerView' %}
+
+<div class="content">
+    <div class="container-fluid">
+
+        {% render_partial 'user_module.views.UserPanelMenuRes' %}
+
+        <div class="row gy-4">
+            {% render_partial 'user_module.views.UserPanelMenu' %}
+            {% block content %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% render_partial 'home_module.views.footerView' %}
+
+{% block footer-references %}
+
+{% endblock %}
+</body>
+
+</html>
