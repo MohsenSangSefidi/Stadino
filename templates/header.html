@@ -308,61 +308,17 @@
                     <div class="top-menu-menu">
                         <ul class="navbar-nav align-items-center">
                             <li class="position-relative m-0"></li>
-                             <li class="nav-item"><a href="" class="nav-link f-600 border-animate fromCenter">صفحه اصلی</a></li>
-                            <li class="nav-item"><a href="" class="nav-link f-600 border-animate fromCenter"><i
-                                    class="bi bi-menu-app"></i>منو ساده</a>
+                             <li class="nav-item"><a href="{% url 'home' %}" class="nav-link f-600 border-animate fromCenter">صفحه اصلی</a></li>
+                            {% for item in category %}
+                                <li class="nav-item"><a href="" class="nav-link f-600 border-animate fromCenter"><i class="bi bi-menu-app"></i>{{ item.name }}</a>
                                 <ul class="level-one">
-                                    <li><a href="">منو شماره 1</a></li>
-                                    <li><a href="">منو شماره 2</a></li>
-                                    <li class="position-relative"><a href="">منو شماره 3 <i
-                                            class="bi bi-chevron-left"></i></a>
-                                        <ul class="level-two">
-                                            <li><a href="">زیر منو شماره 1</a></li>
-                                            <li><a href="">2 زیر منو شماره </a></li>
-                                            <li><a href="">3 زیر منو شماره </a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="">منو شماره 4</a></li>
-                                    <li><a href="">منو شماره 5</a></li>
-                                    <li><a href="">منو شماره 6</a></li>
+                                    {% for cat in item.catgorymodel_set.all %}
+                                         <li><a href="">{{ cat.name }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </li>
-                            <li class="nav-item"><a href="" class="nav-link f-600 border-animate fromCenter"><i
-                                    class="bi bi-menu-app"></i>منو ساده</a>
-                                <ul class="level-one">
-                                    <li><a href="">منو شماره 1</a></li>
-                                    <li><a href="">منو شماره 2</a></li>
-                                    <li class="position-relative"><a href="">منو شماره 3 <i
-                                            class="bi bi-chevron-left"></i></a>
-                                        <ul class="level-two">
-                                            <li><a href="">زیر منو شماره 1</a></li>
-                                            <li><a href="">2 زیر منو شماره </a></li>
-                                            <li><a href="">3 زیر منو شماره </a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="">منو شماره 4</a></li>
-                                    <li><a href="">منو شماره 5</a></li>
-                                    <li><a href="">منو شماره 6</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a href="" class="nav-link f-600 border-animate fromCenter"><i
-                                    class="bi bi-menu-app"></i>منو ساده</a>
-                                <ul class="level-one">
-                                    <li><a href="">منو شماره 1</a></li>
-                                    <li><a href="">منو شماره 2</a></li>
-                                    <li class="position-relative"><a href="">منو شماره 3 <i
-                                            class="bi bi-chevron-left"></i></a>
-                                        <ul class="level-two">
-                                            <li><a href="">زیر منو شماره 1</a></li>
-                                            <li><a href="">2 زیر منو شماره </a></li>
-                                            <li><a href="">3 زیر منو شماره </a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="">منو شماره 4</a></li>
-                                    <li><a href="">منو شماره 5</a></li>
-                                    <li><a href="">منو شماره 6</a></li>
-                                </ul>
-                            </li>
+                            {% endfor %}
+
                         </ul>
                     </div>
                 </div>

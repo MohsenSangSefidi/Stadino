@@ -217,8 +217,5 @@ $(document).ready(function (){
                 $(".step-passwd #passwd").addClass("border-danger border-2");
             }
         })
-
-
     })
-
 })
