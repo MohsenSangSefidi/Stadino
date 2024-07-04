@@ -1,7 +1,7 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<div align="center">
+<div align="center" style="background-color: white;">
   <a>
     <img src="https://s32.picofile.com/file/8477408350/logo_stand.png" alt="Logo" width="80" height="80">
   </a>
@@ -11,7 +11,7 @@
   <p align="center">
     سایت فروشگاه کتاب
     <br />
-    <a href="https://github.com/github_username/repo_name">View Project</a>
+    <a href="">دیدن سایت</a>
   </p>
 </div>
 
