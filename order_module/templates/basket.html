@@ -1,0 +1,65 @@
+{% load poll_extras %}
+<div class="col-12">
+    <div class="cart-product-item">
+        <div class="content-box">
+            <div class="container-fluid">
+                <div class="responsive-table">
+                    <table class="table table-bordered site-tbl">
+                        <thead>
+                        <tr>
+                            <th class="h5 text-center">عملیات</th>
+                            <th class="h5 text-center" colspan="2">تصویر</th>
+                            <th class="h5 text-center">محصول</th>
+                            <th class="h5 text-center">تعداد</th>
+                            <th class="h5 text-center">قیمت کل</th>
+                        </tr>
+                        </thead>
+                        <input type="hidden" id="totalBasketPrice" value="{{ order.total_price }}">
+                        <tbody>
+                        {% for product in products %}
+                            <tr>
+                                <td class="text-center align-middle">
+                                    <a onclick="remove_product_from_basket({{ product.product.id }})"
+                                       data-bs-toggle="tooltip" class="p-4"
+                                       data-bs-placement="top"
+                                       data-bs-title="حذف محصول از سبد خرید">
+                                        <i class="bi bi-x-lg"></i>
+                                    </a>
+                                </td>
+                                <td colspan="2" class="text-center align-middle">
+                                    <a href="{% url 'product-detail' product.product.slug %}">
+                                        <img src="{{ product.product.productimagemodel_set.all.first.img.url }}"
+                                             width="100" alt="">
+                                    </a>
+                                </td>
+                                <td class="align-middle">
+                                    <h5 class="fw-light">{{ product.product.name }}</h5>
+                                </td>
+                                <td class="counter text-center align-middle">
+                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                        <span class="input-group-btn input-group-prepend"><button
+                                                class="btn-counter waves-effect waves-light remove-button bootstrap-touchspin-down"
+                                                onclick="change_count({{ product.product.id }}, 'mines')" type="button">-</button></span>
+                                        <input type="text" name="count" class="counter form-counter"
+                                               value="{{ product.count }}">
+                                        <span class="input-group-btn input-group-append"><button
+                                                class="btn-counter waves-effect waves-light add-button bootstrap-touchspin-up"
+                                                onclick="change_count({{ product.product.id }}, 'add')"
+                                                type="button">+</button></span></div>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <h5 class="title-font main-color-one-color h2 mb-0">{{ product.finalPrice|splitnumber }}<span
+                                            class="mb-0 text-muted-two font-14 fw-lighter">تومان</span>
+                                    </h5>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

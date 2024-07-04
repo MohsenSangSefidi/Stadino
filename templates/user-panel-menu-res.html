@@ -42,16 +42,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user-panel-basket' %}">
                         <i class="bi bi-cart-check box-icon"></i>سفارش های من </a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user-panel-address' %}">
                         <i class="bi bi-pin-map box-icon"></i>آدرس های من</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">
-                        <i class="bi bi-chat-dots box-icon"></i>نظرات من</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user-favorite' %}">
                         <i class="bi bi-heart box-icon"></i>محصولات مورد علاقه</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">

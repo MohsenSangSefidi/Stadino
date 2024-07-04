@@ -1,0 +1,227 @@
+{% extends '_layout.html' %}
+{% load poll_extras %}
+
+{% block title %}
+    سبد خرید
+{% endblock %}
+
+{% block content %}
+    <div class="content mt-3">
+        <div class="container-fluid">
+
+            <div class="payment_navigtions">
+                <div class="checkout-headers">
+                    <nav class="navbar navbar-expand">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a href="" class="nav-link">
+                                    <span>1</span>
+                                    <p>سبد خرید</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <span>2</span>
+                                    <p>صورتحساب</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <span>3</span>
+                                    <p>جزییات پرداخت</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <h2 class="title-font main-color-one-color mt-4 h4">سبد خرید شما <span
+                        class="main-color-three-color">({{ products.count }} کالا)</span>
+                </h2>
+            </div>
+
+        </div>
+
+        <div class="container-fluid">
+            <div class="cart-product">
+                <div class="row gy-4">
+                    <div id="content-holder">
+                        <div class="col-12">
+                            <div class="cart-product-item">
+                                <div class="content-box">
+                                    <div class="container-fluid">
+                                        <div class="responsive-table">
+                                            <table class="table table-bordered site-tbl">
+                                                <thead>
+                                                <tr>
+                                                    <th class="h5 text-center">عملیات</th>
+                                                    <th class="h5 text-center" colspan="2">تصویر</th>
+                                                    <th class="h5 text-center">محصول</th>
+                                                    <th class="h5 text-center">تعداد</th>
+                                                    <th class="h5 text-center">قیمت کل</th>
+                                                </tr>
+                                                </thead>
+                                                <input type="hidden" id="totalBasketPrice"
+                                                       value="{{ order.total_with_delivery }}">
+                                                <tbody>
+                                                {% for product in products %}
+                                                    <tr>
+                                                        <td class="text-center align-middle">
+                                                            <a onclick="remove_product_from_basket({{ product.product.id }})"
+                                                               data-bs-toggle="tooltip" class="p-4"
+                                                               data-bs-placement="top"
+                                                               data-bs-title="حذف محصول از سبد خرید">
+                                                                <i class="bi bi-x-lg"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td colspan="2" class="text-center align-middle">
+                                                            <a href="{% url 'product-detail' product.product.slug %}">
+                                                                <img src="{{ product.product.productimagemodel_set.first.img.url }}"
+                                                                     width="100" alt="">
+                                                            </a>
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <h5 class="fw-light">{{ product.product.name }}</h5>
+                                                        </td>
+                                                        <td class="counter text-center align-middle">
+                                                            <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                                <span class="input-group-btn input-group-prepend"><button
+                                                                        class="btn-counter waves-effect waves-light remove-button bootstrap-touchspin-down"
+                                                                        onclick="change_count({{ product.product.id }}, 'mines')"
+                                                                        type="button">-</button></span>
+                                                                <input type="text" name="count"
+                                                                       class="counter form-counter"
+                                                                       value="{{ product.count }}">
+                                                                <span class="input-group-btn input-group-append"><button
+                                                                        class="btn-counter waves-effect waves-light add-button bootstrap-touchspin-up"
+                                                                        onclick="change_count({{ product.product.id }}, 'add')"
+                                                                        type="button">+</button></span></div>
+                                                        </td>
+                                                        <td class="text-center align-middle">
+                                                            <h5 class="title-font main-color-one-color h2 mb-0">{{ product.finalPrice|splitnumber }}<span
+                                                                    class="mb-0 text-muted-two font-14 fw-lighter">تومان</span>
+                                                            </h5>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {#                    ---------------------------------------------------------------------------#}
+                    <div class="col-12">
+                        <div class="row gy-4">
+                            <div class="col-xl-9">
+                                <div class="content-box">
+                                    <div class="container-fluid">
+                                        <div class="cart-action">
+                                            <div class="search-form mt-4">
+                                                <div class="section-title-title mb-3">
+                                                    <h2 class="title-font h3">کد<span class="main-color-one-color"> تخفیف </span>
+                                                    </h2>
+                                                    <p>کد تخفیف نمونه - xjcordc</p>
+                                                </div>
+                                                {% if order.discount_code %}
+                                                    <h5>کد تخفیف اعمال شد : {{ order.discount_code.code }}
+                                                        - {{ order.discount_code.discount }}%</h5>
+                                                {% else %}
+                                                    <form action="" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="search-filed">
+                                                            {{ discount.DiscountCode.errors }}
+                                                            {{ discount.DiscountCode }}
+                                                            <button type="submit" class="top-header-search-btn">
+                                                                <i class="bi bi-plus-circle"></i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-xl-3">
+                                <div class="content-box">
+                                    <div class="container-fluid">
+                                        <div class="item">
+                                            <div class="factor">
+                                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                    <h5 class="mb-0 h6">مجموع قیمت</h5>
+                                                    <p class="mb-0 font-17"
+                                                       id="total">{{ order.total_price|splitnumber }}
+                                                        تومان</p>
+                                                </div>
+
+                                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                    <h5 class="mb-0 h6">مجموع تخفیف</h5>
+                                                    <p class="mb-0 font-17"
+                                                       id="total_discount">{{ order.total_discount|splitnumber }}
+                                                        تومان</p>
+                                                </div>
+                                                {% if order.discount_code %}
+                                                    <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                        <h5 class="mb-0 h6">کد تخفیف - {{ order.discount_code.discount }}%</h5>
+                                                        <p class="mb-0 font-17"
+                                                           id="total">{{ order.discount_code_price|splitnumber }}
+                                                            تومان</p>
+                                                    </div>
+                                                {% endif %}
+                                                <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                    <h5 class="mb-0 h6">مجموع</h5>
+                                                    <p class="mb-0 font-17"
+                                                       id="total-delivery">{{ order.total_with_delivery|splitnumber }}
+                                                        تومان</p>
+                                                </div>
+
+                                                <div class="d-flex factor-item flex-column align-items-start justify-content-between">
+                                                    <h5 class="mb-0 h6">حمل و نقل</h5>
+                                                    <form method="post">
+                                                        {% csrf_token %}
+                                                        <div class="form-check mt-3">
+                                                            <input type="radio"
+                                                                   onchange="sumDelevary('post-1')"
+                                                                   checked class="form-check-input" name="post"
+                                                                   id="post-1">
+                                                            <label for="post-1" class="form-check-label">
+                                                                پست عادی « ۱۰,۰۰۰ تومان »
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-3">
+                                                            <input type="radio"
+                                                                   onchange="sumDelevary('post-2')"
+                                                                   class="form-check-input" name="post" id="post-2">
+                                                            <label for="post-2" class="form-check-label">
+                                                                پست پیشتاز « ۵۰,۰۰۰ تومان »
+                                                            </label>
+                                                        </div>
+                                                        {{ delivery.delivery_type }}
+
+                                                        <div class="action mt-3 d-flex align-items-center justify-content-center">
+                                                            <input type="submit" value="تسویه حساب"
+                                                                   class="btn main-color-one-bg w-100">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end content -->
+
+    <!-- /content -->
+{% endblock %}

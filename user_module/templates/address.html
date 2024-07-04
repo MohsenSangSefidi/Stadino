@@ -1,0 +1,57 @@
+{% extends '_layout.html' %}
+{% load render_partial %}
+{% load poll_extras %}
+
+{% block title %}
+    پنل کاربری
+{% endblock %}
+
+{% block content %}
+    <!-- start content -->
+
+    <div class="content">
+        <div class="container-fluid">
+
+            {% render_partial 'user_module.views.UserPanelMenuRes' %}
+
+            <div class="row gy-4">
+                {% render_partial 'user_module.views.UserPanelMenu' %}
+                <div class="col-lg-9">
+                    <div class="section-title">
+                        <div class="section-title-title">
+                            <h3 class="title-font h3 main-color-three-color">آدرس های<span class="main-color-one-color"> ثبت شده </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="content-box slider-parent rounded-4">
+                        <div class="container-fluid">
+                            <div class="row">
+                                {% for address in all_address %}
+                                    <div class="col-md-4">
+                                    <div class="bg-white card addresses-item mb-4 shadow-sm">
+                                        <div class="gold-members p-4">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h6 class="mb-1">{{ address.address }}</h6>
+                                                    <p class="text-overflow-2 address-line">
+                                                        {{ address.detail }}
+                                                    </p>
+                                                    <p class="mb-0 text-black font-weight-bold">
+                                                        <a class="me-3" data-bs-toggle="modal" data-bs-target="#addressModal" href="#"><i class="bi bi-pencil"></i> </a>
+                                                        <a class="text-danger" data-toggle="modal" data-target="#delete-address-modal" onclick="removeAddress({{ address.id }})" href="#"><i class="bi bi-trash"></i> </a></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /content -->
+{% endblock %}

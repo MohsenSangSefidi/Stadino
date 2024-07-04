@@ -1,18 +1,6 @@
 {% extends '_layout.html' %}
 {% load render_partial %}
-
-{% block header-references %}
-    <link href="/static/css/normalize.css" rel="stylesheet">
-    <link href="/static/font/bootstrap-icon/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/js/plugin/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="/static/js/plugin/countdown/countdown.css" rel="stylesheet">
-    <link href="/static/js/plugin/rasta-contact/style.css" rel="stylesheet">
-    <link href="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
-    <link href="/static/css/mega-menu.css" rel="stylesheet">
-    <link href="/static/css/style.css" rel="stylesheet">
-    <link href="/static/css/responsive.css" rel="stylesheet">
-{% endblock %}
+{% load poll_extras %}
 
 {% block title %}
     پنل کاربری
@@ -29,18 +17,6 @@
             <div class="row gy-4">
                 {% render_partial 'user_module.views.UserPanelMenu' %}
                 <div class="col-lg-9">
-                    <div class="alert px-3 alert-light shadow-box py-4 rounded-4 alert-dismissible fade show"
-                         role="alert">
-                        <div class="d-flex align-items-center">
-                            <img src="/static/img/bell.png" class="bell-icon" alt="">
-                            <h5 class="title-font"> عنوان اطلاعیه</h5>
-                        </div>
-                        <p class="mt-3 text-justify">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با
-                            استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم
-                            است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می
-                            باشد.</p>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
                     <div class="row gy-3">
                         <div class="col-lg-3 col-md-6">
                             <a href="">
@@ -50,20 +26,7 @@
                                     </div>
                                     <div class="meta-box-desc">
                                         <p>خریدهای تکمیل شده</p>
-                                        <h5>15</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <a href="">
-                                <div class="meta-box">
-                                    <div class="meta-box-icon">
-                                        <i class="bi bi-heart"></i>
-                                    </div>
-                                    <div class="meta-box-desc">
-                                        <p>محصولات مورد علاقه</p>
-                                        <h5>23</h5>
+                                        <h5>{{ is_payed_basket }}</h5>
                                     </div>
                                 </div>
                             </a>
@@ -76,27 +39,13 @@
                                     </div>
                                     <div class="meta-box-desc">
                                         <p>نظرات</p>
-                                        <h5>17</h5>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <a href="">
-                                <div class="meta-box">
-                                    <div class="meta-box-icon">
-                                        <i class="bi bi-repeat"></i>
-                                    </div>
-                                    <div class="meta-box-desc">
-                                        <p>سفارشات مرجوعی</p>
-                                        <h5>5</h5>
+                                        <h5>{{ comments_count }}</h5>
                                     </div>
                                 </div>
                             </a>
                         </div>
                     </div>
                     <div class="panel-latest-order mt-4">
-
                         <div class="section-title">
                             <div class="row gy-3 align-items-center">
                                 <div class="col-sm-8">
@@ -108,7 +57,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="section-title-link text-sm-end text-start">
-                                        <a class="btn btn-title font-13 rounded-pill" href=""> مشاهده همه</a>
+                                        <a class="btn btn-title font-13 rounded-pill" href="{% url 'user-panel-basket' %}"> مشاهده همه</a>
                                     </div>
                                 </div>
                             </div>
@@ -127,46 +76,30 @@
                                 </tr>
                                 </thead>
                                 <tbody class="text-center">
-                                <tr>
-                                    <td class="font-14">1</td>
-                                    <td class="font-14">2354632</td>
-                                    <td class="font-14">سه شنبه 13 دی 1401</td>
-                                    <td class="font-14">580,000 تومان</td>
-                                    <td class="font-14"><a href="" class="title-font">سفارش مرجوع شده</a></td>
-                                    <td class="font-14">
-                                        <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-14">2</td>
-                                    <td class="font-14">2354632</td>
-                                    <td class="font-14">سه شنبه 13 دی 1401</td>
-                                    <td class="font-14">580,000 تومان</td>
-                                    <td class="font-14"><a href="" class="title-font">سفارش لغو شده</a></td>
-                                    <td class="font-14">
-                                        <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-14">1</td>
-                                    <td class="font-14">2354632</td>
-                                    <td class="font-14">سه شنبه 13 دی 1401</td>
-                                    <td class="font-14">580,000 تومان</td>
-                                    <td class="font-14"><a href="" class="title-font">سفارش تحویل داده شده</a></td>
-                                    <td class="font-14">
-                                        <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-14">2</td>
-                                    <td class="font-14">2354632</td>
-                                    <td class="font-14">سه شنبه 13 دی 1401</td>
-                                    <td class="font-14">580,000 تومان</td>
-                                    <td class="font-14"><a href="" class="title-font">سفارش در انتظار پرداخت</a></td>
-                                    <td class="font-14">
-                                        <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                    </td>
-                                </tr>
+                                {% for basket in all_basket %}
+                                    <tr>
+                                        <td class="font-14">{{ forloop.counter }}</td>
+                                        <td class="font-14">{{ basket.id }}</td>
+                                        {% if basket.pay_datetime %}
+                                            <td class="font-14">{{ basket.pay_datetime }}</td>
+                                        {% else %}
+                                            <td class="font-14">پرداخت تکمیل نشده</td>
+                                        {% endif %}
+
+                                        <td class="font-14">{{ basket.total_price|splitnumber }} تومان</td>
+                                        {% if basket.is_pay %}
+                                            <td class="font-14"><a href="" class="title-font">تکمیل شده</a></td>
+                                        {% else %}
+                                            <td class="font-14"><a href="" class="title-font">در حال تکمیل شدن</a></td>
+                                        {% endif %}
+
+                                        <td class="font-14">
+                                            <a href="{% url 'user-panel-basket-detail' basket.id %}"
+                                               class="btn border-0 main-color-one-bg waves-effect waves-light"><i
+                                                    class="bi bi-chevron-left"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -177,16 +110,4 @@
     </div>
 
     <!-- /content -->
-{% endblock %}
-
-{% block footer-references %}
-    <script src="/static/js/vendor/modernizr-3.11.2.min.js"></script>
-    <script src="/static/js/vendor/jquery-3.7.1.min.js"></script>
-    <script src="/static/js/vendor/bootstrap.bundle-5.3.2.min.js"></script>
-    <script src="/static/js/plugin/swiper/swiper-bundle.min.js"></script>
-    <script src="/static/js/plugin/countdown/countdown.js"></script>
-    <script src="/static/js/plugin/rasta-contact/script.js"></script>
-    <script src="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-    <script src="/static/js/plugins.js"></script>
-    <script src="/static/js/main.js"></script>
 {% endblock %}

@@ -27,13 +27,13 @@ $(function () {
         $(".main-menu-sub-active").removeClass("main-menu-sub-active");
     })
 
-    ///شمارنده محصول برای اضافه کردن به سبد خرید
-    $("input.counter").TouchSpin({
-        min: 1,
-        max: '1000000000000000',
-        buttondown_class: "btn-counter waves-effect waves-light",
-        buttonup_class: "btn-counter waves-effect waves-light"
-    });
+    // /شمارنده محصول برای اضافه کردن به سبد خرید
+    // $("input.counter").TouchSpin({
+    //     min: 1,
+    //     max: '1000000000000000',
+    //     buttondown_class: "btn-counter waves-effect waves-light remove-button",
+    //     buttonup_class: "btn-counter waves-effect waves-light add-button",
+    // });
 
     ///انتخاب گر رنگ
     $(".category-sort .form-checks .form-check").click(function () {
@@ -110,7 +110,7 @@ $(document).ready(function () {
 
 /**
  * config floating contact
- */
+ //  */
 $('#btncollapzion').Collapzion({
     _child_attribute: [{
         'label': 'پشتیبانی تلفنی',
@@ -133,10 +133,10 @@ $('#btncollapzion').Collapzion({
 
 
 // When the user clicks on the button, scroll to the top of the document
-function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-}
+// function topFunction() {
+//     document.body.scrollTop = 0; // For Safari
+//     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+// }
 
 /*
 *
@@ -173,9 +173,9 @@ $(document).ready(function () {
         $(this).find('input').prop("checked", true);
     });
 
-    $(".delivary-payment-bank-item").click(function (){
+    $(".delivary-payment-bank-item").click(function () {
         $(".delivary-payment-bank-item").removeClass("active");
-       $(this).addClass("active");
+        $(this).addClass("active");
     });
 });
 
@@ -184,17 +184,17 @@ $(document).ready(function () {
 * فرم چند مرحله ای ورود / ثبت نام
 */
 
-$(document).ready(function (){
+$(document).ready(function () {
     ///disable fild password in load form
     $(".step-passwd").hide();
     ///disable button submit in step one
     $(".step-two").hide();
 
     ///show filed password in step two form
-    $(".step-one").click(function (){
+    $(".step-one").click(function () {
 
         ///check empty fild username
-        if($(".step-username #username").val() != ""){
+        if ($(".step-username #username").val() != "") {
             ///hide username filed
             $(".step-username").hide();
             ///show password filed
@@ -203,19 +203,292 @@ $(document).ready(function (){
             $(this).hide();
             ///show button submit
             $(".step-two").show();
-        }else{
+        } else {
             $(".step-username #username").addClass("border-danger border-2");
         }
 
 
         ///check empty fild password
 
-        $(".btnForm").click(function(){
-            if($(".step-passwd #passwd").val() !=""){
+        $(".btnForm").click(function () {
+            if ($(".step-passwd #passwd").val() != "") {
                 $("#form-auth").submit();
-            }else{
+            } else {
                 $(".step-passwd #passwd").addClass("border-danger border-2");
             }
         })
     })
 })
+
+function addProduct(productCount){
+    let count = document.getElementById('product-Count')
+    let int = parseInt(count.value)
+    int += 1
+    if (int > productCount) {
+        count.value = productCount
+    }else {
+        count.value = int
+    }
+}
+
+function minesProduct(){
+    let count = document.getElementById('product-Count')
+    let int = parseInt(count.value)
+    int -= 1
+    if (int < 1) {
+        count.value = 1
+    }else {
+        count.value = int
+    }
+
+}
+
+function add_to_order(id) {
+    let count = $('#product-Count').val()
+    $.get('/order/add-to-order/', {
+        'productId': id,
+        'count': count
+    }).then(res => {
+        if (res.status == "success") {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "محصول با موفقیت به اضافه شد",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setInterval(function () {
+                location.reload()
+            }, 1500);
+        } else if (res.status == "count_error") {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "مشکلی در اضافه کردن محصول رخ داده است.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else if (res.status == "count_biger_error") {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "این تعداد محصول در انبار موجود نیست.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else if (res.status == "not_login") {
+            Swal.fire({
+                title: "خطای ورود",
+                text: "لطفا برای اضافه کردن محصول وارد حساب خود شوید",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "ورود",
+                cancelButtonText: "لغو"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/user/login/'
+                }
+            });
+        }
+    })
+}
+
+// function sumDelevary(post) {
+//     let delivary = document.getElementById('delivery')
+//     let total_delivery = document.getElementById('total-delivery')
+//     let price = parseInt(document.getElementById('totalBasketPrice').value)
+//     if (post == 'post-1') {
+//         let total = price += 10000
+//         let split3 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(total);
+//         total_delivery.innerHTML = `${split3} تومان`
+//         delivary.value = 'normal'
+//     } else if (post == 'post-2') {
+//         let total = price += 50000
+//         let split3 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(total);
+//         total_delivery.innerHTML = `${split3} تومان`
+//         delivary.value = 'special'
+//     }
+// }
+
+function removeAddress(id) {
+    Swal.fire({
+        title: "مطمئن هستید؟",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله، پاک شود.",
+        cancelButtonText: "خیر"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.get('/user/user-delete/', {
+                'id': id
+            }).then(res => {
+                if (res.status == 'success') {
+                    Swal.fire({
+                        title: "حذف!",
+                        text: "آدرس با موفقیت حذف شد.",
+                        icon: "success",
+                        showConfirmButton: false
+                    });
+                    setInterval(function () {
+                        location.reload()
+                    }, 2000);
+                } else if (res.status == 'cant') {
+                    Swal.fire({
+                        title: "حذف!",
+                        text: "مشکلی در حذف بوجود آمد.",
+                        icon: "warning",
+                        showConfirmButton: false
+                    });
+                }
+            })
+        }
+    });
+}
+
+function remove_product_from_basket(product_id) {
+    Swal.fire({
+        title: "حذف !",
+        text: "آیا از حذف محصول مطمئن هستید ؟",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "بله",
+        cancelButtonText: "خیر"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.get('/order/remove_product/', {
+                'product_id': product_id
+            }).then(res => {
+                if (res.status == 'success') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "محصول با موفقیت حذف شد.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setInterval(function () {
+                        location.reload()
+                    }, 2000);
+                } else if (res.status == 'id_isnt_valid') {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: "در حذف محصول مشکلی رخ داده است.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setInterval(function () {
+                        location.reload()
+                    }, 2000);
+                }
+            })
+        }
+    });
+}
+
+function change_count(product_id, state) {
+    let content = document.getElementById('content-holder')
+    let total = document.getElementById('total')
+    let total_discount = document.getElementById('total_discount')
+    let total_delivery = document.getElementById('total-delivery')
+    $.get('/order/change-count/', {
+        'product_id': product_id,
+        'state': state
+    }).then(res => {
+        if (res.status == 'Success') {
+            content.innerHTML = res.body
+            let split1 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(res.totalPrice);
+            total.innerHTML = `${split1} تومان`
+            let split2 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(res.totlaDiscount);
+            total_discount.innerHTML = `${split2} تومان`
+            let split3 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(res.totalWithDelivery);
+            total_delivery.innerHTML = `${split3} تومان`
+        } else if (res.status == 'Not_Found') {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "در تغییر تعداد محصول مشکلی رخ داده است.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else if (res.status == 'Count_Not_Valid') {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "موجودی انبار کافی نیست.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else if (res.status == 'Minimom_Count') {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "تعداد محصول بیشتر از این کم نمیشود.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    })
+}
+
+function set_id_address(address_id) {
+    let input = document.getElementById('delivery_id')
+    input.value = address_id
+    console.log(input)
+    console.log(address_id)
+}
+
+function addProductToFavorite(product_id) {
+    $.get('/product/add-product-to-favorite/', {
+        'id': product_id
+    }).then(res => {
+        if (res.status == 'add') {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "محصول به موارد مورد علاقه اضافه شد.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setInterval(function () {
+                location.reload()
+            }, 1500);
+        } else if (res.status == 'remove') {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "محصول از موارد مورد علاقه حذف شد.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            setInterval(function () {
+                location.reload()
+            }, 1500);
+        }else if (res.status == 'Error') {
+            Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "مشکلی در انجام عملیات رخ داده.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    })
+}
+
+function send_Code() {
+    let token = document.getElementById("userToken").value
+    $.get('/user/resend-code/', {
+        'token' : token
+    }).then(res => {
+        if (res.status == 'success') {
+            location.reload()
+        }
+    })
+}

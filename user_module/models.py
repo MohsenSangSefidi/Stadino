@@ -14,3 +14,12 @@ class UserModels(AbstractUser):
     class Meta:
         verbose_name= 'کاربر'
         verbose_name_plural= 'کاربران'
+
+class AddressModel(models.Model):
+    user = models.ForeignKey(UserModels, on_delete=models.CASCADE, verbose_name='کاربر')
+    address = models.CharField(max_length=100, verbose_name='address', null=True)
+    detail = models.TextField(verbose_name='text', null=True)
+    state = models.CharField(max_length=100, verbose_name='ostan', null=True)
+    city = models.CharField(max_length=100, verbose_name='city', null=True)
+    phone_number = models.CharField(max_length=100, verbose_name='phone', null=True)
+    is_active = models.BooleanField(default=True, verbose_name='فعال/غیر فعال')

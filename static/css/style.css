@@ -4263,4 +4263,13 @@ div.countdown-bar div:nth-of-type(2) span {
     border-width: 2px;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.slider-img {
+    width: 100%!important;
+    height: 100%!important;
+}
+
 /* end style panel */

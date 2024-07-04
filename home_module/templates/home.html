@@ -1,20 +1,8 @@
 {% extends '_layout.html' %}
+{% load poll_extras %}
 
 {% block title %}
     Stadino
-{% endblock %}
-
-{% block header-references %}
-    <link href="/static/css/normalize.css" rel="stylesheet">
-    <link href="/static/font/bootstrap-icon/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/js/plugin/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="/static/js/plugin/countdown/countdown.css" rel="stylesheet">
-    <link href="/static/js/plugin/rasta-contact/style.css" rel="stylesheet">
-    <link href="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
-    <link href="/static/css/mega-menu.css" rel="stylesheet">
-    <link href="/static/css/style.css" rel="stylesheet">
-    <link href="/static/css/responsive.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -33,26 +21,14 @@
 
                         <div class="swiper homeSlider" id="">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <a href="">
-                                        <img alt="" class="img-fluid" loading="lazy" src="/static/img/slider-1.webp">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="">
-                                        <img alt="" class="img-fluid" loading="lazy" src="/static/img/slider-2.webp">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="">
-                                        <img alt="" class="img-fluid" loading="lazy" src="/static/img/slider-3.webp">
-                                    </a>
-                                </div>
-                                <div class="swiper-slide">
-                                    <a href="">
-                                        <img alt="" class="img-fluid" loading="lazy" src="/static/img/slider-4.webp">
-                                    </a>
-                                </div>
+                                {% for slide in slider %}
+                                    <div class="swiper-slide">
+                                        <a>
+                                            <img alt="" class="slider-img" loading="lazy"
+                                                 src="{{ slide.img.url }}">
+                                        </a>
+                                    </div>
+                                {% endfor %}
                             </div>
                             <div class="swiper-button-next d-lg-flex d-none"></div>
                             <div class="swiper-button-prev d-lg-flex d-none"></div>
@@ -74,117 +50,50 @@
                 <div class="col-lg-3">
                     <div class="swiper suggetMoment">
                         <div class="swiper-wrapper position-relative">
-                            <div class="swiper-slide">
-                                <div class="product-box">
-                                    <div class="product-timer">
-                                        <div class="timer-label">
-                                            <span>40%</span>
+                            {% for product in special %}
+                                <div class="swiper-slide">
+                                    <div class="product-box">
+                                        <div class="product-timer">
+                                            <div class="timer-label">
+                                                <span>{{ product.discount }}%</span>
+                                            </div>
+                                            <div class="timer">
+                                                <div class='countdown'
+                                                     data-date="{{ product.special_discount_date.year }}-{{ product.special_discount_date.month }}-{{ product.special_discount_date.day }}"
+                                                     data-time="{{ product.special_discount_date.hour }}:{{ product.special_discount_date.minute }}">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="timer">
-                                            <div class='countdown' data-date="2027-01-01" data-time="18:30">
+                                        <div class="product-image">
+                                            <img alt="" class="img-fluid" loading="lazy"
+                                                 src="{{ product.productimagemodel_set.all.first.img.url }}">
+                                        </div>
+                                        <div class="product-title">
+                                            <div class="title">
+                                                <p class=" title-font">{{ product.name }}</p>
+                                            </div>
+                                            <div class="product-rating">
+                                                <div class="number"><span
+                                                        class="text-muted font-12">({{ product.commentmodel_set.all.count }}+) {{ product.ratingAvrg }}</span>
+                                                </div>
+                                                <div class="icon"><i class="bi bi-star-fill"></i></div>
+                                            </div>
+                                        </div>
+                                        <div class="product-action">
+                                            <div class="link">
+                                                <a class="btn border-0 rounded-3 main-color-one-bg" href="{% url 'product-detail' product.slug %}">
+                                                    <i class="bi bi-basket text-white"></i>
+                                                </a>
+                                            </div>
+                                            <div class="price">
+                                                <p class="old-price">{{ product.price|splitnumber }}</p>
+                                                <p class="new-price">{{ product.disCount|splitnumber }} <span
+                                                        class="font-12">تومان</span></p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="product-image">
-                                        <img alt="" class="img-fluid" loading="lazy"
-                                             src="/static/img/product/product-1.webp">
-                                    </div>
-                                    <div class="product-title">
-                                        <div class="title">
-                                            <p class=" title-font">دفتر سیمی 85 برگ همیشه طرح انار کد 6338</p>
-                                        </div>
-                                        <div class="product-rating">
-                                            <div class="number"><span class="text-muted font-12">(15+) 4.8</span></div>
-                                            <div class="icon"><i class="bi bi-star-fill"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-action">
-                                        <div class="link">
-                                            <a class="btn border-0 rounded-3 main-color-one-bg" href="">
-                                                <i class="bi bi-basket text-white"></i>
-                                            </a>
-                                        </div>
-                                        <div class="price">
-                                            <p class="old-price">6,500,000 </p>
-                                            <p class="new-price">3,175,000 <span class="font-12">تومان</span></p>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="product-box">
-                                    <div class="product-timer">
-                                        <div class="timer-label">
-                                            <span>40%</span>
-                                        </div>
-                                        <div class="timer">
-                                            <div class='countdown' data-date="2027-01-01" data-time="18:30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <img alt="" class="img-fluid" loading="lazy"
-                                             src="/static/img/product/product-2.webp">
-                                    </div>
-                                    <div class="product-title">
-                                        <div class="title">
-                                            <p class=" title-font">دفتر سیمی 85 برگ همیشه طرح انار کد 6338</p>
-                                        </div>
-                                        <div class="product-rating">
-                                            <div class="number"><span class="text-muted font-12">(15+) 4.8</span></div>
-                                            <div class="icon"><i class="bi bi-star-fill"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-action">
-                                        <div class="link">
-                                            <a class="btn border-0 rounded-3 main-color-one-bg" href="">
-                                                <i class="bi bi-basket text-white"></i>
-                                            </a>
-                                        </div>
-                                        <div class="price">
-                                            <p class="old-price">6,500,000 </p>
-                                            <p class="new-price">3,175,000 <span class="font-12">تومان</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="product-box">
-                                    <div class="product-timer">
-                                        <div class="timer-label">
-                                            <span>40%</span>
-                                        </div>
-                                        <div class="timer">
-                                            <div class='countdown' data-date="2027-01-01" data-time="18:30">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <img alt="" class="img-fluid" loading="lazy"
-                                             src="/static/img/product/product-3.webp">
-                                    </div>
-                                    <div class="product-title">
-                                        <div class="title">
-                                            <p class=" title-font">دفتر سیمی 85 برگ همیشه طرح انار کد 6338</p>
-                                        </div>
-                                        <div class="product-rating">
-                                            <div class="number"><span class="text-muted font-12">(15+) 4.8</span></div>
-                                            <div class="icon"><i class="bi bi-star-fill"></i></div>
-                                        </div>
-                                    </div>
-                                    <div class="product-action">
-                                        <div class="link">
-                                            <a class="btn border-0 rounded-3 main-color-one-bg" href="">
-                                                <i class="bi bi-basket text-white"></i>
-                                            </a>
-                                        </div>
-                                        <div class="price">
-                                            <p class="old-price">6,500,000 </p>
-                                            <p class="new-price">3,175,000 <span class="font-12">تومان</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="d-flex justify-content-center">
                             <div class="swiper-progress-bar">
@@ -262,11 +171,6 @@
                             </h2>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="section-title-link text-sm-end text-start">
-                            <a class="btn btn-title  rounded-pill" href=""> مشاهده همه</a>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -274,19 +178,19 @@
                 <div class="swiper-wrapper">
                     {% for catgory in catgorys %}
                         <div class="swiper-slide">
-                        <a href="">
-                            <div class="slider-category-item">
-                                <div class="slider-category-item-title">
-                                    <h6>{{ catgory.name }}</h6>
+                            <a href="{% url 'search-catgory' catgory.slug %}">
+                                <div class="slider-category-item">
+                                    <div class="slider-category-item-title font-10">
+                                        <h6>{{ catgory.name }}</h6>
+                                    </div>
+                                    <div class="slider-category-item-imagew">
+                                        <img src="{{ catgory.catgoryimagemodel_set.all.first.img.url }}" alt="">
+                                    </div>
                                 </div>
-                                <div class="slider-category-item-image">
-                                    <img src="{{ catgory.catgoryimagemodel_set.all.first.img.url }}" alt="">
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
                     {% endfor %}
-                    
+
 
                 </div>
                 <div class="swiper-button-next"></div>
@@ -324,14 +228,16 @@
                             <div class="container-fluid">
                                 <div class="swiper amazing-slider-sw">
                                     <div class="swiper-wrapper">
-                                        {% for item in discount %}
+                                        {% for item in special %}
                                             <div class="swiper-slide">
                                                 <div class="product-box">
                                                     <a href="{% url 'product-detail' item.slug %}">
                                                         <div class="product-image">
-                                                            <img src="{{ item.productimagemodel_set.all.first.img.url }}" loading="lazy"
+                                                            <img src="{{ item.productimagemodel_set.all.first.img.url }}"
+                                                                 loading="lazy"
                                                                  alt="" class="img-fluid one-image">
-                                                            <img src="{{ item.productimagemodel_set.all.first.img.url }}" loading="lazy"
+                                                            <img src="{{ item.productimagemodel_set.all.first.img.url }}"
+                                                                 loading="lazy"
                                                                  alt="" class="img-fluid two-image">
                                                         </div>
                                                         <div class="product-title">
@@ -348,7 +254,7 @@
                                                             </div>
                                                             <div class="price">
                                                                 <p class="old-price">{{ item.price }} <span
-                                                                        class="danger-label rounded-3 ms-2">{{ item.discount }}</span>
+                                                                        class="danger-label rounded-3 ms-2">{{ item.discount }}%</span>
                                                                 </p>
                                                                 <p class="new-price">{{ item.disCount }} <span
                                                                         class="font-12">تومان</span></p>
@@ -359,28 +265,26 @@
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <nav class="navbar navbar-expand">
                                                                 <ul class="navbar-nav align-items-center">
-                                                                    <li class="nav-item"><a href=""
-                                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-placement="top"
-                                                                                            data-bs-title="مشاهده سریع"><i
-                                                                            class="bi bi-search"></i></a></li>
-                                                                    <li class="nav-item"><a href=""
-                                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn mx-3"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-placement="top"
-                                                                                            data-bs-title="افزودن به سبد خرید"><i
-                                                                            class="bi bi-basket"></i></a></li>
-                                                                    <li class="nav-item"><a href=""
-                                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
-                                                                                            data-bs-toggle="tooltip"
-                                                                                            data-bs-placement="top"
-                                                                                            data-bs-title="افزودن به علاقه ها"><i
-                                                                            class="bi bi-heart"></i></a></li>
+                                                                    {% if request.user.is_authenticated %}
+                                                                        <li class="nav-item"
+                                                                            onclick="addProductToFavorite({{ item.id }})">
+                                                                            <a
+                                                                                    class="nav-item product-box-hover-item product-box-hover-item-btn"
+                                                                                    data-bs-toggle="tooltip"
+                                                                                    data-bs-placement="top"
+                                                                                    data-bs-title="افزودن به علاقه ها">
+                                                                                {% if item in favorit %}
+                                                                                    <i class="bi bi-heart-fill text-danger"></i>
+                                                                                {% else %}
+                                                                                    <i class="bi bi-heart"></i>
+                                                                                {% endif %}
+                                                                            </a></li>
+                                                                    {% endif %}
                                                                 </ul>
                                                             </nav>
                                                             <div class="product-rating">
-                                                                <div class="number"><span class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
+                                                                <div class="number"><span
+                                                                        class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
                                                                 </div>
                                                                 <div class="icon"><i class="bi bi-star-fill"></i></div>
                                                             </div>
@@ -388,8 +292,9 @@
                                                     </div>
                                                     <div class="product-timer justify-content-center border-top pt-2 mb-0">
                                                         <div class="timer">
-                                                            <div class='countdown' data-date="2027-01-01"
-                                                                 data-time="18:30">
+                                                            <div class='countdown'
+                                                                 data-date="{{ item.special_discount_date.year }}-{{ item.special_discount_date.month }}-{{ item.special_discount_date.day }}"
+                                                                 data-time="{{ item.special_discount_date.hour }}:{{ item.special_discount_date.minute }}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -420,13 +325,13 @@
                 <div class="row gy-3 align-items-center">
                     <div class="col-sm-8">
                         <div class="section-title-title">
-                            <h2 class="title-font h1 main-color-three-color">محصولات<span class="main-color-one-color"> پرفروش </span>
+                            <h2 class="title-font h1 main-color-three-color">همه<span class="main-color-one-color"> محصولات </span>
                             </h2>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="section-title-link text-sm-end text-start">
-                            <a class="btn btn-title  rounded-pill" href=""> مشاهده همه</a>
+                            <a class="btn btn-title  rounded-pill" href="{% url 'search-all' %}"> مشاهده همه</a>
                         </div>
                     </div>
                 </div>
@@ -475,30 +380,24 @@
                                     </a>
                                     <div class="product-foot mt-2 border-top border-1 pt-1">
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <nav class="navbar navbar-expand">
-                                                <ul class="navbar-nav align-items-center">
-                                                    <li class="nav-item"><a href=""
-                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
-                                                                            data-bs-toggle="tooltip"
-                                                                            data-bs-placement="top"
-                                                                            data-bs-title="مشاهده سریع"><i
-                                                            class="bi bi-search"></i></a></li>
-                                                    <li class="nav-item"><a href=""
-                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn mx-3"
-                                                                            data-bs-toggle="tooltip"
-                                                                            data-bs-placement="top"
-                                                                            data-bs-title="افزودن به سبد خرید"><i
-                                                            class="bi bi-basket"></i></a></li>
-                                                    <li class="nav-item"><a href=""
-                                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
-                                                                            data-bs-toggle="tooltip"
-                                                                            data-bs-placement="top"
-                                                                            data-bs-title="افزودن به علاقه ها"><i
-                                                            class="bi bi-heart"></i></a></li>
-                                                </ul>
-                                            </nav>
+                                            {% if request.user.is_authenticated %}
+                                                <li class="nav-item"
+                                                    onclick="addProductToFavorite({{ product.id }})">
+                                                    <a
+                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            data-bs-title="افزودن به علاقه ها">
+                                                        {% if product in favorit %}
+                                                            <i class="bi bi-heart-fill text-danger"></i>
+                                                        {% else %}
+                                                            <i class="bi bi-heart"></i>
+                                                        {% endif %}
+                                                    </a></li>
+                                            {% endif %}
                                             <div class="product-rating">
-                                                <div class="number"><span class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
+                                                <div class="number"><span
+                                                        class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
                                                 </div>
                                                 <div class="icon"><i class="bi bi-star-fill"></i></div>
                                             </div>
@@ -518,127 +417,4 @@
     </div>
 
     <!-- end product slider -->
-
-    <!-- start blog slider -->
-
-    <div class="blog-slider py-30">
-        <div class="container-fluid position-relative">
-
-            <div class="section-title">
-                <div class="row gy-3 align-items-center">
-                    <div class="col-sm-8">
-                        <div class="section-title-title">
-                            <h2 class="title-font h1 main-color-three-color">مطالب <span class="main-color-one-color">وبلاگ</span>
-                            </h2>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="section-title-link text-sm-end text-start">
-                            <a class="btn btn-title  rounded-pill" href=""> مشاهده همه</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="swiper blog-slider-sw">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <a href="">
-                            <div class="blog-item">
-                                <div class="blog-item-image">
-                                    <img src="/static/img/blog-1.png" alt="">
-                                </div>
-                                <div class="blog-item-desc">
-                                    <div class="blog-item-title">
-                                        <h6 class="text-overflow-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                            صنعت چاپ و با استفاده از طراحان گرافیک است.</h6>
-                                    </div>
-                                    <div class="blog-item-date">
-                                        <h6 class="f-800">30</h6>
-                                        <span class="d-block">بهمن</span>
-                                        <span>1402</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="swiper-slide">
-                        <a href="">
-                            <div class="blog-item">
-                                <div class="blog-item-image">
-                                    <img src="/static/img/blog-2.png" alt="">
-                                </div>
-                                <div class="blog-item-desc">
-                                    <div class="blog-item-title">
-                                        <h6 class="text-overflow-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                            صنعت چاپ و با استفاده از طراحان گرافیک است.</h6>
-                                    </div>
-                                    <div class="blog-item-date">
-                                        <h6 class="f-800">30</h6>
-                                        <span class="d-block">بهمن</span>
-                                        <span>1402</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="swiper-slide">
-                        <a href="">
-                            <div class="blog-item">
-                                <div class="blog-item-image">
-                                    <img src="/static/img/blog-3.png" alt="">
-                                </div>
-                                <div class="blog-item-desc">
-                                    <div class="blog-item-title">
-                                        <h6 class="text-overflow-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                            صنعت چاپ و با استفاده از طراحان گرافیک است.</h6>
-                                    </div>
-                                    <div class="blog-item-date">
-                                        <h6 class="f-800">30</h6>
-                                        <span class="d-block">بهمن</span>
-                                        <span>1402</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="swiper-slide">
-                        <a href="">
-                            <div class="blog-item">
-                                <div class="blog-item-image">
-                                    <img src="/static/img/blog-5.jpg" alt="">
-                                </div>
-                                <div class="blog-item-desc">
-                                    <div class="blog-item-title">
-                                        <h6 class="text-overflow-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از
-                                            صنعت چاپ و با استفاده از طراحان گرافیک است.</h6>
-                                    </div>
-                                    <div class="blog-item-date">
-                                        <h6 class="f-800">30</h6>
-                                        <span class="d-block">بهمن</span>
-                                        <span>1402</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- /blog slider -->
-{% endblock %}
-
-{% block footer-references %}
-    <script src="/static/js/vendor/modernizr-3.11.2.min.js"></script>
-    <script src="/static/js/vendor/jquery-3.7.1.min.js"></script>
-    <script src="/static/js/vendor/bootstrap.bundle-5.3.2.min.js"></script>
-    <script src="/static/js/plugin/swiper/swiper-bundle.min.js"></script>
-    <script src="/static/js/plugin/countdown/countdown.js"></script>
-    <script src="/static/js/plugin/rasta-contact/script.js"></script>
-    <script src="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-    <script src="/static/js/plugins.js"></script>
-    <script src="/static/js/main.js"></script>
 {% endblock %}

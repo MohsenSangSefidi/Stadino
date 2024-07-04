@@ -19,35 +19,31 @@
     <meta content="" property="og:image">
 
     <!-- Place favicon.ico in the root directory -->
-    {% block header-references %}
-
-    {% endblock %}
+    {% include 'Header-Refrences.html' %}
 
     <meta content="#f4f5f9" name="theme-color">
 </head>
 
 <body>
-{% render_partial 'home_module.views.headerView' %}
+{% render_partial 'home_module.views.HeaderView' %}
 
-<div class="content">
-    <div class="container-fluid">
+    <div class="content">
+        <div class="container-fluid">
 
-        {% render_partial 'user_module.views.UserPanelMenuRes' %}
+            {% render_partial 'user_module.views.UserPanelMenuRes' %}
 
-        <div class="row gy-4">
-            {% render_partial 'user_module.views.UserPanelMenu' %}
-            {% block content %}
+            <div class="row gy-4">
+                {% render_partial 'user_module.views.UserPanelMenu' %}
+                {% block content %}
 
-            {% endblock %}
+                {% endblock %}
+            </div>
         </div>
     </div>
-</div>
 
 {% render_partial 'home_module.views.footerView' %}
 
-{% block footer-references %}
-
-{% endblock %}
+{% include 'Footer-Refrences.html' %}
 </body>
 
 </html>

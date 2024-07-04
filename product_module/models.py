@@ -42,25 +42,28 @@ class ProductModel(models.Model):
     publish_date = models.IntegerField(verbose_name='سال انتشار', null=True, blank=True)
     cut = models.CharField(max_length=100, verbose_name='قطع', null=True, blank=True)
     cover = models.CharField(max_length=100, verbose_name='جلد', null=True, blank=True)
-    discount = models.IntegerField(null=True, verbose_name='تخفیف')
     count = models.IntegerField(null=True, verbose_name='نعداد')
     rating  = models.IntegerField(verbose_name='نظرات', null=True, editable=False)
     page = models.IntegerField(verbose_name='صفحه')
     price = models.IntegerField(verbose_name='قیمت')
     publisher = models.ForeignKey(PublisherModel, on_delete=models.CASCADE, verbose_name='فروشنده')
     detail = models.TextField(verbose_name='توضیحات')
-    catgory = models.ForeignKey(CatgoryModel, on_delete=models.CASCADE, verbose_name='دسته بندی')
+    catgory = models.ManyToManyField(CatgoryModel, verbose_name='دسته بندی')
     is_active = models.BooleanField(verbose_name='فعال/غیرفعال')
     slug = models.SlugField(allow_unicode=True, verbose_name='عنوان در مرورگر')
+    is_special = models.BooleanField(default=False, verbose_name='تخفیف ویژه فعال / غیر فعال')
+    discount = models.IntegerField(null=True, verbose_name='تخفیف', blank=True)
+    special_discount_date = models.DateField(null=True, blank=True, verbose_name='زمان تخفیف')
 
     def __str__(self):
+        self.catgory.all()
         return self.name
 
     def disCount(self):
         try:
             return int(self.price - ((self.price * self.discount) / 100))
         except:
-            return None
+            return self.price
 
     def ratingAvrg(self):
         try:
@@ -69,9 +72,13 @@ class ProductModel(models.Model):
             for item in self.commentmodel_set.all():
                 rating += item.rating
                 count+=1
-            return (rating / count)
+            avrg = rating / count
+            return round(avrg, ndigits=1)
         except:
             return 0
+
+    def disCoun_price(self):
+        return int((self.price * self.discount) / 100)
 
     class Meta:
         verbose_name = 'محصول'
@@ -105,3 +112,23 @@ class CommentModel(models.Model):
     class Meta:
         verbose_name = 'کامنت'
         verbose_name_plural = 'کامنت ها'
+
+class ProductSliderModel(models.Model):
+    name = models.CharField(max_length=100, verbose_name='نام')
+    img = models.ImageField(upload_to='slider/', verbose_name='اسلایدر')
+
+    class Meta:
+        verbose_name = 'اسلاید'
+        verbose_name_plural = 'اسلاید ها'
+
+
+class FavoriteProduct(models.Model):
+    user = models.ForeignKey(UserModels, on_delete=models.CASCADE, verbose_name='کاربر')
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name='محصول')
+
+    def __str__(self):
+        return f'{self.user.username} : {self.product.name}'
+
+    class Meta:
+        verbose_name = 'محصول مورد علاقه'
+        verbose_name_plural = 'محصولات مورد علاقه'

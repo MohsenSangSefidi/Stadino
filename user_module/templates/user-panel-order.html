@@ -1,0 +1,92 @@
+{% extends '_layout.html' %}
+{% load render_partial %}
+{% load poll_extras %}
+
+{% block title %}
+    پنل کاربری
+{% endblock %}
+
+{% block content %}
+    <!-- start content -->
+
+    <div class="content">
+        <div class="container-fluid">
+
+            {% render_partial 'user_module.views.UserPanelMenuRes' %}
+
+            <div class="row gy-4">
+                {% render_partial 'user_module.views.UserPanelMenu' %}
+                <div class="col-lg-9">
+                    <div class="panel-latest-order mt-4">
+
+                        <div class="section-title">
+                            <div class="section-title-title">
+                                <h3 class="title-font h3 main-color-three-color">آخرین<span
+                                        class="main-color-one-color"> سفارشات </span>
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive shadow-box roundedTable p-0">
+                            <table class="table  main-table rounded-0">
+                                <thead class="text-center">
+                                <tr>
+                                    <th class="title-font">#</th>
+                                    <th class="title-font">شماره سفارش</th>
+                                    <th class="title-font">تاریخ ثبت سفارش</th>
+                                    <th class="title-font">مبلغ پرداختی</th>
+                                    <th class="title-font">وضعیت سفارش</th>
+                                    <th class="title-font">جزییات</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                {% for basket in all_basket %}
+                                    <tr>
+                                        <td class="font-14">{{ forloop.counter }}</td>
+                                        <td class="font-14">{{ basket.id }}</td>
+                                        {% if basket.pay_datetime %}
+                                            <td class="font-14">{{ basket.pay_datetime }}</td>
+                                        {% else %}
+                                            <td class="font-14">پرداخت تکمیل نشده</td>
+                                        {% endif %}
+
+                                        <td class="font-14">{{ basket.total_price|splitnumber }} تومان</td>
+                                        {% if basket.is_pay %}
+                                            <td class="font-14"><a href="" class="title-font">تکمیل شده</a></td>
+                                        {% else %}
+                                            <td class="font-14"><a href="" class="title-font">در حال تکمیل شدن</a></td>
+                                        {% endif %}
+
+                                        <td class="font-14">
+                                            <a href="{% url 'user-panel-basket-detail'  basket.id %}"
+                                               class="btn border-0 main-color-one-bg waves-effect waves-light"><i
+                                                    class="bi bi-chevron-left"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- /content -->
+{% endblock %}
+
+{% block footer-references %}
+    <script src="/static/js/vendor/modernizr-3.11.2.min.js"></script>
+    <script src="/static/js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/vendor/bootstrap.bundle-5.3.2.min.js"></script>
+    <script src="/static/js/plugin/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/js/plugin/countdown/countdown.js"></script>
+    <script src="/static/js/plugin/rasta-contact/script.js"></script>
+    <script src="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="/static/js/plugins.js"></script>
+    <script src="/static/js/main.js"></script>
+{% endblock %}

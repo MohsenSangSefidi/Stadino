@@ -75,7 +75,7 @@
                             </div>
                             <div class="footer-service-item-desc ms-3">
                                 <p>پشتیبانی <strong>24 ساعته</strong></p>
-                                <small class="text-muted">تماس با 021123456</small>
+                                <small class="text-muted">تماس با 09921134877</small>
                             </div>
                         </div>
                     </li>
@@ -289,71 +289,22 @@
             <div class="row gy-4">
                 <div class="col-lg-6">
                     <div class="row gy-3">
+                        {% for item in category %}
                         <div class="col-md-3 col-sm-6 col-6">
                             <div class="footer-col-item">
                                 <div class="font-20">
-                                    <strong> راهنمای </strong>خرید
+                                    <strong> {{ item.name }} </strong>
                                 </div>
                                 <nav class="navbar">
                                     <ul class="navbar-nav">
-                                        <li class="nav-item"><a href="" class="nav-link font-15">نحوه ثبت سفارش</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">چگونگی ارسال کالا</a>
-                                        </li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">چگونگی پرداخت</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">چگونگی ثبت</a></li>
+                                        {% for cat in item.catgorymodel_set.all %}
+                                            <li class="nav-item"><a href="{% url 'search-catgory' cat.slug %}" class="nav-link font-15">{{ cat.name }}</a></li>
+                                        {% endfor %}
                                     </ul>
                                 </nav>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 col-6">
-                            <div class="footer-col-item">
-                                <div class="font-20">
-                                    <strong> خدمت </strong>مشتریان
-                                </div>
-                                <nav class="navbar">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item"><a href="" class="nav-link font-15">معرفی تخفیف ها</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">پرسش های متداول</a>
-                                        </li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">چگونگی بازگشت کالا</a>
-                                        </li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">حریم خصوصی</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-6">
-                            <div class="footer-col-item">
-                                <div class="font-20">
-                                    <strong> مجموعه </strong>گاج
-                                </div>
-                                <nav class="navbar">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item"><a href="" class="nav-link font-15">گاجینو</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">دکتر آی کیو</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">مای گاج</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">گاج مگ</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-6">
-                            <div class="footer-col-item">
-                                <div class="font-20">
-                                    <strong> نقشه </strong>استادینو
-                                </div>
-                                <nav class="navbar">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item"><a href="" class="nav-link font-15">درباره ما</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">تماس با ما</a></li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">همکاری و فرصت شغلی</a>
-                                        </li>
-                                        <li class="nav-item"><a href="" class="nav-link font-15">شعب گاج <span
-                                                class="badge bg-info rounded-pill">جدید</span></a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -363,7 +314,7 @@
                                 کارشناسان ما میزبان صدایتان هستند
                             </div>
                             <div class="d-flex align-items-center justify-content-end mt-2 py-2">
-                                <a href=""><span class="me-2">021123456</span></a>
+                                <a href=""><span class="me-2">09921134877</span></a>
                                 <i class="bi bi-telephone-inbound-fill font-16"></i>
                             </div>
                         </div>
@@ -384,14 +335,12 @@
                             <div class="footer-social">
                                 <nav class="navbar navbar-expand">
                                     <ul class="navbar-nav">
-                                        <li class="nav-item"><a href="" class="nav-link"><img
-                                                src="/static/img/aparat-white.svg" alt=""></a></li>
-                                        <li class="nav-item"><a href="" class="nav-link"><img
-                                                src="/static/img/instagram-white.svg" alt=""></a></li>
-                                        <li class="nav-item"><a href="" class="nav-link"><img
-                                                src="/static/img/telegram-white.svg" alt=""></a></li>
-                                        <li class="nav-item"><a href="" class="nav-link"><img
-                                                src="/static/img/youtube-white.svg" alt=""></a></li>
+                                        <li class="nav-item"><a href="https://github.com/MohsenSangSefidi" class="nav-link"><img
+                                                src="/static/img/github.png" alt=""></a></li>
+                                        <li class="nav-item"><a href="https://t.me/mohsensangsefidi" class="nav-link"><img
+                                                src="/static/img/telegram.png" alt=""></a></li>
+                                        <li class="nav-item"><a href="https://www.linkedin.com/in/mohsen-sang-sefidi-67624a217?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B3fVYsL4TRu2iSMStihIqvw%3D%3D" class="nav-link"><img
+                                                src="/static/img/linkedin.png" alt=""></a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -411,7 +360,7 @@
                         </div>
                         <div class="col-lg-10">
                             <div class="footer-description pt-3 border-top ">
-                                <small class="text-muted"> گاج‌مارکت؛ مرکز خرید و فروش انواع کتاب‌های کمک درسی، آموزشی،
+                                <small class="text-muted">استادینو؛ مرکز خرید و فروش انواع کتاب‌های کمک درسی، آموزشی،
                                     دانشگاهی، زبان‌های خارجی، عمومی، کودک و نوجوان می‌باشد و مرجعی برای تهیه انواع
                                     لوازم‌التحریر مورد نیاز برای دانش‌آموزان و دانشجویان، لوازم اداری برای شرکت‌ها و
                                     سازمان‌ها و بازی‌های آموزشی برای تمامی سنین است. </small>
@@ -438,8 +387,8 @@
                     </p>
                 </div>
                 <div class="col-sm-6">
-                    <a href="" class="d-block text-sm-end text-center">
-                        طراحی و توسعه امیر رضایی
+                    <a class="d-block text-sm-end text-center">
+                        طراحی و توسعه محسن سنگ سفیدی
                     </a>
                 </div>
             </div>
@@ -448,151 +397,3 @@
 </div>
 
 <!-- /copy right -->
-
-<!--start cart canvas-->
-
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
-    <div class="offcanvas-header shadow-md">
-        <h5 class="offcanvas-title title-font" id="offcanvasCartLabel">سبد خرید <small
-                class="text-muted fw-bold font-14 ms-1">(1
-            مورد)</small></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <ul class="navbar-nav cart-canvas-parent">
-            <li class="nav-item">
-                <div class="cart-canvas">
-                    <div class="row align-items-center">
-                        <div class="col-4 ps-0">
-                            <img src="/static/img/product/product-1.webp" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h3 class="text-overflow-2 font-16">
-                                کتاب Nuovo Espresso A2 اثر Luciano Ziglio and Givonna Rizzo انتشارات الوندپویان
-                            </h3>
-                            <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                <del class="font-16">5,000,000</del>
-                                <ins class="font-25">2,500,000 <span>تومان</span></ins>
-                            </div>
-                            <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
-                                <div class="cart-canvas-count">
-                                    <span>تعداد:</span>
-                                    <span class="fw-bold">3</span>
-                                </div>
-                                <div class="cart-canvas-delete">
-                                    <a href="" class="btn"><i class="bi bi-x"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="cart-canvas">
-                    <div class="row align-items-center">
-                        <div class="col-4 ps-0">
-                            <img src="/static/img/product/product-13.webp" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h3 class="text-overflow-2 font-16">
-                                کتاب Nuovo Espresso A2 اثر Luciano Ziglio and Givonna Rizzo انتشارات الوندپویان
-                            </h3>
-                            <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                <del class="font-16">5,000,000</del>
-                                <ins class="font-25">2,500,000 <span>تومان</span></ins>
-                            </div>
-                            <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
-                                <div class="cart-canvas-count">
-                                    <span>تعداد:</span>
-                                    <span class="fw-bold">3</span>
-                                </div>
-                                <div class="cart-canvas-delete">
-                                    <a href="" class="btn"><i class="bi bi-x"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-
-        <div class="cart-canvas-foots bg-white shadow-md">
-            <div class="row align-items-center">
-                <div class="col-6">
-                    <div class="cart-canvas-foot-sum">
-                        <p class="text-muted mb-2">جمع کل</p>
-                        <h5>11,000,000 تومان</h5>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="cart-canvas-foot-link text-end">
-                        <a href="" class="btn border-0 main-color-green text-white"><i
-                                class="bi bi-arrow-left me-1"></i> تکمیل خرید</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<!--end cart canvas-->
-
-
-<!-- plugin connect us-->
-
-<div class="float-btn">
-    <div class="container-fluid">
-        <!-- contact us floating -->
-        <div class="btn_collapzion" id="btncollapzion"></div>
-        <div class="" id="contactOverlay"></div>
-        <!-- end contact us floating -->
-    </div>
-</div>
-
-<!-- /plugin connect us-->
-
-<!-- start mobile menu fixed -->
-
-<div class="mobile-footer d-lg-none d-table justify-content-center shadow-box bg-white position-fixed bottom-0 p-2 w-100"
-     style="z-index: 100;table-layout: fixed;">
-    <ul class="d-table-row">
-        <li class="d-table-cell pointer" onclick="topFunction()">
-            <div class="mf-link nav-link text-center">
-                <span class="d-block mf-link-icon"><i class="bi bi-chevron-up font-20"></i></span>
-                <span class="mt-1 font-12 fw-bold mf-link-title">بالا</span>
-            </div>
-        </li>
-        <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
-            <div class="mf-link-icon position-relative d-table mx-auto">
-                <i class="bi bi-heart font-20"></i>
-                <span class="position-absolute main-color-one-bg rounded-pill font-10 text-white badge"
-                      style="right:-40%;bottom:-5px;">0</span>
-            </div>
-            <span class="mt-1 font-12 fw-bold mf-link-title">علاقه مندی ها</span>
-        </a></li>
-        <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
-            <span class="d-block mf-link-icon"><i class="bi bi-house font-20"></i></span>
-            <span class="mt-1 font-12 fw-bold mf-link-title">صفحه اصلی</span>
-        </a></li>
-        <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
-            <div class="position-relative mf-link-icon d-table mx-auto">
-                <span class="d-block mf-link-icon"><i class="bi bi-arrow-left-right font-20"></i></span>
-                <span class="position-absolute main-color-one-bg rounded-pill font-10 text-white badge"
-                      style="right:-60%;bottom:-5px;">0</span>
-            </div>
-            <span class="mt-1 font-12 fw-bold mf-link-title">مقایسه</span>
-        </a></li>
-        <li class="d-table-cell"><a class="mf-link nav-link text-center" data-bs-toggle="offcanvas"
-                                    href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
-            <div class="position-relative mf-link-icon d-table mx-auto">
-                <span class="d-block mf-link-icon"><i class="bi bi-bag font-20"></i></span>
-                <span class="position-absolute main-color-one-bg rounded-pill font-10 text-white badge"
-                      style="right:-60%;bottom:-5px;">0</span>
-            </div>
-            <span class="mt-1 font-12 fw-bold mf-link-title">سبد خرید</span>
-        </a></li>
-    </ul>
-</div>
-
-<!-- /mobile menu fixed -->

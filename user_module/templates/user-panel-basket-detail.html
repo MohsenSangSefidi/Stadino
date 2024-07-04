@@ -1,0 +1,154 @@
+{% extends '_layout.html' %}
+{% load render_partial %}
+{% load poll_extras %}
+
+{% block title %}
+    پنل کاربری
+{% endblock %}
+
+{% block content %}
+    <!-- start content -->
+
+    <div class="content">
+        <div class="container-fluid">
+
+            {% render_partial 'user_module.views.UserPanelMenuRes' %}
+
+            <div class="row gy-4">
+                {% render_partial 'user_module.views.UserPanelMenu' %}
+                <div class="col-lg-9">
+                    <div class="content-box bg-white shadow-box">
+                        <div class="container-fluid">
+                            <div class="d-flex flex-wrap justify-content-sm-between align-items-baseline border-bottom">
+                                <h5 class="font-18 pb-3">
+                                    {% if order.is_pay %}
+                                        <a class="me-3" href="{% url 'user-panel-basket' %}"><i
+                                                class="bi bi-chevron-right"></i></a>جزئیات سفارش
+                                        <span class="ms-2 font-14 text-muted">(تکمیل شده)</span>
+                                    {% else %}
+                                        <a class="me-3" href="{% url 'user-panel-basket' %}"><i
+                                                class="bi bi-chevron-right"></i></a>جزئیات سفارش
+                                        <span class="ms-2 font-14 text-muted">(تکمیل نشده)</span>
+                                    {% endif %}
+                                </h5>
+                                <div>
+                                    <div class=" d-inline-block me-3">
+                                        <span class="main-color-one-color fw-bold">شماره سفارش:</span> {{ order.id }}
+                                    </div>
+                                    <div class="d-inline-block">
+                                        {% if order.is_pay %}
+                                            <i class="bi bi-clock-fill me-2"></i>{{ order.pay_datetime }}
+                                        {% else %}
+                                            <i class="bi bi-clock-fill me-2"></i>پرداخت تکمیل نشده است
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if order.is_pay %}
+                                <div class="detail-order mt-3">
+                                    <div class="detail-order-item d-flex align-items-center">
+                                        <h6><i class="bi bi-pin-map-fill me-1"></i> آدرس تحویل:</h6>
+                                        <span class="ms-2 text-muted">{{ order.address.detail }}</span>
+                                    </div>
+                                    <div class="detail-order-item mt-3 d-flex align-items-center">
+                                        <h6><i class="bi bi-person-fill me-1"></i>تحویل گیرنده:</h6>
+                                        <span class="ms-2 text-muted">{{ order.user.username }}</span>
+                                    </div>
+                                    <div class="detail-order-item mt-3 d-flex align-items-center">
+                                        <h6><i class="bi bi-telephone-fill me-1"></i>شماره تماس:</h6>
+                                        <span class="ms-2 text-muted">{{ order.address.phone_number }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="order-tracking-code flex-wrap alert rounded-3 alert-warning d-flex align-items-center justify-content-between mt-3">
+                                    <div>
+                                        <div class="order-details__postal-traking-icon"></div>
+                                        <span class="h6 d-inline-block">کد رهگیری:</span>
+                                        <span class="font-16 ms-2">2047401361654545484454568111</span>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <ul class="row gy-3 ps-0 mt-4">
+                                {% for product in order.orderdetailmodel_set.all %}
+                                    <div class="col-sm-6">
+                                        <div class="cart-canvas border rounded-3 p-3">
+                                            <div class="row align-items-center">
+                                                <div class="col-4 ps-0">
+                                                    <img alt=""
+                                                         src="{{ product.product.productimagemodel_set.all.first.img.url }}"
+                                                         width="200">
+                                                </div>
+                                                <div class="col-8">
+                                                    <h3 class="text-overflow-2 font-16">{{ product.product.name }}</h3>
+                                                    <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
+                                                        <ins class="font-25 ms-0">{{ product.product.disCount|splitnumber }}<span>تومان</span>
+                                                        </ins>
+                                                    </div>
+                                                    <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
+                                                        <div class="cart-canvas-count">
+                                                            <span>تعداد:</span>
+                                                            <span class="fw-bold">{{ product.count }}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span>قیمت نهایی کل:</span>
+                                                            <span>{{ product.finalPrice|splitnumber }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="order-details__bill">
+                        <div class="order-details__bill-title">
+                            <span class="bold-text">جزئیات قیمت</span>
+                            <div class="order-details__bill-icon order-details__bill-icon--colored"></div>
+                        </div>
+                        <div class="order-details__bill-details">
+                            <div class="order-details__bill-row order-details__bill-row--top">
+                                <div class="bill-row__col">
+                                    <label>جمع مبلغ کالاها:</label>
+                                    <div class="cart__item-price">{{ order.total_price|splitnumber }} <span>تومان</span>
+                                    </div>
+                                </div>
+                                <div class="bill-row__col">
+                                    <label>جمع تخفیف:</label>
+                                    <div class="cart__item-price">{{ order.total_discount|splitnumber }}
+                                        <span>تومان</span></div>
+                                </div>
+                            </div>
+                            <div class="order-details__bill-row order-details__bill-row--top">
+                                {% if order.discount_code %}
+                                    <div class="bill-row__col">
+                                        <label>کد تخفیف - {{ order.discount_code.discount }}%:</label>
+                                        <div class="cart__item-price">{{ order.discount_code_price|splitnumber }}
+                                            <span>تومان</span></div>
+                                    </div>
+                                {% endif %}
+                                <div class="bill-row__col">
+                                    <label> هزینه ارسال و بسته بندی: </label>
+                                    <div class="cart__item-price">{{ order.delivery_price|splitnumber }}
+                                        <span>تومان</span></div>
+                                </div>
+                            </div>
+                            <div class="order-details__bill-row order-details__bill-row--top">
+                                <div class="bill-row__col">
+                                    <label> مجموع : </label>
+                                    <div class="cart__item-price">{{ order.total_with_delivery|splitnumber }} <span>تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /content -->
+{% endblock %}
