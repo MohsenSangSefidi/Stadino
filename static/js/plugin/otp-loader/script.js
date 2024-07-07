@@ -20,7 +20,7 @@ function config() {
     $config.timer_font_weight = 700;
     $config.timer_font = 'yekan-bakh';
     $config.timer_font_size = 14;
-    $config.endtime_message = "<a onclick='send_Code()' class='span-primary'>درخواست کد جدید</a>";
+    $config.endtime_message = "<a onclick='send_Code()' class='span-primary cursor-pointer'>درخواست کد جدید</a>";
 
     return $config;
 }

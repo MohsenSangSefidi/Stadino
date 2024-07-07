@@ -295,22 +295,14 @@ function add_to_order(id) {
     })
 }
 
-// function sumDelevary(post) {
-//     let delivary = document.getElementById('delivery')
-//     let total_delivery = document.getElementById('total-delivery')
-//     let price = parseInt(document.getElementById('totalBasketPrice').value)
-//     if (post == 'post-1') {
-//         let total = price += 10000
-//         let split3 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(total);
-//         total_delivery.innerHTML = `${split3} تومان`
-//         delivary.value = 'normal'
-//     } else if (post == 'post-2') {
-//         let total = price += 50000
-//         let split3 = new Intl.NumberFormat('en-US', {style: "decimal"}).format(total);
-//         total_delivery.innerHTML = `${split3} تومان`
-//         delivary.value = 'special'
-//     }
-// }
+function sumDelevary(post) {
+    let delivary = document.getElementById('delivery')
+    if (post == 'post-1') {
+        delivary.value = 'normal'
+    } else if (post == 'post-2') {
+        delivary.value = 'special'
+    }
+}
 
 function removeAddress(id) {
     Swal.fire({

@@ -5,6 +5,7 @@ from rest_framework.views import APIView, Response
 from home_module.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .serializers import ProductSerializer
+from django.utils.encoding import uri_to_iri
 from .models import *
 from .forms import *
 
@@ -15,7 +16,7 @@ from django.views import View
 
 class ProductDetailView(View):
     def get(self, request: HttpRequest, slug):
-        product = ProductModel.objects.filter(slug=slug).first()
+        product = ProductModel.objects.filter(slug=uri_to_iri(slug)).first()
         comments = product.commentmodel_set.filter(parent=None)
         favoritProduct = []
         if request.user.is_authenticated:
@@ -31,7 +32,7 @@ class ProductDetailView(View):
         })
 
     def post(self, request: HttpRequest, slug):
-        product = ProductModel.objects.filter(slug=slug).first()
+        product = ProductModel.objects.filter(slug=uri_to_iri(slug)).first()
         form = CommentForm(request.POST)
 
         if form.is_valid():
@@ -58,7 +59,7 @@ class ProductDetailView(View):
 
 class SearchPageView(View):
     def get(self, request: HttpRequest, name):
-        items = ProductModel.objects.filter(name__contains=name).order_by('-price')
+        items = ProductModel.objects.filter(name__contains=uri_to_iri(name)).order_by('-price')
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -71,7 +72,7 @@ class SearchPageView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': name,
+            'name': uri_to_iri(name),
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'favorit': favoritProduct
@@ -84,19 +85,18 @@ class SearchPageView(View):
         if priceForm.is_valid():
             start = priceForm.cleaned_data.get('start')
             end = priceForm.cleaned_data.get('end')
-            return redirect(reverse('search-price-filter', args=[name, start, end]))
+            return redirect(reverse('search-price-filter', args=[uri_to_iri(name), start, end]))
 
         if catgoryForm.is_valid():
             catgory = catgoryForm.cleaned_data.get("catgory")
-            return redirect(reverse('search-catgory-filter', args=[name, catgory]))
+            return redirect(reverse('search-catgory-filter', args=[uri_to_iri(name), catgory]))
 
-        return redirect(reverse('search', args=[name]))
+        return redirect(reverse('search', args=[uri_to_iri(name)]))
 
 
 class SearchPagePriceFileterView(View):
     def get(self, request: HttpRequest, name, start, end):
-        print(name, start, end)
-        items = ProductModel.objects.filter(name__contains=name, price__gt=start, price__lte=end).order_by('-price')
+        items = ProductModel.objects.filter(name__contains=uri_to_iri(name), price__gt=start, price__lte=end).order_by('-price')
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -110,7 +110,7 @@ class SearchPagePriceFileterView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': name,
+            'name': uri_to_iri(name),
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
@@ -123,15 +123,15 @@ class SearchPagePriceFileterView(View):
         if priceForm.is_valid():
             start = priceForm.cleaned_data.get('start')
             end = priceForm.cleaned_data.get('end')
-            return redirect(reverse('search-price-filter', args=[name, start, end]))
+            return redirect(reverse('search-price-filter', args=[uri_to_iri(name), start, end]))
 
 
 class SearchPageCatgoryFileterView(View):
     def get(self, request: HttpRequest, name, catgory):
         priceForm = PriceRangeForm()
         catgoryForm = CatgoryForm()
-        catgoryObject = CatgoryModel.objects.filter(slug__contains=catgory).first()
-        items = catgoryObject.productmodel_set.filter(name__contains=name).order_by('-price')
+        catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
+        items = catgoryObject.productmodel_set.filter(name__contains=uri_to_iri(name)).order_by('-price')
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -143,7 +143,7 @@ class SearchPageCatgoryFileterView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': name,
+            'name': uri_to_iri(name),
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
@@ -155,7 +155,7 @@ class SearchPageCatgoryFileterView(View):
 
         if catgoryForm.is_valid():
             catgoryObject = catgoryForm.cleaned_data.get('catgory')
-            return redirect(reverse('search-catgory-filter', args=[name, catgoryObject]))
+            return redirect(reverse('search-catgory-filter', args=[uri_to_iri(name), catgoryObject]))
 
 
 class SearchPageAllView(View):
@@ -227,7 +227,7 @@ class SearchPageAllCatgoryFilterView(View):
     def get(self, request: HttpRequest, catgory):
         priceForm = PriceRangeForm()
         catgoryForm = CatgoryForm()
-        catgoryObject = CatgoryModel.objects.filter(slug__contains=catgory).first()
+        catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.filter(is_active=True).order_by('-price')
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
@@ -256,7 +256,7 @@ class SearchPageAllCatgoryFilterView(View):
 
 class SearchPageCatgoryView(View):
     def get(self, request: HttpRequest, catgory):
-        catgoryObject = CatgoryModel.objects.filter(slug__contains=catgory).first()
+        catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.all()
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
@@ -271,7 +271,7 @@ class SearchPageCatgoryView(View):
             'page': page,
             'name': catgoryObject.name,
             'priceForm': priceForm,
-            'slug': catgory,
+            'slug': uri_to_iri(catgory),
             'favorit': favoritProduct
         })
 
@@ -280,13 +280,13 @@ class SearchPageCatgoryView(View):
         if priceForm.is_valid():
             start = priceForm.cleaned_data.get('start')
             end = priceForm.cleaned_data.get('end')
-            return redirect(reverse('search-catgory-price-filter', args=[catgory, start, end]))
+            return redirect(reverse('search-catgory-price-filter', args=[uri_to_iri(catgory), start, end]))
 
 
 class SearchPageCatgoryPriceFilterView(View):
     def get(self, request: HttpRequest, catgory, start, end):
         priceForm = PriceRangeForm()
-        catgoryObject = CatgoryModel.objects.filter(slug__contains=catgory).first()
+        catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.filter(price__gt=start, price__lte=end)
         paginator = Paginator(items, 5)
         page_number = request.GET.get('page')
@@ -302,7 +302,7 @@ class SearchPageCatgoryPriceFilterView(View):
             'name': catgoryObject.name,
             'priceForm': priceForm,
             'filter': filter,
-            'slug': catgory,
+            'slug': uri_to_iri(catgory),
             'favorit': favoritProduct
         })
 
@@ -311,7 +311,7 @@ class SearchPageCatgoryPriceFilterView(View):
         if priceForm.is_valid():
             start = priceForm.cleaned_data.get('start')
             end = priceForm.cleaned_data.get('end')
-            return redirect(reverse('search-catgory-price-filter', args=[catgory, start, end]))
+            return redirect(reverse('search-catgory-price-filter', args=[uri_to_iri(catgory), start, end]))
 
 
 def add_product_to_favorite(request):

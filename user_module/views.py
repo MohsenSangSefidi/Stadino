@@ -62,29 +62,59 @@ class RegisterView(View):
         register = RegisterForm(request.POST)
         if register.is_valid():
             email = register.cleaned_data.get('email')
-            user = UserModels.objects.filter(email=email).first()
+            user = UserModels.objects.filter(email=email, is_active=True).first()
 
             if not user:
-                password = register.cleaned_data.get('password')
-                passwordCheck = register.cleaned_data.get('passwordCheck')
-                if password == passwordCheck:
-                    code = utils.activeCode()
-                    newUser = UserModels(email=email, activeCode=code, token=get_random_string(40), is_active=False)
-                    newUser.set_password(password)
-                    message = render_to_string('email.html', {'code': code})
-                    plain_messege = strip_tags(message)
-                    send_mail(
-                        'Verify Code',
-                        plain_messege,
-                        'settings.EMAIL_HOST_USER',
-                        [email],
-                        fail_silently=False,
-                        html_message=message
-                    )
-                    newUser.save()
-                    return redirect(reverse('verify-account', args=[newUser.token]))
+                name = register.cleaned_data.get('userName')
+                user = UserModels.objects.filter(username=name, is_active=True).first()
+                if not user:
+                    checkUser = UserModels.objects.filter(username=name, email=email, is_active=False).first()
+                    if not checkUser:
+                        password = register.cleaned_data.get('password')
+                        passwordCheck = register.cleaned_data.get('passwordCheck')
+                        if password == passwordCheck:
+                            code = utils.activeCode()
+                            newUser = UserModels(username=name, email=email, activeCode=code, token=get_random_string(40), is_active=False)
+                            newUser.set_password(password)
+                            message = render_to_string('email.html', {'code': code})
+                            plain_messege = strip_tags(message)
+                            send_mail(
+                                'Verify Code',
+                                plain_messege,
+                                settings.EMAIL_HOST_USER,
+                                [email],
+                                fail_silently=False,
+                                html_message=message
+                            )
+                            newUser.save()
+                            return redirect(reverse('verify-account', args=[newUser.token]))
+                        else:
+                            register.add_error('password', 'پسورد و تکرار ان مطابقت ندارد.')
+                    else:
+                        password = register.cleaned_data.get('password')
+                        passwordCheck = register.cleaned_data.get('passwordCheck')
+                        if password == passwordCheck:
+                            code = utils.activeCode()
+                            newUser = UserModels.objects.filter(username=name, email=email, is_active=False).first()
+                            newUser.set_password(password)
+                            newUser.token = get_random_string(40)
+                            newUser.activeCode = code
+                            message = render_to_string('email.html', {'code': code})
+                            plain_messege = strip_tags(message)
+                            send_mail(
+                                'Verify Code',
+                                plain_messege,
+                                settings.EMAIL_HOST_USER,
+                                [email],
+                                fail_silently=False,
+                                html_message=message
+                            )
+                            newUser.save()
+                            return redirect(reverse('verify-account', args=[newUser.token]))
+                        else:
+                            register.add_error('password', 'پسورد و تکرار ان مطابقت ندارد.')
                 else:
-                    register.add_error('password', 'پسورد و تکرار ان مطابقت ندارد.')
+                    register.add_error('userName', 'نام کاربری از قبل موجود است.')
             else:
                 register.add_error('email', 'ایمیل از قبل موجود است.')
 
@@ -116,7 +146,7 @@ class VerifyAccountView(View):
                 user.is_active = True
                 user.save()
                 login(request, user)
-                return redirect(reverse('change-info'))
+                return redirect(reverse('home'))
             else:
                 form.add_error('num1', 'کد اشتباه است.')
 
@@ -136,7 +166,7 @@ class ResendEmailView(View):
         send_mail(
             'Verify Code',
             plain_messege,
-            'settings.EMAIL_HOST_USER',
+            settings.EMAIL_HOST_USER,
             [user.email],
             fail_silently=False,
             html_message=message
@@ -166,7 +196,7 @@ class ForgetPasswordView(View):
                 send_mail(
                     'Verify Code',
                     plain_messege,
-                    'settings.EMAIL_HOST_USER',
+                    settings.EMAIL_HOST_USER,
                     [user.email],
                     fail_silently=False,
                     html_message=message

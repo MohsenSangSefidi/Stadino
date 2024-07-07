@@ -3,12 +3,14 @@ from .models import *
 
 
 class RegisterForm(forms.Form):
+    userName = forms.CharField(label='', widget=forms.TextInput(
+        attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'text'}))
     email = forms.CharField(label='', widget=forms.TextInput(
         attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'email'}))
     password = forms.CharField(label='', widget=forms.TextInput(
-        attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'text'}))
+        attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'password'}))
     passwordCheck = forms.CharField(label='', widget=forms.TextInput(
-        attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'text'}))
+        attrs={'id': 'floatingInputEmail', 'class': 'form-control', 'type': 'password'}))
 
 
 class VerifyAcounntForm(forms.Form):

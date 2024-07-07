@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-s5$n4rz+906hdi)gqm_ytokzgz7c*hq)ncx#ds&11gmenzz$$v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'stadinoverifycode@gmail.com'
-EMAIL_HOST_PASSWORD = 'isddapcwlqjekffo'
+EMAIL_BACKEND= 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.mohsensangsefidi.ir'
 EMAIL_PORT = 587
+EMAIL_HOST_USER = 'stadino@mohsensangsefidi.ir'
+EMAIL_HOST_PASSWORD = 'Mohsen@1384'
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_SSL = False
 
 ALLOWED_HOSTS = []
 

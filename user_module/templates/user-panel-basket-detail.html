@@ -122,26 +122,26 @@
                                 </div>
                             </div>
                             <div class="order-details__bill-row order-details__bill-row--top">
-                                {% if order.discount_code %}
-                                    <div class="bill-row__col">
-                                        <label>کد تخفیف - {{ order.discount_code.discount }}%:</label>
-                                        <div class="cart__item-price">{{ order.discount_code_price|splitnumber }}
-                                            <span>تومان</span></div>
+                                <div class="bill-row__col">
+                                    <label> مجموع : </label>
+                                    <div class="cart__item-price">{{ order.total_with_delivery|splitnumber }} <span>تومان</span>
                                     </div>
-                                {% endif %}
+                                </div>
                                 <div class="bill-row__col">
                                     <label> هزینه ارسال و بسته بندی: </label>
                                     <div class="cart__item-price">{{ order.delivery_price|splitnumber }}
                                         <span>تومان</span></div>
                                 </div>
                             </div>
-                            <div class="order-details__bill-row order-details__bill-row--top">
-                                <div class="bill-row__col">
-                                    <label> مجموع : </label>
-                                    <div class="cart__item-price">{{ order.total_with_delivery|splitnumber }} <span>تومان</span>
+                            {% if order.discount_code %}
+                                <div class="order-details__bill-row order-details__bill-row--top">
+                                    <div class="bill-row__col">
+                                        <label>کد تخفیف - {{ order.discount_code.discount }}%:</label>
+                                        <div class="cart__item-price">{{ order.discount_code_price|splitnumber }}
+                                            <span>تومان</span></div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
 
                     </div>
