@@ -78,7 +78,10 @@ class ProductModel(models.Model):
             return 0
 
     def disCoun_price(self):
-        return int((self.price * self.discount) / 100)
+        try:
+            return int((self.price * self.discount) / 100)
+        except:
+            return 0
 
     class Meta:
         verbose_name = 'محصول'
@@ -87,6 +90,9 @@ class ProductModel(models.Model):
 class ProductImageModel(models.Model):
     img = models.ImageField(upload_to='product/', verbose_name='عکس')
     book = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name='کتاب', null=True)
+
+    def __str__(self):
+        return f'{self.book.name} : {self.id}'
 
     class Meta:
         verbose_name = 'عکس محصول'
@@ -107,7 +113,7 @@ class CommentModel(models.Model):
         return range(5 - self.rating)
 
     def __str__(self):
-        return self.user.username
+        return f'{self.book.name} : {self.user.username}'
 
     class Meta:
         verbose_name = 'کامنت'
@@ -116,6 +122,9 @@ class CommentModel(models.Model):
 class ProductSliderModel(models.Model):
     name = models.CharField(max_length=100, verbose_name='نام')
     img = models.ImageField(upload_to='slider/', verbose_name='اسلایدر')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = 'اسلاید'

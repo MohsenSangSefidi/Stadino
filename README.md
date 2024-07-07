@@ -11,7 +11,7 @@
   <p align="center">
     سایت فروشگاه کتاب
     <br />
-    <a href="">دیدن سایت</a>
+    <a href="https://mohsensangsefidi.ir/">دیدن سایت</a>
   </p>
 </div>
 
@@ -25,7 +25,7 @@
 
 ![Screenshot 2024-07-04 210023](https://github.com/MohsenSangSefidi/Stadino/assets/160093991/d7f7492c-44bd-4d2a-a146-db96632a7032)
 
-سایت فروشگاهی کتاب های درسی و کتاب کار است. این پروژه یک پروژه تمرینی است. این قسمت Back-End این سایت با فریمورک Django طراحی شده است و در قسمت Front-End آن از یک قالب آماده استفاده شده است. فسمت های مختلف سایت و قابلیت های به شرح زیر است :
+این پروژه یک سایت فروشگاهی مخصوص فروش کتاب است. این پروژه تمرینی است. قسمت Back-End این سایت با فریمورک Django طراحی شده است و در قسمت Front-End آن از یک قالب آماده استفاده شده است. فسمت های مختلف سایت و قابلیت های به شرح زیر است :
 
   `صفحه سبد خرید و انتخاب آدرس ارسال محصول`
   `صفحه سرچ محصول و اعمال فیلتر قیمت و دسته بندی روی متن جستجو شده`
@@ -48,28 +48,28 @@
 
 ### Get
 
-برای دریافت لیست محصولات سایت میتوانید از آدرس "http://127.0.0.1:8000/product/product-api/"
+برای دریافت لیست محصولات سایت میتوانید از آدرس "https://mohsensangsefidi.ir/product/product-api/"
 
-با توکن "Stadino 8112953f289db9194ed1c5bab3355c67966d6f99" آن را دریافت کنید.
+با توکن "Stadino ddfd2b32b7e26df767b0d2fd51672d38b2d0f367" آن را دریافت کنید.
 
 
    ```sh
    import requests
 
-    endpoint = 'http://127.0.0.1:8000/product/product-api/'
+    endpoint = 'https://mohsensangsefidi.ir/product/product-api/'
 
     headers = {
-        'Authorization': 'Stadino 8112953f289db9194ed1c5bab3355c67966d6f99'
-    }
+      'Authorization': 'Stadino ddfd2b32b7e26df767b0d2fd51672d38b2d0f367'
+  }
 
-    response = requests.post(endpoint, headers=headers)
+  response = requests.get(endpoint, headers=headers)
    ```
 
 ### Post
 
-برای ثبت محصول در سایت میتوانید از آدرس "http://127.0.0.1:8000/product/product-api/"
+برای ثبت محصول در سایت میتوانید از آدرس "https://mohsensangsefidi.ir/product/product-api/"
 
-با توکن "Stadino 8112953f289db9194ed1c5bab3355c67966d6f99" آن را ثبت کنید کنید.
+با توکن "Stadino ddfd2b32b7e26df767b0d2fd51672d38b2d0f367" آن را ثبت کنید.
 
 
    ```sh

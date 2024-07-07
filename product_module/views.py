@@ -60,7 +60,7 @@ class ProductDetailView(View):
 class SearchPageView(View):
     def get(self, request: HttpRequest, name):
         items = ProductModel.objects.filter(name__contains=uri_to_iri(name)).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         priceForm = PriceRangeForm()
@@ -75,7 +75,8 @@ class SearchPageView(View):
             'name': uri_to_iri(name),
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, name):
@@ -97,7 +98,7 @@ class SearchPageView(View):
 class SearchPagePriceFileterView(View):
     def get(self, request: HttpRequest, name, start, end):
         items = ProductModel.objects.filter(name__contains=uri_to_iri(name), price__gt=start, price__lte=end).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         priceForm = PriceRangeForm()
@@ -114,7 +115,8 @@ class SearchPagePriceFileterView(View):
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, name, start, end):
@@ -132,7 +134,7 @@ class SearchPageCatgoryFileterView(View):
         catgoryForm = CatgoryForm()
         catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.filter(name__contains=uri_to_iri(name)).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         filter = catgoryObject.name
@@ -147,7 +149,8 @@ class SearchPageCatgoryFileterView(View):
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, name, catgory):
@@ -161,7 +164,7 @@ class SearchPageCatgoryFileterView(View):
 class SearchPageAllView(View):
     def get(self, request: HttpRequest):
         items = ProductModel.objects.filter(is_active=True).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         priceForm = PriceRangeForm()
@@ -175,7 +178,8 @@ class SearchPageAllView(View):
             'page': page,
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest):
@@ -197,7 +201,7 @@ class SearchPageAllPriceFilterView(View):
         priceForm = PriceRangeForm(request.POST)
         catgoryForm = CatgoryForm(request.POST)
         items = ProductModel.objects.filter(price__gt=start, price__lte=end, is_active=True).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         filter = f'قیمت بین {start} و {end}'
@@ -211,7 +215,8 @@ class SearchPageAllPriceFilterView(View):
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, start, end):
@@ -229,7 +234,7 @@ class SearchPageAllCatgoryFilterView(View):
         catgoryForm = CatgoryForm()
         catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.filter(is_active=True).order_by('-price')
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         filter = catgoryObject.name
@@ -243,7 +248,8 @@ class SearchPageAllCatgoryFilterView(View):
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, catgory):
@@ -258,7 +264,7 @@ class SearchPageCatgoryView(View):
     def get(self, request: HttpRequest, catgory):
         catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.all()
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         priceForm = PriceRangeForm()
@@ -272,7 +278,8 @@ class SearchPageCatgoryView(View):
             'name': catgoryObject.name,
             'priceForm': priceForm,
             'slug': uri_to_iri(catgory),
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, catgory):
@@ -288,7 +295,7 @@ class SearchPageCatgoryPriceFilterView(View):
         priceForm = PriceRangeForm()
         catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
         items = catgoryObject.productmodel_set.filter(price__gt=start, price__lte=end)
-        paginator = Paginator(items, 5)
+        paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
         filter = f'قیمت بین {start} و {end}'
@@ -303,7 +310,8 @@ class SearchPageCatgoryPriceFilterView(View):
             'priceForm': priceForm,
             'filter': filter,
             'slug': uri_to_iri(catgory),
-            'favorit': favoritProduct
+            'favorit': favoritProduct,
+            'count' : items.count()
         })
 
     def post(self, request: HttpRequest, catgory, start, end):

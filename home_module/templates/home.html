@@ -320,18 +320,17 @@
 
     <div class="product-slider free-sw site-slider mt-5">
         <div class="container-fluid">
-
             <div class="section-title">
                 <div class="row gy-3 align-items-center">
                     <div class="col-sm-8">
                         <div class="section-title-title">
-                            <h2 class="title-font h1 main-color-three-color">همه<span class="main-color-one-color"> محصولات </span>
+                            <h2 class="title-font h1 main-color-three-color">کتاب<span class="main-color-one-color"> کمک درسی </span>
                             </h2>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="section-title-link text-sm-end text-start">
-                            <a class="btn btn-title  rounded-pill" href="{% url 'search-all' %}"> مشاهده همه</a>
+                            <a class="btn btn-title  rounded-pill" href="{% url 'search-catgory' catgory1.slug %}"> مشاهده همه</a>
                         </div>
                     </div>
                 </div>
@@ -342,7 +341,7 @@
             <div class="container-fluid">
                 <div class="swiper pro-slider">
                     <div class="swiper-wrapper">
-                        {% for product in products %}
+                        {% for product in catgory1_product %}
                             <div class="swiper-slide">
                                 <div class="product-box">
                                     <a href="{% url 'product-detail' product.slug %}">
@@ -416,5 +415,295 @@
         </div>
     </div>
 
+    <div class="product-slider free-sw site-slider mt-5">
+        <div class="container-fluid">
+            <div class="section-title">
+                <div class="row gy-3 align-items-center">
+                    <div class="col-sm-8">
+                        <div class="section-title-title">
+                            <h2 class="title-font h1 main-color-three-color">کتاب<span class="main-color-one-color"> عمومی </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="section-title-link text-sm-end text-start">
+                            <a class="btn btn-title  rounded-pill" href="{% url 'search-catgory' catgory2.slug %}"> مشاهده همه</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parent parent-two">
+            <div class="container-fluid">
+                <div class="swiper pro-slider">
+                    <div class="swiper-wrapper">
+                        {% for product in catgory2_product %}
+                            <div class="swiper-slide">
+                                <div class="product-box">
+                                    <a href="{% url 'product-detail' product.slug %}">
+                                        <div class="product-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid one-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid two-image">
+                                        </div>
+                                        <div class="product-title">
+                                            <div class="title">
+                                                <p class="text-overflow-1 title-font">{{ product.name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="product-action">
+                                            <div class="link">
+                                                <button class="btn border-0 rounded-3 main-color-one-bg" href="">
+                                                    <i class="bi bi-basket text-white"></i>
+                                                </button>
+                                            </div>
+                                            <div class="price">
+                                                {% if product.discount %}
+                                                    <p class="old-price">{{ product.price }} <span
+                                                            class="danger-label rounded-3 ms-2">%{{ product.discount }}</span>
+                                                    </p>
+                                                    <p class="new-price">{{ product.disCount }} <span class="font-12">تومان</span>
+                                                    </p>
+                                                {% else %}
+                                                    <p class="new-price">{{ product.price }} <span
+                                                            class="font-12">تومان</span></p>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="product-foot mt-2 border-top border-1 pt-1">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            {% if request.user.is_authenticated %}
+                                                <li class="nav-item"
+                                                    onclick="addProductToFavorite({{ product.id }})">
+                                                    <a
+                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            data-bs-title="افزودن به علاقه ها">
+                                                        {% if product in favorit %}
+                                                            <i class="bi bi-heart-fill text-danger"></i>
+                                                        {% else %}
+                                                            <i class="bi bi-heart"></i>
+                                                        {% endif %}
+                                                    </a></li>
+                                            {% endif %}
+                                            <div class="product-rating">
+                                                <div class="number"><span
+                                                        class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
+                                                </div>
+                                                <div class="icon"><i class="bi bi-star-fill"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-slider free-sw site-slider mt-5">
+        <div class="container-fluid">
+            <div class="section-title">
+                <div class="row gy-3 align-items-center">
+                    <div class="col-sm-8">
+                        <div class="section-title-title">
+                            <h2 class="title-font h1 main-color-three-color">کتاب<span class="main-color-one-color"> کودک و نوجوان </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="section-title-link text-sm-end text-start">
+                            <a class="btn btn-title  rounded-pill" href="{% url 'search-catgory' catgory3.slug %}"> مشاهده همه</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parent parent-two">
+            <div class="container-fluid">
+                <div class="swiper pro-slider">
+                    <div class="swiper-wrapper">
+                        {% for product in catgory3_product %}
+                            <div class="swiper-slide">
+                                <div class="product-box">
+                                    <a href="{% url 'product-detail' product.slug %}">
+                                        <div class="product-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid one-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid two-image">
+                                        </div>
+                                        <div class="product-title">
+                                            <div class="title">
+                                                <p class="text-overflow-1 title-font">{{ product.name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="product-action">
+                                            <div class="link">
+                                                <button class="btn border-0 rounded-3 main-color-one-bg" href="">
+                                                    <i class="bi bi-basket text-white"></i>
+                                                </button>
+                                            </div>
+                                            <div class="price">
+                                                {% if product.discount %}
+                                                    <p class="old-price">{{ product.price }} <span
+                                                            class="danger-label rounded-3 ms-2">%{{ product.discount }}</span>
+                                                    </p>
+                                                    <p class="new-price">{{ product.disCount }} <span class="font-12">تومان</span>
+                                                    </p>
+                                                {% else %}
+                                                    <p class="new-price">{{ product.price }} <span
+                                                            class="font-12">تومان</span></p>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="product-foot mt-2 border-top border-1 pt-1">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            {% if request.user.is_authenticated %}
+                                                <li class="nav-item"
+                                                    onclick="addProductToFavorite({{ product.id }})">
+                                                    <a
+                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            data-bs-title="افزودن به علاقه ها">
+                                                        {% if product in favorit %}
+                                                            <i class="bi bi-heart-fill text-danger"></i>
+                                                        {% else %}
+                                                            <i class="bi bi-heart"></i>
+                                                        {% endif %}
+                                                    </a></li>
+                                            {% endif %}
+                                            <div class="product-rating">
+                                                <div class="number"><span
+                                                        class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
+                                                </div>
+                                                <div class="icon"><i class="bi bi-star-fill"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-slider free-sw site-slider mt-5">
+        <div class="container-fluid">
+            <div class="section-title">
+                <div class="row gy-3 align-items-center">
+                    <div class="col-sm-8">
+                        <div class="section-title-title">
+                            <h2 class="title-font h1 main-color-three-color">کتاب<span class="main-color-one-color"> دانشگاهی </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="section-title-link text-sm-end text-start">
+                            <a class="btn btn-title  rounded-pill" href="{% url 'search-catgory' catgory4.slug %}"> مشاهده همه</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="parent parent-two">
+            <div class="container-fluid">
+                <div class="swiper pro-slider">
+                    <div class="swiper-wrapper">
+                        {% for product in catgory4_product %}
+                            <div class="swiper-slide">
+                                <div class="product-box">
+                                    <a href="{% url 'product-detail' product.slug %}">
+                                        <div class="product-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid one-image">
+                                            <img src="{{ product.productimagemodel_set.all.first.img.url }}" alt=""
+                                                 class="img-fluid two-image">
+                                        </div>
+                                        <div class="product-title">
+                                            <div class="title">
+                                                <p class="text-overflow-1 title-font">{{ product.name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="product-action">
+                                            <div class="link">
+                                                <button class="btn border-0 rounded-3 main-color-one-bg" href="">
+                                                    <i class="bi bi-basket text-white"></i>
+                                                </button>
+                                            </div>
+                                            <div class="price">
+                                                {% if product.discount %}
+                                                    <p class="old-price">{{ product.price }} <span
+                                                            class="danger-label rounded-3 ms-2">%{{ product.discount }}</span>
+                                                    </p>
+                                                    <p class="new-price">{{ product.disCount }} <span class="font-12">تومان</span>
+                                                    </p>
+                                                {% else %}
+                                                    <p class="new-price">{{ product.price }} <span
+                                                            class="font-12">تومان</span></p>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="product-foot mt-2 border-top border-1 pt-1">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            {% if request.user.is_authenticated %}
+                                                <li class="nav-item"
+                                                    onclick="addProductToFavorite({{ product.id }})">
+                                                    <a
+                                                            class="nav-item product-box-hover-item product-box-hover-item-btn"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            data-bs-title="افزودن به علاقه ها">
+                                                        {% if product in favorit %}
+                                                            <i class="bi bi-heart-fill text-danger"></i>
+                                                        {% else %}
+                                                            <i class="bi bi-heart"></i>
+                                                        {% endif %}
+                                                    </a></li>
+                                            {% endif %}
+                                            <div class="product-rating">
+                                                <div class="number"><span
+                                                        class="text-muted font-12">({{ item.commentmodel_set.all|length }}) {{ item.ratingAvrg }}</span>
+                                                </div>
+                                                <div class="icon"><i class="bi bi-star-fill"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- end product slider -->
 {% endblock %}

@@ -13,7 +13,10 @@ from .forms import SearchForm
 
 class HomeViews(View):
     def get(self, request: HttpRequest):
-        product = ProductModel.objects.filter(is_active=True, discount=0)[0:10]
+        catgory1 = CatgoryModel.objects.filter(name='کتاب کمک درسی').first()
+        catgory2 = CatgoryModel.objects.filter(name='کتاب های عمومی').first()
+        catgory3 = CatgoryModel.objects.filter(name='کتاب کودک و نوجوان').first()
+        catgory4 = CatgoryModel.objects.filter(name='کتاب دانشگاهی').first()
         special_discount = ProductModel.objects.filter(is_special=True, is_active=True)
         favoritProduct = []
         if request.user.is_authenticated:
@@ -31,7 +34,14 @@ class HomeViews(View):
         slider = ProductSliderModel.objects.all()
         catgory = CatgoryModel.objects.filter(parent=None)
         return render(request, 'home.html', {
-            'products': product,
+            'catgory1_product': catgory1.productmodel_set.all()[:10],
+            'catgory2_product': catgory2.productmodel_set.all()[:10],
+            'catgory3_product': catgory3.productmodel_set.all()[:10],
+            'catgory4_product': catgory4.productmodel_set.all()[:10],
+            'catgory1' : catgory1,
+            'catgory2' : catgory2,
+            'catgory3' : catgory3,
+            'catgory4' : catgory4,
             'catgorys': catgory,
             'special': special_discount_product,
             'favorit' : favoritProduct,

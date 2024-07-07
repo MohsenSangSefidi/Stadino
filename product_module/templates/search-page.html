@@ -11,7 +11,7 @@
             <div class="container-fluid">
 
                 <div class="d-flex align-items-center mb-4 alert alert-light shadow-box rounded-4">
-                    <span class="h3 main-color-one-color me-3">{{ page.object_list.count }}</span>
+                    <span class="h3 main-color-one-color me-3">{{ count }}</span>
                     <h1 class="h3">
                         نتیجه برای "{{ name }}" پیدا شده !
                     </h1>
@@ -39,26 +39,27 @@
                                 <div class="offcanvas-body">
                                     <div class="position-sticky top-0 mb-5">
                                         <div class="item-boxs">
-                                            <div class="item-box shadow-box">
-                                                <div class="title">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <h6 class="font-14">فیلتر های اعمال شده</h6>
-                                                        <a class="btn border-0" data-bs-toggle="collapse"
-                                                           href="#collapseItemBox"
-                                                           role="button" aria-expanded="false">
-                                                            <i class="bi bi-chevron-down"></i>
-                                                        </a>
+                                            {% if filter %}
+                                                <div class="item-box shadow-box">
+                                                    <div class="title">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <h6 class="font-14">فیلتر های اعمال شده</h6>
+                                                            <a class="btn border-0" data-bs-toggle="collapse"
+                                                               href="#collapseItemBox"
+                                                               role="button" aria-expanded="false">
+                                                                <i class="bi bi-chevron-down"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="desc collapse show" id="collapseItemBox">
-                                                    {% if filter %}
-                                                        <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2">
+                                                    <div class="desc collapse show" id="collapseItemBox">
+                                                        <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2"
+                                                           href="{% url 'search' name %}">
                                                             <span>{{ filter }}</span>
                                                             <span class="ms-3"><i
                                                                     class="bi bi-x text-danger"></i></span></a>
-                                                    {% endif %}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
                                             <div class="item-box shadow-box">
                                                 <div class="accordion accordion-flush" id="accordionFlushExample">
                                                     <div class="accordion-item">
@@ -138,25 +139,27 @@
 
                         <div class="position-sticky top-0 mb-5 d-lg-block d-none">
                             <div class="item-boxs">
-                                <div class="item-box shadow-box">
-                                    <div class="title">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h6 class="font-14">فیلتر های اعمال شده</h6>
-                                            <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBox"
-                                               role="button" aria-expanded="false">
-                                                <i class="bi bi-chevron-down"></i>
-                                            </a>
+                                {% if filter %}
+                                    <div class="item-box shadow-box">
+                                        <div class="title">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h6 class="font-14">فیلتر های اعمال شده</h6>
+                                                <a class="btn border-0" data-bs-toggle="collapse"
+                                                   href="#collapseItemBox"
+                                                   role="button" aria-expanded="false">
+                                                    <i class="bi bi-chevron-down"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="desc collapse show" id="collapseItemBox">
-                                        {% if filter %}
+                                        <div class="desc collapse show" id="collapseItemBox">
                                             <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2"
                                                href="{% url 'search' name %}">
                                                 <span>{{ filter }}</span>
-                                                <span class="ms-3"><i class="bi bi-x text-danger"></i></span></a>
-                                        {% endif %}
+                                                <span class="ms-3"><i
+                                                        class="bi bi-x text-danger"></i></span></a>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                                 <div class="item-box shadow-box">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
@@ -244,13 +247,11 @@
                                 {% for product in page.object_list %}
                                     <div class="col-md-6 col-xl-4 col-xxl-3">
                                         <div class="product-box">
-                                            <a>
-                                                <a href="{% url 'product-detail' product.slug %}">
-                                                    <div class="product-image">
-                                                        <img src="{{ product.productimagemodel_set.all.first.img.url }}"
-                                                             alt="">
-                                                    </div>
-                                                </a>
+                                            <a href="{% url 'product-detail' product.slug %}">
+                                                <div class="product-image">
+                                                    <img src="{{ product.productimagemodel_set.all.first.img.url }}"
+                                                         alt="">
+                                                </div>
                                                 <div class="product-title">
                                                     <div class="title">
                                                         <p class="text-overflow-1 title-font">{{ product.name }}</p>
@@ -258,8 +259,7 @@
                                                 </div>
                                                 <div class="product-action">
                                                     <div class="link">
-                                                        <button class="btn border-0 rounded-3 main-color-one-bg"
-                                                                href="{% url 'product-detail' product.slug %}">
+                                                        <button class="btn border-0 rounded-3 main-color-one-bg">
                                                             <i class="bi bi-basket text-white"></i>
                                                         </button>
                                                     </div>
@@ -361,7 +361,6 @@
         <div class="content mt-3">
             <div class="container-fluid">
                 <div class="d-flex align-items-center mb-4 alert alert-light shadow-box rounded-4">
-                    <span class="h3 main-color-one-color me-3">{{ page.object_list.count }}</span>
                     <h1 class="h3">
                         نتیجه برای "{{ name }}" پیدا نشد !
                     </h1>
@@ -390,26 +389,27 @@
                                 <div class="offcanvas-body">
                                     <div class="position-sticky top-0 mb-5">
                                         <div class="item-boxs">
-                                            <div class="item-box shadow-box">
-                                                <div class="title">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <h6 class="font-14">فیلتر های اعمال شده</h6>
-                                                        <a class="btn border-0" data-bs-toggle="collapse"
-                                                           href="#collapseItemBox"
-                                                           role="button" aria-expanded="false">
-                                                            <i class="bi bi-chevron-down"></i>
-                                                        </a>
+                                            {% if filter %}
+                                                <div class="item-box shadow-box">
+                                                    <div class="title">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <h6 class="font-14">فیلتر های اعمال شده</h6>
+                                                            <a class="btn border-0" data-bs-toggle="collapse"
+                                                               href="#collapseItemBox"
+                                                               role="button" aria-expanded="false">
+                                                                <i class="bi bi-chevron-down"></i>
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="desc collapse show" id="collapseItemBox">
-                                                    {% if filter %}
-                                                        <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2">
+                                                    <div class="desc collapse show" id="collapseItemBox">
+                                                        <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2"
+                                                           href="{% url 'search' name %}">
                                                             <span>{{ filter }}</span>
                                                             <span class="ms-3"><i
                                                                     class="bi bi-x text-danger"></i></span></a>
-                                                    {% endif %}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            {% endif %}
                                             <div class="item-box shadow-box">
                                                 <div class="accordion accordion-flush" id="accordionFlushExample">
                                                     <div class="accordion-item">
@@ -489,25 +489,27 @@
 
                         <div class="position-sticky top-0 mb-5 d-lg-block d-none">
                             <div class="item-boxs">
-                                <div class="item-box shadow-box">
-                                    <div class="title">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h6 class="font-14">فیلتر های اعمال شده</h6>
-                                            <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBox"
-                                               role="button" aria-expanded="false">
-                                                <i class="bi bi-chevron-down"></i>
-                                            </a>
+                                {% if filter %}
+                                    <div class="item-box shadow-box">
+                                        <div class="title">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h6 class="font-14">فیلتر های اعمال شده</h6>
+                                                <a class="btn border-0" data-bs-toggle="collapse"
+                                                   href="#collapseItemBox"
+                                                   role="button" aria-expanded="false">
+                                                    <i class="bi bi-chevron-down"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="desc collapse show" id="collapseItemBox">
-                                        {% if filter %}
+                                        <div class="desc collapse show" id="collapseItemBox">
                                             <a class="btn btn-sm rounded-pill border-1 border-muted me-1 font-14 mb-2"
                                                href="{% url 'search' name %}">
                                                 <span>{{ filter }}</span>
-                                                <span class="ms-3"><i class="bi bi-x text-danger"></i></span></a>
-                                        {% endif %}
+                                                <span class="ms-3"><i
+                                                        class="bi bi-x text-danger"></i></span></a>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                                 <div class="item-box shadow-box">
                                     <div class="accordion accordion-flush" id="accordionFlushExample">
                                         <div class="accordion-item">
