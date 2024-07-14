@@ -59,7 +59,9 @@ class ProductDetailView(View):
 
 class SearchPageView(View):
     def get(self, request: HttpRequest, name):
-        items = ProductModel.objects.filter(name__contains=uri_to_iri(name)).order_by('-price')
+        text: str = uri_to_iri(name)
+        search_name = text.replace('%20', ' ')
+        items = ProductModel.objects.filter(name__contains=search_name).order_by('-price')
         paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -72,7 +74,7 @@ class SearchPageView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': uri_to_iri(name),
+            'name': uri_to_iri(search_name),
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'favorit': favoritProduct,
@@ -97,7 +99,9 @@ class SearchPageView(View):
 
 class SearchPagePriceFileterView(View):
     def get(self, request: HttpRequest, name, start, end):
-        items = ProductModel.objects.filter(name__contains=uri_to_iri(name), price__gt=start, price__lte=end).order_by('-price')
+        text: str = uri_to_iri(name)
+        search_name = text.replace('%20', ' ')
+        items = ProductModel.objects.filter(name__contains=search_name, price__gt=start, price__lte=end).order_by('-price')
         paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -111,7 +115,7 @@ class SearchPagePriceFileterView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': uri_to_iri(name),
+            'name': search_name,
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
@@ -130,10 +134,12 @@ class SearchPagePriceFileterView(View):
 
 class SearchPageCatgoryFileterView(View):
     def get(self, request: HttpRequest, name, catgory):
+        text: str = uri_to_iri(name)
+        search_name = text.replace('%20', ' ')
         priceForm = PriceRangeForm()
         catgoryForm = CatgoryForm()
         catgoryObject = CatgoryModel.objects.filter(slug__contains=uri_to_iri(catgory)).first()
-        items = catgoryObject.productmodel_set.filter(name__contains=uri_to_iri(name)).order_by('-price')
+        items = catgoryObject.productmodel_set.filter(name__contains=search_name).order_by('-price')
         paginator = Paginator(items, 8)
         page_number = request.GET.get('page')
         page = paginator.get_page(page_number)
@@ -145,7 +151,7 @@ class SearchPageCatgoryFileterView(View):
                 favoritProduct.append(item.product)
         return render(request, 'search-page.html', {
             'page': page,
-            'name': uri_to_iri(name),
+            'name': search_name,
             'priceForm': priceForm,
             'catgoryForm': catgoryForm,
             'filter': filter,
