@@ -11,7 +11,7 @@
   <p align="center">
     سایت فروشگاه کتاب
     <br />
-    <a href="https://mohsensangsefidi.ir/">دیدن سایت</a>
+    <a href="https://stadino.pythonanywhere.com/">دیدن سایت</a>
   </p>
 </div>
 
@@ -48,7 +48,7 @@
 
 ### Get
 
-برای دریافت لیست محصولات سایت میتوانید از آدرس "https://mohsensangsefidi.ir/product/product-api/"
+برای دریافت لیست محصولات سایت میتوانید از آدرس "https://stadino.pythonanywhere.com/product/product-api/"
 
 با توکن "Stadino ddfd2b32b7e26df767b0d2fd51672d38b2d0f367" آن را دریافت کنید.
 
@@ -67,7 +67,7 @@
 
 ### Post
 
-برای ثبت محصول در سایت میتوانید از آدرس "https://mohsensangsefidi.ir/product/product-api/"
+برای ثبت محصول در سایت میتوانید از آدرس "https://stadino.pythonanywhere.com/product/product-api/"
 
 با توکن "Stadino ddfd2b32b7e26df767b0d2fd51672d38b2d0f367" آن را ثبت کنید.
 
