@@ -38,14 +38,14 @@ class HomeViews(View):
             'catgory2_product': catgory2.productmodel_set.all()[:10],
             'catgory3_product': catgory3.productmodel_set.all()[:10],
             'catgory4_product': catgory4.productmodel_set.all()[:10],
-            'catgory1' : catgory1,
-            'catgory2' : catgory2,
-            'catgory3' : catgory3,
-            'catgory4' : catgory4,
+            'catgory1': catgory1,
+            'catgory2': catgory2,
+            'catgory3': catgory3,
+            'catgory4': catgory4,
             'catgorys': catgory,
             'special': special_discount_product,
-            'favorit' : favoritProduct,
-            'slider' : slider
+            'favorit': favoritProduct,
+            'slider': slider
         })
 
     def post(self, request: HttpRequest):
@@ -53,6 +53,7 @@ class HomeViews(View):
         if form.is_valid():
             text = form.cleaned_data.get('text')
             return redirect(reverse('search', args=[text]))
+
 
 class HeaderView(View):
     def get(self, request: HttpRequest):
@@ -101,8 +102,9 @@ class HeaderView(View):
                 'form': form
             })
 
+
 def footerView(request: HttpRequest):
     category = CatgoryModel.objects.filter(parent=None)
     return render(request, 'footer.html', {
-        'category' : category
+        'category': category
     })
