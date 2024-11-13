@@ -11,7 +11,6 @@
   <p align="center">
     سایت فروشگاه کتاب
     <br />
-    <a href="https://stadino.pythonanywhere.com/">دیدن سایت</a>
   </p>
 </div>
 
