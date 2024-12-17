@@ -1,6 +1,8 @@
-
-![Logo](https://s32.picofile.com/file/8481356268/logo.png)
-
+<p align="center">
+  <a href="">
+    <img src="https://s32.picofile.com/file/8481356268/logo.png" />
+  </a>
+</p>
 
 #
 

@@ -267,6 +267,9 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .top-header-cart {
+        display: none!important;
+    }
 
     .footer-logo-parent {
         position: absolute;

@@ -11,7 +11,13 @@ class HeaderView(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'header.html')
 
+    def post(self, request, *args, **kwargs):
+        return render(request, 'header.html')
+
 
 class FooterView(View):
     def get(self, request, *args, **kwargs):
+        return render(request, 'footer.html')
+
+    def post(self, request, *args, **kwargs):
         return render(request, 'footer.html')
