@@ -3549,7 +3549,25 @@ button:focus{
     box-shadow: var(--shadow-xl);
     border: 1px solid #ccc;
     position: relative;
-    min-height: 480px;
+    min-height: 450px;
+    border-radius: 20px;
+}
+
+.auth-front-forget {
+    background-color: #f3f6f6;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid #ccc;
+    position: relative;
+    min-height: 240px;
+    border-radius: 20px;
+}
+
+.auth-front-change-pass {
+    background-color: #f3f6f6;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid #ccc;
+    position: relative;
+    min-height: 340px;
     border-radius: 20px;
 }
 

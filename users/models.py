@@ -4,6 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    token = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return f"username: {self.username} - email: {self.email}"

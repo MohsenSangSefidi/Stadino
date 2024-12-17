@@ -91,3 +91,40 @@ class LoginForm(forms.Form):
             }
         )
     )
+
+
+class ForgetPasswordForm(forms.Form):
+    email = forms.CharField(
+        label='',
+        widget=forms.TextInput(
+            attrs={
+                'type': 'email',
+                'class': 'form-control',
+                'id': 'floatingInputEmail'
+            }
+        )
+    )
+
+
+class ChangePasswordForm(forms.Form):
+    password = forms.CharField(
+        label='',
+        widget=forms.PasswordInput(
+            attrs={
+                'type': 'password',
+                'class': 'form-control',
+                'id': 'floatingInputPasswd'
+            }
+        )
+    )
+
+    re_password = forms.CharField(
+        label='',
+        widget=forms.PasswordInput(
+            attrs={
+                'type': 'password',
+                'class': 'form-control',
+                'id': 'floatingInputPasswd'
+            }
+        )
+    )
