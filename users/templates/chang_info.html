@@ -1,0 +1,98 @@
+{% extends '_layout-panel.html' %}
+
+{% block content %}
+    <div class="col-lg-9">
+        <div class="section-title">
+            <div class="section-title-title">
+                <h3 class="title-font h3 main-color-three-color">ویرایش<span
+                        class="main-color-one-color"> اطلاعات </span>
+                </h3>
+            </div>
+        </div>
+
+        <div class="content-box slider-parent rounded-4">
+
+            <div class="container-fluid">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row gy-2">
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_info_form.username }}
+                                <label for="floatingInputoldPasswd" class="form-label label-float fw-bold">نام کاربری</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_info_form.first_name }}
+                                <label for="floatingInputNewPasswd" class="form-label label-float fw-bold">نام</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_info_form.last_name }}
+                                <label for="floatingInputConfirmPasswd" class="form-label label-float fw-bold">نام خانوادگی</label>
+                            </div>
+                        </div>
+                        <div class="col-12 text-danger font-17">
+                            {% if change_info_form.errors.username %}
+                            	<p>{{ change_info_form.errors.username }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <input type="submit" value="تغییر" class="btn main-color-one-bg px-5 w-100-in-400 pt-2">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="section-title">
+            <div class="section-title-title">
+                <h3 class="title-font h3 main-color-three-color">ویرایش<span
+                        class="main-color-one-color"> رمزعبور </span>
+                </h3>
+            </div>
+        </div>
+
+        <div class="content-box slider-parent rounded-4">
+
+            <div class="container-fluid">
+                <form action="{% url 'change_pass' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row gy-2">
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_pass_form.old_password }}
+                                <label for="floatingInputoldPasswd" class="form-label label-float fw-bold">رمزعبور قبلی</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_pass_form.password }}
+                                <label for="floatingInputNewPasswd" class="form-label label-float fw-bold">رمزعبور جدید</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="comment-item mb-3">
+                                {{ change_pass_form.re_password }}
+                                <label for="floatingInputConfirmPasswd" class="form-label label-float fw-bold">تکرار رمزعبور جدید</label>
+                            </div>
+                        </div>
+                        <div class="col-12 text-danger font-17">
+                            {% if error != 'None' and error %}
+                            	<p class="text-danger">{{ error }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <input type="submit" value="تغییر" class="btn main-color-one-bg px-5 w-100-in-400 pt-2">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

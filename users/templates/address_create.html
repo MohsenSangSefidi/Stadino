@@ -1,0 +1,64 @@
+{% extends '_layout-panel.html' %}
+
+{% block content %}
+    <div class="col-lg-9">
+        <div class="section-title">
+            <div class="section-title-title">
+                <h3 class="title-font h3 main-color-three-color">ثبت<span class="main-color-one-color"> آدرس </span>
+                </h3>
+            </div>
+        </div>
+        <div class="content-box slider-parent rounded-4">
+            <div class="container-fluid">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="comment-item mb-3">
+                                {{ form.street }}
+                                <label for="floatingInputStreet1" class="form-label label-float fw-bold">آدرس خیابان</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comment-item" for="floatingInputOstan1">
+                                <label class="label-float fw-bold">استان <span class="text-danger">*</span></label>
+
+                                {{ form.state_select }}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="comment-item">
+                                <label class="label-float fw-bold" for="floatingInputCity1">شهر <span class="text-danger">*</span></label>
+
+                                {{ form.city_select }}
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="comment-item mb-3">
+
+                                {{ form.phone_number }}
+
+                                <label for="floatingInputDesc" class="form-label label-float fw-bold">توضیحات سفارش</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-danger">
+                            <p class="text-danger">{{ form.errors.street }}</p>
+                            <p class="text-danger">{{ form.errors.state_select }}</p>
+                            <p class="text-danger">{{ form.errors.city_select  }}</p>
+                            <p class="text-danger">{{ form.errors.phone_number }}</p>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn main-color-one-bg px-3 py-2">ثبت آدرس</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

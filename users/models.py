@@ -7,7 +7,7 @@ class User(AbstractUser):
     token = models.CharField(max_length=100, null=True)
 
     def __str__(self):
-        return f"username: {self.username} - email: {self.email}"
+        return f'( Username: {self.username} - Email: {self.email} )'
 
 
 class Address(models.Model):
@@ -18,4 +18,4 @@ class Address(models.Model):
     phone_number = models.CharField(max_length=150)
 
     def __str__(self):
-        return f"street: {self.street} - city: {self.city} - state:{self.state} - phone_number: {self.phone_number}"
+        return f'( User : {self.user.username} - Phone Number: {self.phone_number} )'

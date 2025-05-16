@@ -1,0 +1,153 @@
+<!doctype html>
+<html class="no-js" dir="rtl" lang="Fa_IR">
+
+<head>
+    <meta charset="utf-8">
+    <title>استادینو</title>
+    <meta content="" name="description">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <meta content="" property="og:title">
+    <meta content="" property="og:type">
+    <meta content="" property="og:url">
+    <meta content="" property="og:image">
+
+    <!-- Place favicon.ico in the root directory -->
+
+    <link href="/static/css/normalize.css" rel="stylesheet">
+    <link href="/static/font/bootstrap-icon/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/js/plugin/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="/static/js/plugin/countdown/countdown.css" rel="stylesheet">
+    <link href="/static/js/plugin/rasta-contact/style.css" rel="stylesheet">
+    <link href="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
+    <link href="/static/css/mega-menu.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/responsive.css" rel="stylesheet">
+
+    <meta content="#f4f5f9" name="theme-color">
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="custom-filter d-lg-none d-block">
+                <button class="btn btn-filter-float border-0 main-color-one-bg shadow-box px-4 rounded-3 position-fixed" style="z-index: 999;bottom:80px;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <i class="bi bi-list font-20 fw-bold text-white"></i>
+                    <span class="d-block font-14 text-white">منو</span>
+                </button>
+
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title">منو</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="position-sticky top-0">
+                            <div class="penel-nav-seller">
+                                <div class="profile-box mb-3 d-flex flex-column justify-content-center align-items-center">
+                                    <div class="profile-box-image">
+                                        <img src="/static/img/user-avatar.svg" alt="">
+                                    </div>
+                                    <div class="profile-box-desc mt-2">
+                                        <h6 class="text-center">{{ request.user.username }}</h6>
+                                        <p class="">{{ request.user.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="panel-nav-nav">
+                                    <ul class="rm-item-menu navbar-nav">
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'change_info' None %}">
+                                            <i class="bi bi-house box-icon"></i>ویرایش پروفایل</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'user_orders' %}">
+                                            <i class="bi bi-cart-check box-icon"></i>سفارش های من </a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'address' %}">
+                                            <i class="bi bi-pin-map box-icon"></i>آدرس های من</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'user_comment' %}">
+                                            <i class="bi bi-chat-dots box-icon"></i>نظرات من</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'favorite' %}">
+                                            <i class="bi bi-heart box-icon"></i>محصولات مورد علاقه</a>
+                                        </li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">
+                                            <i class="bi bi-arrow-right-square box-icon"></i>خروج از حساب کاربری</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-4">
+
+                <div class="col-lg-3 d-lg-block d-none">
+                    <div class="position-sticky top-0">
+                        <div class="penel-nav-seller">
+                            <div class="profile-box mb-3 d-flex flex-column justify-content-center align-items-center">
+                                <div class="profile-box-image">
+                                    <img src="/static/img/user-avatar.svg" alt="">
+                                </div>
+                                <div class="profile-box-desc mt-2">
+                                    <h6 class="text-center">{{ request.user.username }}</h6>
+                                    <p class="">{{ request.user.email }}</p>
+                                </div>
+                            </div>
+                            <div class="panel-nav-nav">
+                                <ul class="rm-item-menu navbar-nav">
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'change_info' None %}">
+                                        <i class="bi bi-house box-icon"></i>ویرایش پروفایل</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'user_orders' %}">
+                                        <i class="bi bi-cart-check box-icon"></i>سفارش های من </a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'address' %}">
+                                        <i class="bi bi-pin-map box-icon"></i>آدرس های من</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'user_comment' %}">
+                                        <i class="bi bi-chat-dots box-icon"></i>نظرات من</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'favorite' %}">
+                                        <i class="bi bi-heart box-icon"></i>محصولات مورد علاقه</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">
+                                        <i class="bi bi-arrow-right-square box-icon"></i>خروج از حساب کاربری</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% block content %}
+                	
+                {% endblock %}
+
+            </div>
+
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+
+    <script src="/static/js/vendor/modernizr-3.11.2.min.js"></script>
+    <script src="/static/js/vendor/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/vendor/bootstrap.bundle-5.3.2.min.js"></script>
+    <script src="/static/js/plugin/swiper/swiper-bundle.min.js"></script>
+    <script src="/static/js/plugin/countdown/countdown.js"></script>
+    <script src="/static/js/plugin/rasta-contact/script.js"></script>
+    <script src="/static/js/plugin/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="/static/js/plugins.js"></script>
+    <script src="/static/js/main.js"></script>
+
+</body>
+
+</html>

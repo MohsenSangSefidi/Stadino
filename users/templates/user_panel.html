@@ -1,0 +1,97 @@
+{% extends '_layout-panel.html' %}
+
+{% block content %}
+    <div class="col-lg-9">
+        <div class="row gy-3">
+            <div class="col-lg-3 col-md-6">
+                <a href="">
+                    <div class="meta-box">
+                        <div class="meta-box-icon">
+                            <i class="bi bi-bag-check"></i>
+                        </div>
+                        <div class="meta-box-desc">
+                            <p>کلاس های شرکت کرده</p>
+                            <h5>15</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="">
+                    <div class="meta-box">
+                        <div class="meta-box-icon">
+                            <i class="bi bi-heart"></i>
+                        </div>
+                        <div class="meta-box-desc">
+                            <p>محصولات مورد علاقه</p>
+                            <h5>23</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <a href="">
+                    <div class="meta-box">
+                        <div class="meta-box-icon">
+                            <i class="bi bi-send"></i>
+                        </div>
+                        <div class="meta-box-desc">
+                            <p>نظرات</p>
+                            <h5>17</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="panel-latest-order mt-4">
+
+            <div class="section-title">
+                <div class="row gy-3 align-items-center">
+                    <div class="col-sm-8">
+                        <div class="section-title-title">
+                            <h3 class="title-font h3 main-color-three-color">آخرین<span class="main-color-one-color"> سفارشات </span></h3>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="section-title-link text-sm-end text-start">
+                            <a class="btn btn-title font-13 rounded-pill" href=""> مشاهده همه</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive shadow-box roundedTable p-0">
+                <table class="table  main-table rounded-0">
+                    <thead class="text-center">
+                    <tr>
+                        <th class="title-font">#</th>
+                        <th class="title-font">شماره سفارش</th>
+                        <th class="title-font">تاریخ ثبت سفارش</th>
+                        <th class="title-font">مبلغ پرداختی</th>
+                        <th class="title-font">وضعیت سفارش</th>
+                        <th class="title-font">جزییات</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    <tr>
+                        <td class="font-14">1</td>
+                        <td class="font-14">2354632</td>
+                        <td class="font-14">سه شنبه 13 دی 1401</td>
+                        <td class="font-14">580,000 تومان</td>
+                        <td class="font-14"><a href="" class="title-font">سفارش مرجوع شده</a></td>
+                        <td class="font-14"><a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="font-14">2</td>
+                        <td class="font-14">2354632</td>
+                        <td class="font-14">سه شنبه 13 دی 1401</td>
+                        <td class="font-14">580,000 تومان</td>
+                        <td class="font-14"><a href="" class="title-font">سفارش لغو شده</a></td>
+                        <td class="font-14"><a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
