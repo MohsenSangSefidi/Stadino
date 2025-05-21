@@ -24,46 +24,22 @@
                             </tr>
                             </thead>
                             <tbody class="text-center">
-                            <tr>
-                                <td class="font-14">1</td>
-                                <td class="font-14">2354632</td>
-                                <td class="font-14">سه شنبه 13 دی 1401</td>
-                                <td class="font-14">580,000 تومان</td>
-                                <td class="font-14"><a href="" class="title-font">سفارش مرجوع شده</a></td>
-                                <td class="font-14">
-                                    <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-14">2</td>
-                                <td class="font-14">2354632</td>
-                                <td class="font-14">سه شنبه 13 دی 1401</td>
-                                <td class="font-14">580,000 تومان</td>
-                                <td class="font-14"><a href="" class="title-font">سفارش لغو شده</a></td>
-                                <td class="font-14">
-                                    <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-14">1</td>
-                                <td class="font-14">2354632</td>
-                                <td class="font-14">سه شنبه 13 دی 1401</td>
-                                <td class="font-14">580,000 تومان</td>
-                                <td class="font-14"><a href="" class="title-font">سفارش تحویل داده شده</a></td>
-                                <td class="font-14">
-                                    <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="font-14">2</td>
-                                <td class="font-14">2354632</td>
-                                <td class="font-14">سه شنبه 13 دی 1401</td>
-                                <td class="font-14">580,000 تومان</td>
-                                <td class="font-14"><a href="" class="title-font">سفارش در انتظار پرداخت</a></td>
-                                <td class="font-14">
-                                    <a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
-                                </td>
-                            </tr>
+                            {% for object in page_obj.object_list %}
+                            	<tr>
+                                    <td class="font-14">{{ forloop.counter }}</td>
+                                    <td class="font-14">{{ object.id }}</td>
+                                    <td class="font-14">{{ object.get_jalali_pay_date }}</td>
+                                    <td class="font-14">{{ object.total_amount }} تومان</td>
+                                    {% if object.cart_status %}
+                                        <td class="font-14"><a href="" class="title-font">سفارش ارسال شده</a></td>
+                                    {% else %}
+                                        <td class="font-14"><a href="" class="title-font">سفارش در حال آماده سازی هست</a></td>
+                                    {% endif %}
+                                    <td class="font-14">
+                                        <a href="{% url 'cart_detail' object.id %}" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -71,19 +47,19 @@
                 <div class="my-paginate mt-5">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link rounded-3" href="#"><i class="bi bi-chevron-right"></i></a>
-                            </li>
-                            <li class="page-item active"><a class="page-link rounded-3" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">14</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">15</a></li>
-                            <li class="page-item"><a class="page-link rounded-3" href="#">16</a></li>
-                            <li class="page-item">
-                                <a class="page-link rounded-3" href="#"><i class="bi bi-chevron-left"></i></a>
-                            </li>
+                            {% if page_obj.has_previous %}
+                            	<li class="page-item disabled">
+                                    <a class="page-link rounded-3" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-right"></i></a>
+                                </li>
+                            {% endif %}
+
+                            <li class="page-item active"><a class="page-link rounded-3">{{ page_obj.number }}</a></li>
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link rounded-3" href="?page={{ page_obj.next_page_number }}"><i class="bi bi-chevron-left"></i></a>
+                                </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>

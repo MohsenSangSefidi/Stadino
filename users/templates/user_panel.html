@@ -1,4 +1,5 @@
 {% extends '_layout-panel.html' %}
+{% load custom_filters %}
 
 {% block content %}
     <div class="col-lg-9">
@@ -11,7 +12,7 @@
                         </div>
                         <div class="meta-box-desc">
                             <p>کلاس های شرکت کرده</p>
-                            <h5>15</h5>
+                            <h5>{{ request.user.carts.count }}</h5>
                         </div>
                     </div>
                 </a>
@@ -24,7 +25,7 @@
                         </div>
                         <div class="meta-box-desc">
                             <p>محصولات مورد علاقه</p>
-                            <h5>23</h5>
+                            <h5>{{ request.user.favorite_products.count }}</h5>
                         </div>
                     </div>
                 </a>
@@ -37,7 +38,7 @@
                         </div>
                         <div class="meta-box-desc">
                             <p>نظرات</p>
-                            <h5>17</h5>
+                            <h5>{{ request.user.comments.count }}</h5>
                         </div>
                     </div>
                 </a>
@@ -73,22 +74,22 @@
                     </tr>
                     </thead>
                     <tbody class="text-center">
-                    <tr>
-                        <td class="font-14">1</td>
-                        <td class="font-14">2354632</td>
-                        <td class="font-14">سه شنبه 13 دی 1401</td>
-                        <td class="font-14">580,000 تومان</td>
-                        <td class="font-14"><a href="" class="title-font">سفارش مرجوع شده</a></td>
-                        <td class="font-14"><a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="font-14">2</td>
-                        <td class="font-14">2354632</td>
-                        <td class="font-14">سه شنبه 13 دی 1401</td>
-                        <td class="font-14">580,000 تومان</td>
-                        <td class="font-14"><a href="" class="title-font">سفارش لغو شده</a></td>
-                        <td class="font-14"><a href="" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a></td>
-                    </tr>
+
+                        {% for user_cart in user_carts %}
+                            <tr>
+                                <td class="font-14">{{ forloop.counter }}</td>
+                                <td class="font-14">{{ user_cart.id }}</td>
+                                <td class="font-14">{{ user_cart.get_jalali_pay_date }}</td>
+                                <td class="font-14">{{ user_cart.total_amount|intcomma }} تومان</td>
+                                {% if user_cart.cart_status %}
+                                    <td class="font-14"><a href="" class="title-font">سفارش ارسال شده</a></td>
+                                {% else %}
+                                    <td class="font-14"><a href="" class="title-font">سفارش در حال آماده سازی هست</a></td>
+                                {% endif %}
+                                <td class="font-14"><a href="{% url 'cart_detail' user_cart.id %}" class="btn border-0 main-color-one-bg waves-effect waves-light"><i class="bi bi-chevron-left"></i></a></td>
+                            </tr>
+                        {% endfor %}
+
                     </tbody>
                 </table>
             </div>

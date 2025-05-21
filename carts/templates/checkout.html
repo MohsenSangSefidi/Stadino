@@ -1,0 +1,126 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+    <div class="content mt-3">
+        <div class="container-fluid">
+
+            <div class="payment_navigtions">
+                <div class="checkout-headers">
+                    <nav class="navbar navbar-expand">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <span>1</span>
+                                    <p>سبد خرید</p>
+                                </a>
+                            </li>
+                            <li class="nav-item active">
+                                <a href="" class="nav-link">
+                                    <span>2</span>
+                                    <p>صورتحساب</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="" class="nav-link">
+                                    <span>3</span>
+                                    <p>جزییات پرداخت</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="container-fluid">
+                <div class="cart-product">
+                    <div class="row gy-4">
+                        <div class="col-xl-9">
+
+                            <div class="content-box">
+                                <div class="container-fluid">
+
+                                    <div class="row align-items-center">
+                                        <div class="col-sm-9">
+                                            <h5>انتخاب آدرس:</h5>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="text-sm-end">
+                                                <h5><a href="{% url 'create_address' %}" class="text-info"> + ثبت آدرس
+                                                    جدید</a></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% for item in address %}
+                                        <label for="address-one" class="d-block">
+                                            <div class="detail-order mt-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-4 border-end border-2 pe-3 border-dark">
+                                                        <input type="radio" name="address" id="address-one" class="form-check-input" value="{{ item.id }}">
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <div class="detail-order-item d-flex align-items-center">
+                                                            <h6><i class="bi bi-pin-map-fill me-1"></i> آدرس تحویل:</h6>
+                                                            <span class="ms-2 text-muted">{{ item.street }}</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mt-4">
+                                                            <div class="detail-order-item d-flex me-3 align-items-center">
+                                                                <h6><i class="bi bi-person-fill me-1"></i>استان :</h6>
+                                                                <span class="ms-2 text-muted">{{ item.state }}</span>
+                                                            </div>
+                                                            <div class="detail-order-item d-flex me-3 align-items-center">
+                                                                <h6><i class="bi bi-person-fill me-1"></i>شهر :</h6>
+                                                                <span class="ms-2 text-muted">{{ item.city }}</span>
+                                                            </div>
+                                                            <div class="detail-order-item d-flex align-items-center">
+                                                                <h6><i class="bi bi-telephone-fill me-1"></i>شماره تماس:
+                                                                </h6>
+                                                                <span class="ms-2 text-muted">{{ item.phone_number }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="content-box position-sticky top-0">
+                                <div class="container-fluid">
+                                    <div class="item">
+                                        <div class="factor">
+                                            <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                <h5 class="mb-0 h6">قیمت کالا ها</h5>
+                                                <p class="mb-0 font-17">{{ cart.total_amount_with_out_discount }} تومان</p>
+                                            </div>
+
+                                            <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                <h5 class="mb-0 h6">تخفیف کالا ها</h5>
+                                                <p class="mb-0 font-18">{{ cart.total_discounted_amount }} تومان</p>
+                                            </div>
+
+                                            <div class="d-flex factor-item mb-3 align-items-center justify-content-between">
+                                                <h5 class="mb-0 h6">مجموع</h5>
+                                                <p class="mb-0 font-18">{{ cart.total_amount }} تومان</p>
+                                            </div>
+
+                                            <div class="action mt-3 d-flex align-items-center justify-content-center">
+                                                <input type="submit" value="تسویه حساب" class="btn main-color-one-bg w-100"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

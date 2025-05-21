@@ -27,13 +27,13 @@ $(function () {
         $(".main-menu-sub-active").removeClass("main-menu-sub-active");
     })
 
-    ///شمارنده محصول برای اضافه کردن به سبد خرید
-    $("input.counter").TouchSpin({
-        min: 1,
-        max: '1000000000000000',
-        buttondown_class: "btn-counter waves-effect waves-light",
-        buttonup_class: "btn-counter waves-effect waves-light"
-    });
+    // ///شمارنده محصول برای اضافه کردن به سبد خرید
+    // $("input.counter").TouchSpin({
+    //     min: 1,
+    //     max: '1000000000000000',
+    //     buttondown_class: "btn-counter waves-effect waves-light",
+    //     buttonup_class: "btn-counter waves-effect waves-light"
+    // });
 
     ///انتخاب گر رنگ
     $(".category-sort .form-checks .form-check").click(function () {
@@ -173,9 +173,9 @@ $(document).ready(function () {
         $(this).find('input').prop("checked", true);
     });
 
-    $(".delivary-payment-bank-item").click(function (){
+    $(".delivary-payment-bank-item").click(function () {
         $(".delivary-payment-bank-item").removeClass("active");
-       $(this).addClass("active");
+        $(this).addClass("active");
     });
 });
 
@@ -184,17 +184,17 @@ $(document).ready(function () {
 * فرم چند مرحله ای ورود / ثبت نام
 */
 
-$(document).ready(function (){
+$(document).ready(function () {
     ///disable fild password in load form
     $(".step-passwd").hide();
     ///disable button submit in step one
     $(".step-two").hide();
 
     ///show filed password in step two form
-    $(".step-one").click(function (){
+    $(".step-one").click(function () {
 
         ///check empty fild username
-        if($(".step-username #username").val() != ""){
+        if ($(".step-username #username").val() != "") {
             ///hide username filed
             $(".step-username").hide();
             ///show password filed
@@ -203,17 +203,17 @@ $(document).ready(function (){
             $(this).hide();
             ///show button submit
             $(".step-two").show();
-        }else{
+        } else {
             $(".step-username #username").addClass("border-danger border-2");
         }
 
 
         ///check empty fild password
 
-        $(".btnForm").click(function(){
-            if($(".step-passwd #passwd").val() !=""){
+        $(".btnForm").click(function () {
+            if ($(".step-passwd #passwd").val() != "") {
                 $("#form-auth").submit();
-            }else{
+            } else {
                 $(".step-passwd #passwd").addClass("border-danger border-2");
             }
         })
@@ -222,3 +222,91 @@ $(document).ready(function (){
     })
 
 })
+
+function change_quantity(status, max_value) {
+    let quantity_input = document.getElementById("quantity_input");
+    if (status === "increase") {
+        if (quantity_input.value < max_value) {
+            quantity_input.value++;
+        }
+    } else if (status === "decrease") {
+        if (quantity_input.value > 0) {
+            quantity_input.value--;
+        }
+    }
+}
+
+function add_cart_items(slug) {
+    let quantity = document.getElementById("quantity_input");
+    let massage = document.getElementById("massage");
+    if (quantity.value <= 0) {
+        massage.classList.remove('hidden', 'text-success')
+        massage.classList.add('text-danger')
+        massage.innerHTML = 'تعداد وارد شده صحیح نیست'
+    } else {
+        fetch('/carts/add-cart-item/' + '?product_slug=' + slug + '&quantity=' + quantity.value).then(
+            res => res.json()
+        ).then(
+            res => {
+                if (res.status === 'success') {
+                    massage.classList.remove('hidden', 'text-danger')
+                    massage.classList.add('text-success')
+                    massage.innerHTML = 'محصول با موفقیت به سبد خرید اضافه شد.'
+
+                    setTimeout(
+                        function () {
+                            location.reload()
+                        }, 2000
+                    )
+
+                } else if (res.status === 'error') {
+                    massage.classList.remove('hidden', 'text-success')
+                    massage.classList.add('text-danger')
+                    massage.innerHTML = 'مشکلی در پیدا اضافه کردن محصول رخ داده.'
+                }
+            }
+        )
+    }
+}
+
+function change_cart_item_quantity(status, max_value, slug) {
+    let quantity_input = document.getElementById(`quantity_input_${slug}`);
+    let factor_section = document.getElementById("factor_section");
+    if (status === "increase") {
+        if (quantity_input.value < max_value) {
+            quantity_input.value++;
+            fetch(
+                '/carts/add-cart-item/' + '?product_slug=' + slug + '&quantity=' + quantity_input.value
+            ).then(
+                res => res.json()
+            ).then(
+                res => {
+                    if (res.status === 'success') {
+                        quantity_input.value = res.value;
+                        factor_section.innerHTML = res['factor_section'];
+                    } else if (res.status === 'error') {
+                        quantity_input--;
+                    }
+                }
+            )
+        }
+    } else if (status === "decrease") {
+        if (quantity_input.value > 1) {
+            quantity_input.value--;
+            fetch(
+                '/carts/add-cart-item/' + '?product_slug=' + slug + '&quantity=' + quantity_input.value
+            ).then(
+                res => res.json()
+            ).then(
+                res => {
+                    if (res.status === 'success') {
+                        quantity_input.value = res.value;
+                        factor_section.innerHTML = res['factor_section'];
+                    } else if (res.status === 'error') {
+                        quantity_input++;
+                    }
+                }
+            )
+        }
+    }
+}

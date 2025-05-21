@@ -1,3 +1,6 @@
+<!-- footer -->
+
+
 <footer class="footer my-20">
     <div class="footer-service">
         <div class="container-fluid">
@@ -355,115 +358,82 @@
 <!--start cart canvas-->
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+
     <div class="offcanvas-header shadow-md">
-        <h5 class="offcanvas-title title-font" id="offcanvasCartLabel">سبد خرید <small class="text-muted fw-bold font-14 ms-1">(1
-            مورد)</small></h5>
+        <h5 class="offcanvas-title title-font" id="offcanvasCartLabel">سبد خرید <small class="text-muted fw-bold font-14 ms-1">({{ cart_items.count }} مورد)</small></h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+
     <div class="offcanvas-body">
         <ul class="navbar-nav cart-canvas-parent">
-            <li class="nav-item">
-                <div class="cart-canvas">
-                    <div class="row align-items-center">
-                        <div class="col-4 ps-0">
-                            <img src="/static/img/product/product-1.webp" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h3 class="text-overflow-2 font-16">
-                                کتاب Nuovo Espresso A2 اثر Luciano Ziglio and Givonna Rizzo انتشارات الوندپویان
-                            </h3>
-                            <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                <del class="font-16">5,000,000</del>
-                                <ins class="font-25">2,500,000 <span>تومان</span></ins>
+            {% for cart_item in cart_items %}
+                <li class="nav-item p-2 rounded" style="background-color: #e3e5e6;">
+                    <div class="cart-canvas">
+                        <div class="row align-items-center">
+
+                            <div class="col-4">
+                                <img src="{{ cart_item.product.book_image.url }}" alt="">
                             </div>
-                            <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
-                                <div class="cart-canvas-count">
-                                    <span>تعداد:</span>
-                                    <span class="fw-bold">3</span>
+
+                            <div class="col-8">
+                                <h3 class="text-overflow-2 font-16"></h3>
+                                <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
+                                    {% if cart_item.product.discounted_percentage %}
+                                        <del class="font-16">{{ cart_item.product.book_price }}</del>
+                                        <ins class="font-25">{{ cart_item.product.discounted_price }}<span>تومان</span></ins>
+                                    {% else %}
+                                        <ins class="font-25 col-12 text-end px-3">{{ cart_item.product.book_price }} <span>تومان</span></ins>
+                                    {% endif %}
                                 </div>
-                                <div class="cart-canvas-delete">
-                                    <a href="" class="btn"><i class="bi bi-x"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div class="cart-canvas">
-                    <div class="row align-items-center">
-                        <div class="col-4 ps-0">
-                            <img src="/static/img/product/product-13.webp" alt="">
-                        </div>
-                        <div class="col-8">
-                            <h3 class="text-overflow-2 font-16">
-                                کتاب Nuovo Espresso A2 اثر Luciano Ziglio and Givonna Rizzo انتشارات الوندپویان
-                            </h3>
-                            <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                <del class="font-16">5,000,000</del>
-                                <ins class="font-25">2,500,000 <span>تومان</span></ins>
-                            </div>
-                            <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
-                                <div class="cart-canvas-count">
-                                    <span>تعداد:</span>
-                                    <span class="fw-bold">3</span>
-                                </div>
-                                <div class="cart-canvas-delete">
-                                    <a href="" class="btn"><i class="bi bi-x"></i></a>
+                                <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
+                                    <div class="cart-canvas-count">
+                                        <span>تعداد:</span>
+                                        <span class="fw-bold">{{ cart_item.quantity }}</span>
+                                    </div>
+                                    <div class="cart-canvas-delete">
+                                        <a href="{% url 'remove-cart-item' %}?product_slug={{ cart_item.product.book_slug }}" class="btn"><i class="bi bi-x"></i></a>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                </div>
-            </li>
+                </li>
+            {% endfor %}
+
         </ul>
 
         <div class="cart-canvas-foots bg-white shadow-md">
             <div class="row align-items-center">
-                <div class="col-6">
-                    <div class="cart-canvas-foot-sum">
-                        <p class="text-muted mb-2">جمع کل</p>
-                        <h5>11,000,000 تومان</h5>
-                    </div>
-                </div>
-                <div class="col-6">
+                <div class="col-12">
                     <div class="cart-canvas-foot-link text-end">
-                        <a href="" class="btn border-0 main-color-green text-white"><i
-                                class="bi bi-arrow-left me-1"></i> تکمیل خرید</a>
+                        <a href="{% url 'carts' %}" class="btn border-0 main-color-green text-white"><i class="bi bi-arrow-left me-1"></i> تکمیل خرید</a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>
 
 <!--end cart canvas-->
 
-
-<!-- plugin connect us-->
-
-<div class="float-btn">
-    <div class="container-fluid">
-        <!-- contact us floating -->
-        <div class="btn_collapzion" id="btncollapzion"></div>
-        <div class="" id="contactOverlay"></div>
-        <!-- end contact us floating -->
-    </div>
-</div>
-
-<!-- /plugin connect us-->
-
 <!-- start mobile menu fixed -->
 
 <div class="mobile-footer d-lg-none d-table justify-content-center shadow-box bg-white position-fixed bottom-0 p-2 w-100" style="z-index: 100;table-layout: fixed;">
     <ul class="d-table-row">
+
         <li class="d-table-cell pointer" onclick="topFunction()">
             <div class="mf-link nav-link text-center">
                 <span class="d-block mf-link-icon"><i class="bi bi-chevron-up font-20"></i></span>
                 <span class="mt-1 font-12 fw-bold mf-link-title">بالا</span>
             </div>
         </li>
+        
+        {% if req %}
+        	
+        {% endif %} 
         <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
             <div class="mf-link-icon position-relative d-table mx-auto">
                 <i class="bi bi-heart font-20"></i>
@@ -471,17 +441,12 @@
             </div>
             <span class="mt-1 font-12 fw-bold mf-link-title">علاقه مندی ها</span>
         </a></li>
+
         <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
             <span class="d-block mf-link-icon"><i class="bi bi-house font-20"></i></span>
             <span class="mt-1 font-12 fw-bold mf-link-title">صفحه اصلی</span>
         </a></li>
-        <li class="d-table-cell"><a href="" class="mf-link nav-link text-center">
-            <div class="position-relative mf-link-icon d-table mx-auto">
-                <span class="d-block mf-link-icon"><i class="bi bi-arrow-left-right font-20"></i></span>
-                <span class="position-absolute main-color-one-bg rounded-pill font-10 text-white badge" style="right:-60%;bottom:-5px;">0</span>
-            </div>
-            <span class="mt-1 font-12 fw-bold mf-link-title">مقایسه</span>
-        </a></li>
+
         <li class="d-table-cell"><a class="mf-link nav-link text-center" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
             <div class="position-relative mf-link-icon d-table mx-auto">
                 <span class="d-block mf-link-icon"><i class="bi bi-bag font-20"></i></span>
@@ -489,6 +454,7 @@
             </div>
             <span class="mt-1 font-12 fw-bold mf-link-title">سبد خرید</span>
         </a></li>
+
     </ul>
 </div>
 

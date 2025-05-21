@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='address')
     street = models.CharField(max_length=1500)
     city = models.CharField(max_length=150)
     state = models.CharField(max_length=150)

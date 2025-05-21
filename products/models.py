@@ -6,7 +6,7 @@ class Category(models.Model):
     category_title = models.CharField(max_length=150)
 
     def __str__(self):
-        return f'( Category : {self.category_title} )'
+        return f'Category : {self.category_title}'
 
 
 class Product(models.Model):
@@ -22,9 +22,28 @@ class Product(models.Model):
     inventory = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    discounted_percentage = models.IntegerField(default=0)
 
     def __str__(self):
-        return f'( Product : {self.book_title} )'
+        return f'Product : {self.book_title}'
+
+    def discounted_price(self):
+        if self.discounted_percentage:
+            discounted_price = self.book_price - ((self.book_price * self.discounted_percentage) / 100)
+        else:
+            return None
+
+        return int(discounted_price)
+
+
+
+    def discount_amount(self):
+        if self.discounted_percentage:
+            discount_amount = (self.book_price * self.discounted_percentage) / 100
+        else:
+            return None
+
+        return int(discount_amount)
 
 
 class ProductImage(models.Model):
@@ -32,7 +51,7 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to='products/')
 
     def __str__(self):
-        return f'( Product Title : {self.product.book_title} - Image Path : {self.image.url} )'
+        return f'Product Title : {self.product.book_title} - Image Path : {self.image.url}'
 
 
 class ProductComments(models.Model):
@@ -43,7 +62,7 @@ class ProductComments(models.Model):
     comment = models.TextField()
 
     def __str__(self):
-        return f'( User : {self.user.username} - Product : {self.product.book_title} - Rating : {self.rating} )'
+        return f'User : {self.user.username} - Product : {self.product.book_title} - Rating : {self.rating}'
 
     def filled_star(self):
         return range(0, self.rating)
@@ -51,21 +70,6 @@ class ProductComments(models.Model):
     def unfilled_star(self):
         unfilled = 5 - int(self.rating)
         return range(0, unfilled)
-
-
-class DiscountedProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='discounted_products')
-    discounted_precentage = models.IntegerField()
-    end_date = models.DateField()
-
-    def __str__(self):
-        return f'( Product Title : {self.product.book_title} - Discount : {self.discounted_precentage} )'
-
-    def discounted_price(self):
-
-        discounted_price = (self.product.book_price * self.discounted_precentage) / 100
-
-        return discounted_price
 
 
 class FavoriteProducts(models.Model):

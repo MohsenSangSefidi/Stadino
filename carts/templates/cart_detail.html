@@ -1,0 +1,114 @@
+{% extends '_layout-panel.html' %}
+{% load custom_filters %}
+
+{% block content %}
+
+    <div class="col-lg-9">
+            <div class="content-box bg-white shadow-box">
+                <div class="container-fluid">
+                    <div class="d-flex flex-wrap justify-content-sm-between align-items-baseline border-bottom">
+                        <h5 class="font-18 pb-3">
+                            <a class="me-3" href=""><i class="bi bi-chevron-right"></i></a>جزئیات سفارش
+                            <span class="ms-2 font-14 text-muted">(ارسال شده)</span>
+                        </h5>
+                        <div>
+                            <div class=" d-inline-block me-3">
+                                <span class="main-color-one-color fw-bold">شماره سفارش:</span> {{ cart.id }}
+                            </div>
+                            <div class="d-inline-block">
+                                <i class="bi bi-clock-fill me-2"></i>
+                                {{ cart.get_jalali_created_at }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-order mt-3">
+                        <div class="detail-order-item d-flex align-items-center">
+                            <h6><i class="bi bi-pin-map-fill me-1"></i> آدرس تحویل:</h6>
+                            <span class="ms-2 text-muted">{{ cart.address.street }}</span>
+                        </div>
+                        <div class="detail-order-item mt-3 d-flex align-items-center">
+                            <h6><i class="bi bi-person-fill me-1"></i>شهر :</h6>
+                            <span class="ms-2 text-muted">{{ cart.address.city }}</span>
+                        </div>
+                        <div class="detail-order-item mt-3 d-flex align-items-center">
+                            <h6><i class="bi bi-person-fill me-1"></i>استان :</h6>
+                            <span class="ms-2 text-muted">{{ cart.address.state }}</span>
+                        </div>
+                        <div class="detail-order-item mt-3 d-flex align-items-center">
+                            <h6><i class="bi bi-telephone-fill me-1"></i>شماره تماس:</h6>
+                            <span class="ms-2 text-muted">{{ cart.address.phone_number }}</span>
+                        </div>
+                    </div>
+
+                    <div class="order-tracking-code flex-wrap alert rounded-3 alert-warning d-flex align-items-center justify-content-between mt-3">
+                        <div>
+                            <div class="order-details__postal-traking-icon"></div>
+                            <span class="h6 d-inline-block">کد رهگیری:</span>
+                            <span class="font-16 ms-2">2047401361654545484454568111</span>
+                        </div>
+                        <a class="btn btn-warning" id="js-copy-to-clipboard-button">
+                            <svg fill="none" height="15" viewBox="0 0 12 15" width="12" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.228 0.5H4.3463C3.49194 0.5 2.79682 1.19511 2.79682 2.04948V2.23965H1.77201C0.917647 2.23965 0.222534 2.93476 0.222534 3.78912V12.9506C0.222534 13.805 0.917647 14.5001 1.77201 14.5001H7.65375C8.50811 14.5001 9.20316 13.805 9.20316 12.9506V12.7604H10.228C11.0823 12.7604 11.7774 12.0653 11.7774 11.2109V2.04948C11.7775 1.19511 11.0824 0.5 10.228 0.5ZM8.20373 12.9506C8.20373 13.2538 7.95699 13.5006 7.65381 13.5006H1.77201C1.46877 13.5006 1.22202 13.2538 1.22202 12.9506V3.78906C1.22202 3.48581 1.46877 3.23907 1.77201 3.23907H7.65375C7.95699 3.23907 8.20367 3.48581 8.20367 3.78906V12.9506H8.20373ZM10.778 11.2109C10.778 11.5142 10.5313 11.7609 10.228 11.7609H9.20323V3.78906C9.20323 2.93469 8.50811 2.23958 7.65381 2.23958H3.79631V2.04941C3.79631 1.74617 4.04305 1.49942 4.3463 1.49942H10.228C10.5313 1.49942 10.778 1.74617 10.778 2.04941V11.2109Z" fill="#423B2D"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <ul class="row gy-3 ps-0 mt-4">
+
+                        {% for cart_item in cart.cart_item.all %}
+                            <div class="col-sm-6">
+                                <div class="cart-canvas border rounded-3 p-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-4 ps-0">
+                                            <img alt="" src="{{ cart_item.product.book_image.url }}" width="200">
+                                        </div>
+                                        <div class="col-8">
+                                            <h3 class="text-overflow-2 font-16">{{ cart_item.product.book_title }}</h3>
+                                            <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
+                                                <ins class="font-25 ms-0">{{ cart_item.product.book_price|intcomma }}
+                                                    <span>تومان</span></ins>
+                                            </div>
+                                            <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
+                                                <div class="cart-canvas-count">
+                                                    <span>تعداد:</span>
+                                                    <span class="fw-bold">{{ cart_item.quantity }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+            <div class="order-details__bill">
+                <div class="order-details__bill-title">
+                    <span class="bold-text">جزئیات قیمت</span>
+                    <div class="order-details__bill-icon order-details__bill-icon--colored"></div>
+                </div>
+                <div class="order-details__bill-details">
+                    <div class="order-details__bill-row order-details__bill-row--top">
+                        <div class="bill-row__col">
+                            <label>جمع مبلغ کالاها:</label>
+                            <div class="cart__item-price">{{ cart.total_amount_with_out_discount|intcomma }} <span>تومان</span></div>
+                        </div>
+                        <div class="bill-row__col">
+                            <label>تخفیف خرید:</label>
+                            <div class="cart__item-price">{{ cart.total_discounted_amount|intcomma }} <span>تومان</span></div>
+                        </div>
+                    </div>
+                    <div class="order-details__bill-row order-details__bill-row--top">
+                        <div class="bill-row__col">
+                            <label class="me-1"> مبلغ پرداخت شده: </label>
+                            <div class="cart__item-price main-color-green-color">{{ cart.total_amount|intcomma }} <span>تومان</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+{% endblock %}

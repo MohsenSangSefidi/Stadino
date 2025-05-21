@@ -81,8 +81,13 @@
                             </div>
                         </div>
                         <div class="col-12 text-danger font-17">
-                            {% if error != 'None' and error %}
+                            {% if error %}
                             	<p class="text-danger">{{ error }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-12 text-success font-17">
+                            {% if success %}
+                            	<p class="text-success">{{ success }}</p>
                             {% endif %}
                         </div>
                         <div class="col-12">

@@ -120,15 +120,24 @@
                                     </div>
                                     <div class="col-lg-6 w-100-in-400">
                                         <div class="d-flex justify-content-end flex-wrap">
-                                            <button class="btn me-3 btn-add-to-basket border-0 main-color-one-bg"><i
-                                                    class="bi bi-basket text-white font-20 me-1"></i>خرید کالا
-                                            </button>
+                                            <button onclick="add_cart_items('{{ object.book_slug }}')" class="btn me-3 btn-add-to-basket border-0 main-color-one-bg"><i class="bi bi-basket text-white font-20 me-1"></i>خرید کالا</button>
                                             <div class="product-counter-input">
                                                 <div class="counter">
-                                                    <input type="text" name="count" class="counter" value="1">
+                                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                        <span class="input-group-btn input-group-prepend">
+                                                            <button onclick="change_quantity('decrease', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-down" type="button">-</button>
+                                                        </span>
+                                                        <input type="text" id="quantity_input" name="count" class="counter form-counter" value="1">
+                                                        <span class="input-group-btn input-group-append">
+                                                            <button onclick="change_quantity('increase', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-up" type="button">+</button>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="d-flex mt-3 justify-content-start flex-wrap">
+                                        <p id="massage" class="text-success font-18 hidden"> محصول با موفقیت به سبد خرید اضافه شد. </p>
                                     </div>
                                 </div>
                             </div>

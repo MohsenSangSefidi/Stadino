@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, reverse
 from django.core.mail import send_mail, BadHeaderError
+from django.utils.decorators import method_decorator
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout
 from django.http import HttpResponse
+from urllib.parse import urlencode
 from django.conf import settings
-from django.utils.decorators import method_decorator
 from django.views import View
 
 from .forms import (
@@ -245,30 +247,44 @@ class ChangePasswordView(View):
 @method_decorator(login_required, name='dispatch')
 class UserPanelView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
-        return render(request, 'user_panel.html', {})
+        user_carts = request.user.carts.filter(is_paid=True).only('cart_status', 'pay_date', 'id')[:5]
+
+        return render(
+            request, 'user_panel.html', {
+                'user_carts': user_carts,
+            }
+        )
 
 
 @method_decorator(login_required, name='dispatch')
 class ChangeUserInfoView(View):
-    def get(self, request, error=None, *args, **kwargs) -> HttpResponse:
+    def get(self, request, *args, **kwargs) -> HttpResponse:
         change_info_form = ChangeUserInfoForm(instance=request.user)
         change_pass_form = ChangePasswordPanelForm(instance=request.user)
+
+        error = request.GET.get('error')
+        success = request.GET.get('success')
 
         return render(request, 'chang_info.html', {
             'change_info_form': change_info_form,
             'change_pass_form': change_pass_form,
-            'error': error
+            'error': error,
+            'success': success
         })
 
-    def post(self, request, error=None, *args, **kwargs) -> HttpResponse:
+    def post(self, request, *args, **kwargs) -> HttpResponse:
         change_info_form = ChangeUserInfoForm(request.POST, instance=request.user)
         change_pass_form = ChangePasswordPanelForm(request.POST, instance=request.user)
+
+        error = request.GET.get('error')
+        success = request.GET.get('success')
 
         if not change_info_form.is_valid():
             return render(request, 'chang_info.html', {
                 'change_info_form': change_info_form,
                 'change_pass_form': change_pass_form,
-                'error': error
+                'error': error,
+                'success': success
             })
 
         change_info_form.save()
@@ -276,20 +292,35 @@ class ChangeUserInfoView(View):
         return render(request, 'chang_info.html', {
             'change_info_form': change_info_form,
             'change_pass_form': change_pass_form,
-            'error': error
+            'error': error,
+            'success': success
         })
 
 
 @method_decorator(login_required, name='dispatch')
 class UserOrderView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
-        return render(request, 'last_order.html', {})
+        user_carts = request.user.carts.filter(is_paid=True).only('cart_status', 'pay_date', 'id')[:5]
+
+        paginator = Paginator(user_carts, 5)
+
+        page_number = request.GET.get('page')
+
+        if not page_number:
+            page_number = 1
+
+        page_obj = paginator.page(page_number)
+
+        return render(
+            request, 'last_order.html', {
+                'page_obj': page_obj,
+            }
+        )
 
 
 @method_decorator(login_required, name='dispatch')
 class AddressView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
-
         address = Address.objects.filter(user=request.user)
 
         return render(
@@ -301,8 +332,7 @@ class AddressView(View):
 
 @method_decorator(login_required, name='dispatch')
 class CreateAddressView(View):
-    def get(self, request, object_id=None, *args, **kwargs) -> HttpResponse:
-
+    def get(self, request, *args, **kwargs) -> HttpResponse:
         form = AddressCreateForm()
 
         return render(
@@ -311,8 +341,7 @@ class CreateAddressView(View):
             }
         )
 
-    def post(self, request, object_id=None, *args, **kwargs) -> HttpResponse:
-
+    def post(self, request, *args, **kwargs) -> HttpResponse:
         form = AddressCreateForm(request.POST)
 
         if not form.is_valid():
@@ -332,7 +361,8 @@ class CreateAddressView(View):
 
         data.save()
 
-        return redirect(reverse('address'))
+        previous_page = request.META.get('HTTP_REFERER', reverse('index'))
+        return redirect(previous_page)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -380,24 +410,30 @@ def change_password_panel(request, *args, **kwargs) -> HttpResponse:
         password = change_pass_form.cleaned_data.get('password')
         re_password = change_pass_form.cleaned_data.get('re_password')
 
-        user = User.objects.get(email=request.user.email).only('password')
+        user = User.objects.get(email=request.user.email)
+
+        url = reverse('change_info')
+        params = {}
 
         if not user.check_password(old_password):
-            return redirect(reverse('change_info', kwargs={'error': 'رمز عبور قدیمی درست وارد نشده است.'}))
+            params['error'] = 'رمز عبور قدیمی درست وارد نشده است'
+
+            return redirect(f'{url}?{urlencode(params)}')
 
         if password != re_password:
-            return redirect(reverse('change_info', kwargs={'error': 'رمز عبور و تکرار آن مطابقت ندارد.'}))
+            params['error'] = 'رمز عبور و تکرار آن مطابقت ندارد'
+            return redirect(f'{url}?{urlencode(params)}')
 
         user.set_password(password)
         user.save()
         login(request, user)
 
-        return redirect(reverse('change_info', kwargs={'error': 'رمز عبور تغییر یافت.'}))
+        params['success'] = 'رمز عبور تغییر یافت'
+        return redirect(f'{url}?{urlencode(params)}')
 
 
 @login_required()
 def logout_view(request):
-
     logout(request)
 
     return redirect(reverse('login'))
