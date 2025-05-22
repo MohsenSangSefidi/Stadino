@@ -9,25 +9,28 @@
                 </h3>
             </div>
         </div>
-        {% if favorites.count %}
+        {% if paginated_products.object_list.count %}
             <div class="content-box slider-parent rounded-4">
                 <div class="container-fluid">
                     <ul class="row gy-3 ps-0">
-                        {% for favorite in favorites %}
+                        {% for favorite in paginated_products.object_list %}
                             <div class="col-sm-6">
                                 <div class="cart-canvas border rounded-3 p-3">
                                     <div class="row align-items-center">
                                         <div class="col-4 ps-0">
-                                            <img src="{{ favorite.product.book_image.url }}" width="200" height="200" alt="">
+                                            <img src="{{ favorite.product.book_image.url }}" width="200" height="200"
+                                                 alt="">
                                         </div>
                                         <div class="col-8">
                                             <h3 class="text-overflow-2 font-16">{{ favorite.product.book_title }}</h3>
                                             <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                                <ins class="font-25 ms-0">{{ favorite.product.book_price }} <span>تومان</span></ins>
+                                                <ins class="font-25 ms-0">{{ favorite.product.book_price }}
+                                                    <span>تومان</span></ins>
                                             </div>
                                             <div class="cart-canvas-foot d-flex align-items-center justify-content-between">
                                                 <div class="cart-canvas-delete">
-                                                    <a href="{% url 'remove-favorite' favorite.product.book_slug %}" class="btn"><i class="bi bi-x"></i></a>
+                                                    <a href="{% url 'remove-favorite' favorite.product.book_slug %}"
+                                                       class="btn"><i class="bi bi-x"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -39,19 +42,19 @@
                     <div class="my-paginate mt-5">
                         <nav aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link rounded-3" href="#"><i class="bi bi-chevron-right"></i></a>
-                                </li>
-                                <li class="page-item active"><a class="page-link rounded-3" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">...</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">14</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">15</a></li>
-                                <li class="page-item"><a class="page-link rounded-3" href="#">16</a></li>
-                                <li class="page-item">
-                                    <a class="page-link rounded-3" href="#"><i class="bi bi-chevron-left"></i></a>
-                                </li>
+                                {% if paginated_products.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link rounded-3" href="?page={{ paginated_products.previous_page_number }}"><i class="bi bi-chevron-right"></i></a>
+                                    </li>
+                                {% endif %}
+
+                                <li class="page-item active"><a class="page-link rounded-3">{{ paginated_products.number }}</a></li>
+
+                                {% if paginated_products.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link rounded-3" href="?page={{ paginated_products.next_page_number }}"><i class="bi bi-chevron-left"></i></a>
+                                    </li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>

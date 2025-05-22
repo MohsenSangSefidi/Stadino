@@ -16,6 +16,7 @@ class Address(models.Model):
     city = models.CharField(max_length=150)
     state = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=150)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f'( User : {self.user.username} - Phone Number: {self.phone_number} )'

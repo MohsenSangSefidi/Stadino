@@ -45,7 +45,7 @@ class CheckoutView(View):
     def get(self, request, *args, **kwargs):
         cart = create_cart(request)
 
-        address = request.user.address.all()
+        address = request.user.address.filter(is_active=True)
 
         return render(
             request, 'checkout.html', {
@@ -78,6 +78,15 @@ class SuccessPaymentView(View):
         cart.pay_date = timezone.now()
         cart.is_paid = True
         cart.save()
+
+        for cart_item in cart.cart_item.all():
+            product = cart_item.product
+
+            new_inventory = (product.inventory - cart_item.quantity)
+
+            product.inventory = new_inventory if new_inventory > 0 else 0
+
+            product.save()
 
         return render(request, 'success_payment.html')
 

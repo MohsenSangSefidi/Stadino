@@ -300,16 +300,13 @@ class ChangeUserInfoView(View):
 @method_decorator(login_required, name='dispatch')
 class UserOrderView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
-        user_carts = request.user.carts.filter(is_paid=True).only('cart_status', 'pay_date', 'id')[:5]
+        user_carts = request.user.carts.filter(is_paid=True).only('cart_status', 'pay_date', 'id')
 
         paginator = Paginator(user_carts, 5)
 
         page_number = request.GET.get('page')
 
-        if not page_number:
-            page_number = 1
-
-        page_obj = paginator.page(page_number)
+        page_obj = paginator.page(page_number if page_number else 1)
 
         return render(
             request, 'last_order.html', {
@@ -321,7 +318,7 @@ class UserOrderView(View):
 @method_decorator(login_required, name='dispatch')
 class AddressView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
-        address = Address.objects.filter(user=request.user)
+        address = Address.objects.filter(user=request.user, is_active=True)
 
         return render(
             request, 'address.html', {
@@ -382,20 +379,31 @@ class FavoriteProductView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
         favorites = FavoriteProducts.objects.filter(user=request.user)
 
+        paginator = Paginator(favorites, 10)
+
+        page = request.GET.get('page')
+        paginated_products = paginator.page(page if page else 1)
+
         return render(
             request, 'favorites.html', {
-                'favorites': favorites
+                'paginated_products': paginated_products
             }
         )
 
 
 @login_required()
 def delete_address(request, object_id, *args, **kwargs) -> HttpResponse:
-    address = Address.objects.filter(id=object_id).first()
+    try:
+        address = Address.objects.get(id=object_id)
+    except Address.DoesNotExist:
+        previous_page = request.META.get('HTTP_REFERER', reverse('index'))
+        return redirect(previous_page)
 
-    address.delete()
+    address.is_active = False
+    address.save()
 
-    return redirect(reverse('address'))
+    previous_page = request.META.get('HTTP_REFERER', reverse('index'))
+    return redirect(previous_page)
 
 
 @login_required()
@@ -410,7 +418,11 @@ def change_password_panel(request, *args, **kwargs) -> HttpResponse:
         password = change_pass_form.cleaned_data.get('password')
         re_password = change_pass_form.cleaned_data.get('re_password')
 
-        user = User.objects.get(email=request.user.email)
+        try:
+            user = User.objects.get(email=request.user.email)
+        except User.DoesNotExist:
+            previous_page = request.META.get('HTTP_REFERER', reverse('index'))
+            return redirect(previous_page)
 
         url = reverse('change_info')
         params = {}

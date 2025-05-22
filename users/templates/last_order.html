@@ -48,7 +48,7 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
                             {% if page_obj.has_previous %}
-                            	<li class="page-item disabled">
+                            	<li class="page-item">
                                     <a class="page-link rounded-3" href="?page={{ page_obj.previous_page_number }}"><i class="bi bi-chevron-right"></i></a>
                                 </li>
                             {% endif %}

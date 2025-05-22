@@ -23,6 +23,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     discounted_percentage = models.IntegerField(default=0)
+    discounted_expire_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return f'Product : {self.book_title}'
@@ -45,6 +46,30 @@ class Product(models.Model):
 
         return int(discount_amount)
 
+    def discount_date(self):
+        if self.discounted_expire_date:
+            return f'{self.discounted_expire_date.year}-{self.discounted_expire_date.month}-{self.discounted_expire_date.day}'
+
+        return None
+
+    def discount_time(self):
+        if self.discounted_expire_date:
+            return f'{self.discounted_expire_date.hour}:{self.discounted_expire_date.minute}'
+
+        return None
+
+    def average_rating(self):
+        if self.comments.count() != 0:
+            rating = []
+
+            for rate in self.comments.all():
+                rating.append(rate.rating)
+
+            average_rating = sum(rating) / len(rating)
+
+            return average_rating
+
+        return 0
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
