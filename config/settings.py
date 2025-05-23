@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-f@4jsw$i0qkcq(6nq^t$7v&fn%0nquoir3_h8@e&rd-3z7+y#$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['config-h2wa.onrender.com']
 
 # Application definition
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
     'django_render_partial',
     'jalali_core',
@@ -139,18 +140,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
-MEDIA_URL = 'media/'
-
-MEDIA_ROOT = BASE_DIR / 'media'
-
-if not DEBUG:
+if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -180,3 +175,20 @@ CORS_ALLOW_HEADERS = (
 )
 
 LOGIN_REDIRECT_URL = '/users/login'
+
+MEDIA_URL = '/media/'
+
+STORAGES = {
+    'default': {
+        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+    }
+}
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
+}

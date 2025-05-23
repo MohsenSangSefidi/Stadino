@@ -20,9 +20,12 @@ class IndexView(View):
 
         categories = Category.objects.all()
 
-        favorite_products = [
-            item.product.book_title for item in request.user.favorite_products.only('product__book_title').all()
-        ]
+        favorite_products = []
+
+        if request.user.is_authenticated:
+            favorite_products = [
+                item.product.book_title for item in request.user.favorite_products.only('product__book_title').all()
+            ]
 
         products_in_categories = []
 
