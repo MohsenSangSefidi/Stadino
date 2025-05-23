@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-
+from jalali_core import GregorianToJalali
 
 class Category(models.Model):
     category_title = models.CharField(max_length=150)
@@ -35,8 +35,6 @@ class Product(models.Model):
             return None
 
         return int(discounted_price)
-
-
 
     def discount_amount(self):
         if self.discounted_percentage:
@@ -95,6 +93,11 @@ class ProductComments(models.Model):
     def unfilled_star(self):
         unfilled = 5 - int(self.rating)
         return range(0, unfilled)
+
+    def jalali_created_at(self):
+        date = GregorianToJalali(self.created_at.year, self.created_at.month, self.created_at.day).getJalaliList()
+
+        return f'{date[2]} / {date[1]} / {date[0]}'
 
 
 class FavoriteProducts(models.Model):
