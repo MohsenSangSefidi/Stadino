@@ -12,7 +12,7 @@ class Category(models.Model):
 class Product(models.Model):
     book_title = models.CharField(max_length=150)
     book_author = models.CharField(max_length=150)
-    book_translator = models.CharField(max_length=150)
+    book_translator = models.CharField(max_length=150, null=True, blank=True)
     book_page_count = models.IntegerField()
     book_price = models.IntegerField()
     book_description = models.TextField()
