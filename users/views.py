@@ -184,7 +184,7 @@ class ForgetPasswordView(View):
             )
 
         # Set information to send it via email
-        link = reverse('change_password', kwargs={'token': user.token})
+        link = f'https://config-h2wa.onrender.com/users/change-password/{user.token}'
         html = render_to_string('email.html', {'link': link})
 
         # Trying to send email
