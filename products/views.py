@@ -47,7 +47,7 @@ class ProductView(View):
 
         # Trying to get product object ( If didn't exist, returns previous-page )
         try:
-            product_object = Product.objects.get(book_slug=slug).only('id')
+            product_object = Product.objects.get(book_slug=slug)
 
         except Product.DoesNotExist:
             # Return previous-page
