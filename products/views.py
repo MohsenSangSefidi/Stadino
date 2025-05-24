@@ -22,7 +22,7 @@ class ProductView(View):
         try:
             FavoriteProducts.objects.get(product=product_object, user=request.user)
             favorite_products = True
-        except FavoriteProducts.DoesNotExist:
+        except:
             favorite_products = False
 
         # Get all products comments

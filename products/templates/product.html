@@ -98,14 +98,16 @@
                             </div>
 
                             <div class="icon-product-box my-3">
-                                {% if favorite_products %}
-                                	<div class="icon-product-box-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="حذف از علاقه مندی">
-                                        <a href="{% url 'remove-favorite' object.book_slug %}"><i class="bi bi-heart-fill" style="color: red!important;"></i></a>
-                                    </div>
-                                {% else %}
-                                    <div class="icon-product-box-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="افزودن به علاقه مندی">
-                                        <a href="{% url 'add-favorite' object.book_slug %}"><i class="bi bi-heart"></i></a>
-                                    </div>
+                                {% if request.user.is_authenticated %}
+                                    {% if favorite_products %}
+                                        <div class="icon-product-box-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="حذف از علاقه مندی">
+                                            <a href="{% url 'remove-favorite' object.book_slug %}"><i class="bi bi-heart-fill" style="color: red!important;"></i></a>
+                                        </div>
+                                    {% else %}
+                                        <div class="icon-product-box-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="افزودن به علاقه مندی">
+                                            <a href="{% url 'add-favorite' object.book_slug %}"><i class="bi bi-heart"></i></a>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 
@@ -114,39 +116,47 @@
                             </div>
 
                             <div class="product-meta-action">
-                                <div class="row align-items-center gy-3">
-                                    <div class="col-lg-6 w-100-in-400">
-                                        {% if object.discounted_percentage %}
-                                        	<h6 class="fs-3 text-sm-start text-center new-price text-dark-emphasis text-start">
-                                            {{ object.discounted_price|intcomma }} تومان</h6>
-                                        {% else %}
-                                            <h6 class="fs-3 text-sm-start text-center new-price text-dark-emphasis text-start">
-                                            {{ object.book_price|intcomma }} تومان</h6>
-                                        {% endif %}
+                                {% if request.user.is_authenticated %}
+                                    <div class="row align-items-center gy-3">
+                                        <div class="col-lg-6 w-100-in-400">
+                                            {% if object.discounted_percentage %}
+                                                <h6 class="fs-3 text-sm-start text-center new-price text-dark-emphasis text-start">
+                                                {{ object.discounted_price|intcomma }} تومان</h6>
+                                            {% else %}
+                                                <h6 class="fs-3 text-sm-start text-center new-price text-dark-emphasis text-start">
+                                                {{ object.book_price|intcomma }} تومان</h6>
+                                            {% endif %}
 
-                                    </div>
-                                    <div class="col-lg-6 w-100-in-400">
-                                        <div class="d-flex justify-content-end flex-wrap">
-                                            <button onclick="add_cart_items('{{ object.book_slug }}')" class="btn me-3 btn-add-to-basket border-0 main-color-one-bg"><i class="bi bi-basket text-white font-20 me-1"></i>خرید کالا</button>
-                                            <div class="product-counter-input">
-                                                <div class="counter">
-                                                    <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
-                                                        <span class="input-group-btn input-group-prepend">
-                                                            <button onclick="change_quantity('decrease', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-down" type="button">-</button>
-                                                        </span>
-                                                        <input type="text" id="quantity_input" name="count" class="counter form-counter" value="1">
-                                                        <span class="input-group-btn input-group-append">
-                                                            <button onclick="change_quantity('increase', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-up" type="button">+</button>
-                                                        </span>
+                                        </div>
+                                        <div class="col-lg-6 w-100-in-400">
+                                            <div class="d-flex justify-content-end flex-wrap">
+                                                <button onclick="add_cart_items('{{ object.book_slug }}')" class="btn me-3 btn-add-to-basket border-0 main-color-one-bg"><i class="bi bi-basket text-white font-20 me-1"></i>خرید کالا</button>
+                                                <div class="product-counter-input">
+                                                    <div class="counter">
+                                                        <div class="input-group bootstrap-touchspin bootstrap-touchspin-injected">
+                                                            <span class="input-group-btn input-group-prepend">
+                                                                <button onclick="change_quantity('decrease', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-down" type="button">-</button>
+                                                            </span>
+                                                            <input type="text" id="quantity_input" name="count" class="counter form-counter" value="1">
+                                                            <span class="input-group-btn input-group-append">
+                                                                <button onclick="change_quantity('increase', {{ object.inventory }})" class="btn-counter waves-effect waves-light bootstrap-touchspin-up" type="button">+</button>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="d-flex mt-3 justify-content-start flex-wrap">
+                                            <p id="massage" class="text-success font-18 hidden"> محصول با موفقیت به سبد خرید اضافه شد. </p>
+                                        </div>
                                     </div>
-                                    <div class="d-flex mt-3 justify-content-start flex-wrap">
-                                        <p id="massage" class="text-success font-18 hidden"> محصول با موفقیت به سبد خرید اضافه شد. </p>
+                                {% else %}
+                                    <div class="row align-items-center gy-3">
+                                        <div class="col-lg-6 w-100-in-400">
+                                            <h6 class="fs-3 text-sm-start text-center new-price text-dark-emphasis text-start">برای اضافه کردن محصول به سبد خرید باید وارد حساب خود شوید.</h6>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
