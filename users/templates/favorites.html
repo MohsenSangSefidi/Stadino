@@ -1,4 +1,5 @@
 {% extends '_layout-panel.html' %}
+{% load custom_filters %}
 
 {% block content %}
     <div class="col-lg-9">
@@ -24,7 +25,7 @@
                                         <div class="col-8">
                                             <h3 class="text-overflow-2 font-16">{{ favorite.product.book_title }}</h3>
                                             <div class="product-box-suggest-price my-2  d-flex align-items-center justify-content-between">
-                                                <ins class="font-25 ms-0">{{ favorite.product.book_price }}
+                                                <ins class="font-25 ms-0">{{ favorite.product.book_price|intcomma }}
                                                     <span>تومان</span></ins>
                                             </div>
                                             <div class="cart-canvas-foot d-flex align-items-center justify-content-between">

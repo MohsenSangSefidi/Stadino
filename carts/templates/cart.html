@@ -1,4 +1,5 @@
 {% extends '_layout.html' %}
+{% load custom_filters %}
 
 {% block content %}
     {% if cart_items.count %}
@@ -95,9 +96,9 @@
                                                         <td class="text-center align-middle">
 
                                                             {% if cart_item.product.discounted_percentage %}
-                                                                <h5 class="title-font main-color-one-color h2 mb-0">{{ cart_item.product.discounted_price }}<span class="mb-0 text-muted-two font-14 fw-lighter">تومان</span></h5>
+                                                                <h5 class="title-font main-color-one-color h2 mb-0">{{ cart_item.product.discounted_price|intcomma }}<span class="mb-0 text-muted-two font-14 fw-lighter">تومان</span></h5>
                                                             {% else %}
-                                                                <h5 class="title-font main-color-one-color h2 mb-0">{{ cart_item.product.book_price }}<span class="mb-0 text-muted-two font-14 fw-lighter">تومان</span></h5>
+                                                                <h5 class="title-font main-color-one-color h2 mb-0">{{ cart_item.product.book_price|intcomma }}<span class="mb-0 text-muted-two font-14 fw-lighter">تومان</span></h5>
                                                             {% endif %}
 
                                                         </td>

@@ -391,9 +391,7 @@ class CreateAddressView(View):
         # Save data
         data.save()
 
-        # Return previous-page
-        previous_page = request.META.get('HTTP_REFERER', reverse('index'))
-        return redirect(previous_page)
+        return redirect(reverse('address'))
 
 
 @method_decorator(login_required, name='dispatch')

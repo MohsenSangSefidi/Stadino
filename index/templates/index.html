@@ -337,10 +337,10 @@
                                                 </div>
                                                 <div class="price">
                                                     {% if product.discounted_percentage %}
-                                                    	<p class="old-price">{{ product.book_price }} <span class="danger-label rounded-3 ms-2">{{ product.discounted_percentage }}%</span></p>
-                                                        <p class="new-price">{{ product.discount_amount }} <span class="font-12">تومان</span></p>
+                                                    	<p class="old-price">{{ product.book_price|intcomma }} <span class="danger-label rounded-3 ms-2">{{ product.discounted_percentage }}%</span></p>
+                                                        <p class="new-price">{{ product.discount_amount|intcomma }} <span class="font-12">تومان</span></p>
                                                     {% else %}
-                                                        <p class="new-price">{{ product.book_price }} <span class="font-12">تومان</span></p>
+                                                        <p class="new-price">{{ product.book_price|intcomma }} <span class="font-12">تومان</span></p>
                                                     {% endif %}
 
                                                 </div>

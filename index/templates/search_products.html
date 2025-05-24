@@ -353,7 +353,7 @@
                                             <ul class="pagination justify-content-center">
                                                 {% if paginated_products.has_previous %}
                                                     <li class="page-item">
-                                                        <a class="page-link rounded-3" href="?page={{ paginated_products.previous_page_number }}"><i class="bi bi-chevron-right"></i></a>
+                                                        <a class="page-link rounded-3" href="?page={{ paginated_products.previous_page_number }}&{{ url_prams }}&order_by={{ order_by }}"><i class="bi bi-chevron-right"></i></a>
                                                     </li>
                                                 {% endif %}
 
@@ -361,7 +361,7 @@
 
                                                 {% if paginated_products.has_next %}
                                                     <li class="page-item">
-                                                        <a class="page-link rounded-3" href="?page={{ paginated_products.next_page_number }}"><i class="bi bi-chevron-left"></i></a>
+                                                        <a class="page-link rounded-3" href="?page={{ paginated_products.next_page_number }}&{{ url_prams }}&order_by={{ order_by }}"><i class="bi bi-chevron-left"></i></a>
                                                     </li>
                                                 {% endif %}
                                             </ul>
