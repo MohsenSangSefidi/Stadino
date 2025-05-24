@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, InvalidPage
 from urllib.parse import urlencode
 from django.utils import timezone
 from django.views import View
@@ -72,6 +72,9 @@ class SearchProductView(View):
         # This dict for saving Query-Params for requesting to another page in template
         params = {}
 
+        # This dict for changing page number in template
+        params_change_page = {}
+
         # This dict for showing what type filter applying on Query
         filter_status = {
 
@@ -91,6 +94,10 @@ class SearchProductView(View):
             params['min_price'] = min_price
             params['max_price'] = max_price
 
+            # Add variables to Query-Params
+            params_change_page['min_price'] = min_price
+            params_change_page['max_price'] = max_price
+
             # Add variables filter-status dict
             filter_status['price'] = 'price'
 
@@ -108,6 +115,9 @@ class SearchProductView(View):
 
                 # Add variables to Query-Params
                 params['category_title'] = category_title
+
+                # Add variables to Query-Params
+                params_change_page['category_title'] = category_title
 
                 # Add variables filter-status dict
                 filter_status['category'] = 'category'
@@ -128,6 +138,9 @@ class SearchProductView(View):
             # Sorting products
             products = products.order_by(order_by)
 
+            # Add variables to Query-Params
+            params_change_page['order_by'] = order_by
+
             # Add variables filter-status dict
             filter_status['order_by'] = 'order_by'
 
@@ -137,8 +150,16 @@ class SearchProductView(View):
         # Get Information from Query-Params ( Page number )
         page = request.GET.get('page')
 
-        # Paginate by page number ( If page number didn't send, returns page 1 )
-        paginated_products = paginator.page(page if page else 1)
+        if page:
+            params['page'] = page
+
+        try:
+            # Paginate by page number ( If page number didn't send, returns page 1 )
+            paginated_products = paginator.page(page if page else 1)
+        except InvalidPage:
+            # Paginate by page number ( If page didn't exist, returns page 1 )
+            paginated_products = paginator.page(1)
+            params['page'] = 1
 
         # Get all categories for showing on filter list
         categories = Category.objects.all()
@@ -162,6 +183,7 @@ class SearchProductView(View):
 
                 # For request another page
                 'url_prams': urlencode(params),
+                'params_change_page': params_change_page,
                 'searched_content': searched_content,
 
                 # For show categories in filter list
@@ -185,6 +207,7 @@ class SearchProductView(View):
         # Get Information from Query-Params ( Filters that have already been applied )
         category_title = request.GET.get('category_title')
         order_by = request.GET.get('order_by')
+        page = request.GET.get('page')
 
         # Set url and Query-Params for redirect
         url = reverse('search', kwargs={'searched_content': searched_content})
@@ -197,6 +220,11 @@ class SearchProductView(View):
         if order_by:
             # Add variable to Query-Params
             params['order_by'] = order_by
+
+        # Check if variable are valid
+        if page:
+            # Add variable to Query-Params
+            params['page'] = page
 
         # Check if variable are valid
         if category_title:
@@ -309,6 +337,7 @@ def filter_by_category(request, searched_content):
         min_price = request.GET.get('min_price')
         max_price = request.GET.get('max_price')
         order_by = request.GET.get('order_by')
+        page = request.GET.get('page')
 
         # Set url and Query-Params for redirect
         url = reverse('search', kwargs={'searched_content': searched_content})
@@ -320,6 +349,11 @@ def filter_by_category(request, searched_content):
         if order_by and order_by != 'None':
             # Add variable to Query-Params
             params['order_by'] = order_by
+
+        # Check if variable are valid
+        if page:
+            # Add variable to Query-Params
+            params['page'] = page
 
         # Check if variables valid
         if min_price and max_price:
@@ -336,6 +370,7 @@ def remove_filter(request, searched_content, filter_name):
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
     order_by = request.GET.get('order_by')
+    page = request.GET.get('page')
 
     # Set url and Query-Params for redirect
     url = reverse('search', kwargs={'searched_content': searched_content})
@@ -356,6 +391,11 @@ def remove_filter(request, searched_content, filter_name):
     if order_by and order_by != 'None':
         # Add variable to Query-Params
         params['order_by'] = order_by
+
+    # Check if variable are valid
+    if page:
+        # Add variable to Query-Params
+        params['page'] = page
 
     # Compare the submitted filter name with the filters applied to the products to remove filters
     match filter_name:
