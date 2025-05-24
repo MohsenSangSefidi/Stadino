@@ -27,17 +27,20 @@ class Cart(models.Model):
         return f'Username : {self.user.username} - Cart : {self.id}'
 
     def get_jalali_pay_date(self):
+        # This function for returning Jalali-Date for showing in template
         if self.pay_date is not None:
             date = GregorianToJalali(self.pay_date.year, self.pay_date.month, self.pay_date.day).getJalaliList()
 
             return f'{date[2]} / {date[1]} / {date[0]}'
 
     def get_jalali_created_at(self):
+        # This function for returning Jalali-Date for showing in template
         date = GregorianToJalali(self.created_at.year, self.created_at.month, self.created_at.day).getJalaliList()
 
         return f'{date[2]} / {date[1]} / {date[0]}'
 
     def total_amount_with_out_discount(self):
+        # This function calculate total price without applying the discount
         total = 0
 
         for item in self.cart_item.all():
@@ -46,6 +49,8 @@ class Cart(models.Model):
         return total
 
     def total_discounted_amount(self):
+        # This function calculate total discounted amount
+
         total = 0
 
         for item in self.cart_item.all():
@@ -55,6 +60,7 @@ class Cart(models.Model):
         return total
 
     def total_amount(self):
+        # This function calculate price after applying the discount
 
         total = self.total_amount_with_out_discount() - self.total_discounted_amount()
 

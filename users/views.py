@@ -32,7 +32,7 @@ class LoginView(View):
     def post(self, request, *args, **kwargs) -> HttpResponse:
         form = LoginForm(request.POST)
 
-        # Validate Form
+        # Validate form
         if not form.is_valid():
             return render(
                 request, 'register.html', {
@@ -40,9 +40,13 @@ class LoginView(View):
                 }
             )
 
-        user = User.objects.filter(email=form.cleaned_data.get('email').lower(), is_active=True).first()
+        # Trying to get user object ( If didn't exist, sets user to none )
+        try:
+            user = User.objects.get(email=form.cleaned_data.get('email').lower(), is_active=True)
+        except User.DoesNotExist:
+            user = None
 
-        # Validate User Information
+        # Validate user information
         if user is None:
             form.add_error('email', 'کاربری با این ایمیل وجور ندارد.')
             return render(request, 'login.html', {
@@ -74,7 +78,7 @@ class RegisterView(View):
     def post(self, request, *args, **kwargs) -> HttpResponse:
         form = RegistrationForm(request.POST)
 
-        # Validate Form
+        # Validate form
         if not form.is_valid():
             return render(
                 request, 'register.html', {
@@ -82,7 +86,7 @@ class RegisterView(View):
                 }
             )
 
-        # Validate Password
+        # Validate password
         if form.cleaned_data.get('password') != form.cleaned_data.get('re_password'):
             form.add_error('re_password', 'رمز عبور و تکرار آن متفاوت است.')
             return render(
@@ -91,8 +95,11 @@ class RegisterView(View):
                 }
             )
 
-        # Check Username
-        user = User.objects.filter(username=form.cleaned_data.get('username')).first()
+        # Trying to get user object ( If didn't exist, sets user to none )
+        try:
+            user = User.objects.get(username=form.cleaned_data.get('username'))
+        except User.DoesNotExist:
+            user = None
 
         if user is not None:
             form.add_error('username', 'این نام کاربری از قبل وجود دارد')
@@ -103,8 +110,12 @@ class RegisterView(View):
             )
 
         # Check Email
-        user = User.objects.filter(email=form.cleaned_data.get('email').lower()).first()
+        try:
+            user = User.objects.get(email=form.cleaned_data.get('email').lower())
+        except User.DoesNotExist:
+            user = None
 
+        # Validate user information
         if user is not None:
             form.add_error('email', 'این ایمیل از قبل وجود دارد')
             return render(
@@ -155,7 +166,12 @@ class ForgetPasswordView(View):
                 }
             )
 
-        user = User.objects.filter(email=form.cleaned_data.get('email').lower()).first()
+        # Trying to get user object ( If didn't exist, sets user to none )
+        try:
+            user = User.objects.get(email=form.cleaned_data.get('email').lower())
+
+        except User.DoesNotExist:
+            user = None
 
         # Validate User email
         if user is None:
@@ -167,9 +183,11 @@ class ForgetPasswordView(View):
                 }
             )
 
-        link = f'http://localhost:8000/users/change-password/{user.token}'
+        # Set information to send it via email
+        link = reverse('change_password', kwargs={'token': user.token})
         html = render_to_string('email.html', {'link': link})
 
+        # Trying to send email
         try:
             send_mail(
                 subject='تغغیر رمز عبور',
@@ -179,6 +197,7 @@ class ForgetPasswordView(View):
                 recipient_list=[user.email],
                 fail_silently=False,
             )
+
         except BadHeaderError as e:
             form.add_error('email', 'در ارسال ایمیل مشکلی به وجود آمده لطفا دوباره امتحان کنید.')
             return render(
@@ -198,10 +217,10 @@ class ForgetPasswordView(View):
 
 class ChangePasswordView(View):
     def get(self, request, token, *args, **kwargs) -> HttpResponse:
-        user = User.objects.filter(token=token).first()
-
-        if user is None:
-            return redirect(reverse('index'))
+        try:
+            user = User.objects.filter(token=token).first()
+        except User.DoesNotExist:
+            return redirect('index')
 
         form = ChangePasswordForm()
 
@@ -235,10 +254,12 @@ class ChangePasswordView(View):
                 }
             )
 
+        # Save user data
         user.set_password(form.cleaned_data.get('password'))
         user.token = get_random_string(100)
         user.save()
 
+        # Login user
         login(request, user)
 
         return redirect(reverse('index'))
@@ -262,6 +283,7 @@ class ChangeUserInfoView(View):
         change_info_form = ChangeUserInfoForm(instance=request.user)
         change_pass_form = ChangePasswordPanelForm(instance=request.user)
 
+        # Get variables from Query-Params ( Showing message on template )
         error = request.GET.get('error')
         success = request.GET.get('success')
 
@@ -276,9 +298,11 @@ class ChangeUserInfoView(View):
         change_info_form = ChangeUserInfoForm(request.POST, instance=request.user)
         change_pass_form = ChangePasswordPanelForm(request.POST, instance=request.user)
 
+        # Get variables from Query-Params ( Showing message on template )
         error = request.GET.get('error')
         success = request.GET.get('success')
 
+        # Validate form ( change_info_form )
         if not change_info_form.is_valid():
             return render(request, 'chang_info.html', {
                 'change_info_form': change_info_form,
@@ -287,6 +311,7 @@ class ChangeUserInfoView(View):
                 'success': success
             })
 
+        # Save data
         change_info_form.save()
 
         return render(request, 'chang_info.html', {
@@ -300,12 +325,16 @@ class ChangeUserInfoView(View):
 @method_decorator(login_required, name='dispatch')
 class UserOrderView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
+        # Get user cart ( shopping history )
         user_carts = request.user.carts.filter(is_paid=True).only('cart_status', 'pay_date', 'id')
 
+        # Paginate item
         paginator = Paginator(user_carts, 5)
 
+        # Get variables from Query-Params ( showing which page of paginated item must be sent )
         page_number = request.GET.get('page')
 
+        # Set paginate items
         page_obj = paginator.page(page_number if page_number else 1)
 
         return render(
@@ -341,6 +370,7 @@ class CreateAddressView(View):
     def post(self, request, *args, **kwargs) -> HttpResponse:
         form = AddressCreateForm(request.POST)
 
+        # Validate form
         if not form.is_valid():
             return render(
                 request, 'address_create.html', {
@@ -348,16 +378,20 @@ class CreateAddressView(View):
                 }
             )
 
+        # Create instance of information user sent
         data = form.save(commit=False)
 
+        # Set information
         data.user = request.user
         data.street = form.cleaned_data.get('street')
         data.city = form.cleaned_data.get('city_select')
         data.state = form.cleaned_data.get('state_select')
         data.phone_number = form.cleaned_data.get('phone_number')
 
+        # Save data
         data.save()
 
+        # Return previous-page
         previous_page = request.META.get('HTTP_REFERER', reverse('index'))
         return redirect(previous_page)
 
@@ -377,11 +411,16 @@ class UserCommentView(View):
 @method_decorator(login_required, name='dispatch')
 class FavoriteProductView(View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
+        # Get user favorite products
         favorites = FavoriteProducts.objects.filter(user=request.user)
 
+        # Paginate item
         paginator = Paginator(favorites, 10)
 
+        # Get variables from Query-Params ( showing which page of paginated item must be sent )
         page = request.GET.get('page')
+
+        # Set paginate items
         paginated_products = paginator.page(page if page else 1)
 
         return render(
@@ -393,15 +432,18 @@ class FavoriteProductView(View):
 
 @login_required()
 def delete_address(request, object_id, *args, **kwargs) -> HttpResponse:
+    # Try to get user address
     try:
         address = Address.objects.get(id=object_id)
     except Address.DoesNotExist:
         previous_page = request.META.get('HTTP_REFERER', reverse('index'))
         return redirect(previous_page)
 
+    # Delete ( set is_active to False )
     address.is_active = False
     address.save()
 
+    # Return previous-page
     previous_page = request.META.get('HTTP_REFERER', reverse('index'))
     return redirect(previous_page)
 
@@ -411,39 +453,49 @@ def change_password_panel(request, *args, **kwargs) -> HttpResponse:
     if request.method == 'POST':
         change_pass_form = ChangePasswordPanelForm(request.POST, instance=request.user)
 
+        # Validate form
         if not change_pass_form.is_valid():
             return redirect(reverse('change_info'))
 
+        # Set data from form
         old_password = change_pass_form.cleaned_data.get('old_password')
         password = change_pass_form.cleaned_data.get('password')
         re_password = change_pass_form.cleaned_data.get('re_password')
 
+        # Try to get user object ( if didn't exist, returns previous-page )
         try:
             user = User.objects.get(email=request.user.email)
+
         except User.DoesNotExist:
+            # Return previous-page
             previous_page = request.META.get('HTTP_REFERER', reverse('index'))
             return redirect(previous_page)
 
+        # Set Url
         url = reverse('change_info')
         params = {}
 
+        # Validate information ( user password )
         if not user.check_password(old_password):
             params['error'] = 'رمز عبور قدیمی درست وارد نشده است'
 
             return redirect(f'{url}?{urlencode(params)}')
 
+        # Validate information ( check re-password )
         if password != re_password:
             params['error'] = 'رمز عبور و تکرار آن مطابقت ندارد'
             return redirect(f'{url}?{urlencode(params)}')
 
+        # Save data and login user
         user.set_password(password)
         user.save()
         login(request, user)
 
+        # Return page
         params['success'] = 'رمز عبور تغییر یافت'
         return redirect(f'{url}?{urlencode(params)}')
 
-
+# Log out functions
 @login_required()
 def logout_view(request):
     logout(request)

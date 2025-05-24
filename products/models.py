@@ -28,6 +28,7 @@ class Product(models.Model):
     def __str__(self):
         return f'Product : {self.book_title}'
 
+    # Return price after applying discount
     def discounted_price(self):
         if self.discounted_percentage:
             discounted_price = self.book_price - ((self.book_price * self.discounted_percentage) / 100)
@@ -36,6 +37,7 @@ class Product(models.Model):
 
         return int(discounted_price)
 
+    # Return amount of discount
     def discount_amount(self):
         if self.discounted_percentage:
             discount_amount = (self.book_price * self.discounted_percentage) / 100
@@ -44,18 +46,21 @@ class Product(models.Model):
 
         return int(discount_amount)
 
+    # Return discount date for showing on timer
     def discount_date(self):
         if self.discounted_expire_date:
             return f'{self.discounted_expire_date.year}-{self.discounted_expire_date.month}-{self.discounted_expire_date.day}'
 
         return None
 
+    # Return discount time for showing on timer
     def discount_time(self):
         if self.discounted_expire_date:
             return f'{self.discounted_expire_date.hour}:{self.discounted_expire_date.minute}'
 
         return None
 
+    # Return avrage rating for showing on template
     def average_rating(self):
         if self.comments.count() != 0:
             rating = []
@@ -87,13 +92,16 @@ class ProductComments(models.Model):
     def __str__(self):
         return f'User : {self.user.username} - Product : {self.product.book_title} - Rating : {self.rating}'
 
+    # Return list of rate for showing star on comment section
     def filled_star(self):
         return range(0, self.rating)
 
+    # Return list of rate for showing star on comment section
     def unfilled_star(self):
         unfilled = 5 - int(self.rating)
         return range(0, unfilled)
 
+    # Return jalale date of create_at for showing on comment section
     def jalali_created_at(self):
         date = GregorianToJalali(self.created_at.year, self.created_at.month, self.created_at.day).getJalaliList()
 

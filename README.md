@@ -10,19 +10,24 @@ Stadino is a web application built using the Django framework that allows users 
 
 - **User Authentication :** Secure user registration and login
 
-- **Product Catalog:** A comprehensive catalog of books with detailed descriptions and images.
+- **Search Page:** A comprehensive Search-Page with some filter feature.
 
 - **Shopping Cart:** A robust shopping cart system for adding, removing, and modifying items.
 
-- **Checkout Process:** A straightforward checkout process with payment integration.
+- **Checkout Process:** A straightforward checkout process this a practice project not real one.
 
 
 ## Tech Stack
 
-[![My Skills](https://skillicons.dev/icons?i=js,html,css,django,python)](https://skillicons.dev)
+[![Tech Stack](https://skillicons.dev/icons?i=js,html,css,django,python)](https://skillicons.dev)
 
 
 ## Installation on your system
+
+**Visiting WebSite Online**
+
+It may take a while for loading. Maybe 50 seconds. But It's just for first time
+You Can See Website Here: https://config-h2wa.onrender.com
 
 1 . **Clone the Repository:**
 
@@ -58,9 +63,9 @@ Stadino is a web application built using the Django framework that allows users 
 
 5 . **Configure the Database:**
 
-- Create a postgersql database in your system.
+- Create a PostgresSQL database in your system.
 
-- Update the DATABASE_URL setting in settings.py file.
+- Update the DATABASE_URL setting in settings.py file. Or you can use sqlite for testing locally
 
 6 . **Run Migrations:**
 
@@ -83,8 +88,6 @@ Stadino is a web application built using the Django framework that allows users 
 - Create an Account: Register a new account to start shopping.
 
 - Add Items to Cart: Add books to your cart and proceed to checkout.
-
-- Checkout and Payment: Complete the checkout process and make a secure payment.
 
 ## Contributing
 
