@@ -495,6 +495,7 @@ def change_password_panel(request, *args, **kwargs) -> HttpResponse:
         params['success'] = 'رمز عبور تغییر یافت'
         return redirect(f'{url}?{urlencode(params)}')
 
+
 # Log out functions
 @login_required()
 def logout_view(request):

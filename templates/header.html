@@ -25,7 +25,7 @@
                                         <li class="nav-item bg-ul-f7"><a class="nav-link" href="{% url 'index' %}">صفحه اصلی</a></li>
 
                                         <li class="nav-item bg-ul-f7">
-                                            <a class="nav-link" href="#">دسته بندی</a>
+                                            <a class="nav-link" href="">دسته بندی</a>
                                             <span class="showSubMenu"><i class="bi bi-chevron-left"></i></span>
                                             <ul class="navbar-nav h-0">
                                                 {% for category in categories %}
@@ -58,7 +58,7 @@
 
                 <div class="col-lg-6 col-12 order-lg-2 order-4">
                     <div class="search-form">
-                        <form action="{% url 'header' %}" method="post">
+                        <form action="{% url 'send-search' %}" method="post">
                             {% csrf_token %}
                             <div class="search-filed">
                                 <input type="text" name="searched_content" placeholder="محصول خود را جستجو کنید" class="form-control search-input">

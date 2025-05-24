@@ -226,10 +226,22 @@ class HeaderView(View):
         )
 
     def post(self, request, *args, **kwargs):
-        # Get information from request.POST ( For price filter )
-        searched_content = request.POST.get('searched_content')
+        # User shopping cart item count
+        cart_item_count = 0
 
-        return redirect(reverse('search', kwargs={'searched_content': searched_content}))
+        # Set cart_item_count if user authenticated
+        if request.user.is_authenticated:
+            cart_item_count = create_cart(request).cart_item.count()
+
+        # Get all categories showing on header
+        categories = Category.objects.all()
+
+        return render(
+            request, 'header.html', {
+                'cart_item_count': cart_item_count,
+                'categories': categories,
+            }
+        )
 
 
 class FooterView(View):
@@ -356,3 +368,12 @@ def remove_filter(request, searched_content, filter_name):
             params.pop('order_by')
 
     return redirect(f'{url}?{urlencode(params)}')
+
+
+# Function for send user to search page
+def search_view(request):
+    if request.method == 'POST':
+        # Get information from request.POST
+        searched_content = request.POST.get('searched_content')
+
+        return redirect(reverse('search', kwargs={'searched_content': searched_content}))

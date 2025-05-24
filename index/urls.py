@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import HeaderView, FooterView, IndexView, SearchProductView, filter_by_category, remove_filter
+from .views import HeaderView, FooterView, IndexView, SearchProductView, filter_by_category, remove_filter, search_view
 
 urlpatterns = [
     # Class base View
@@ -11,6 +11,7 @@ urlpatterns = [
     path('footer/', FooterView.as_view(), name='footer'),
 
     # Function base view
+    path('send-search/', search_view, name='send-search'),
     path('filter_by_category/<str:searched_content>', filter_by_category, name='filter_by_category'),
     path('remove_filter/<str:searched_content>/<str:filter_name>', remove_filter, name='remove_filter'),
 ]
