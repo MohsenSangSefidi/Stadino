@@ -27,7 +27,7 @@ Stadino is a web application built using the Django framework that allows users 
 **Visiting WebSite Online**
 
 It may take a while for loading. Maybe 50 seconds. But It's just for first time
-You Can See Website Here: https://config-h2wa.onrender.com
+You Can See Website Here: https://stadinoshop.pythonanywhere.com/
 
 1 . **Clone the Repository:**
 
